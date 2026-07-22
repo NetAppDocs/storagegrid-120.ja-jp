@@ -1,0 +1,39 @@
+---
+indexpage:
+  title: ノードを復旧または交換する
+  summary: グリッドノードに障害が発生した場合は、障害が発生した物理サーバーまたは仮想サーバーを交換し、StorageGRID ソフトウェアを再インストールして、リカバリ可能なデータを復元することで復旧できます。
+  keywords: recover node, replace node
+  lead: グリッドノードに障害が発生した場合は、障害が発生した物理サーバーまたは仮想サーバーを交換し、StorageGRID ソフトウェアを再インストールして、リカバリ可能なデータを復元することで復旧できます。
+  tiles:
+  - title: はじめに
+    links:
+    - title: 警告および注意事項
+      url: "../maintain/warnings-and-considerations-for-grid-node-recovery.html"
+    - title: 必要な材料を集める
+      url: "../maintain/gathering-required-materials-for-grid-node-recovery.html"
+  - title: 障害が発生したノードを復旧する
+    links:
+    - title: 警告および注意事項
+      url: "../maintain/warnings-and-considerations-for-grid-node-recovery.html"
+    - title: ストレージ ノード
+      url: "../maintain/recovering-from-storage-node-failures.html"
+    - title: 管理ノード
+      url: "../maintain/recovering-from-admin-node-failures.html"
+    - title: ゲートウェイノード
+      url: "../maintain/replacing-gateway-node.html"
+    - title: アーカイブノード
+      url: "../maintain/recovering-from-archive-node-failures.html"
+  - title: ノードを置換
+    links:
+    - title: Linuxノードを置き換える
+      url: "../maintain/all-node-types-replacing-linux-node.html"
+    - title: VMwareノードを置き換える
+      url: "../maintain/all-node-types-replacing-vmware-node.html"
+    - title: LinuxまたはVMwareノードをサービスアプライアンスに置き換える
+      url: "../maintain/installing-services-appliance-platform-change-only.html"
+    - title: アプライアンスノードを複製
+      url: https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/how-appliance-node-cloning-works.html
+  - title: サイトを復元する
+    links:
+    - title: テクニカルサポートがサイトを復旧する方法
+      url: "../maintain/how-site-recovery-is-performed-by-technical-support.html"

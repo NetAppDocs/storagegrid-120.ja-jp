@@ -1,0 +1,96 @@
+---
+permalink: maintain/using-donotstart-file.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, donotstart, do not start, donotstart file, do not start file 
+summary: 技術サポートの指示に従ってさまざまな保守または構成手順を実行する場合、Server Manager の起動時または再起動時にサービスが開始されないようにするために DoNotStart ファイルを使用するよう求められることがあります。 
+---
+= StorageGRID DoNotStart ファイルを使用する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+技術サポートの指示に従ってさまざまな保守または構成手順を実行する場合、Server Manager の起動時または再起動時にサービスが開始されないようにするために DoNotStart ファイルを使用するよう求められることがあります。
+
+
+CAUTION: DoNotStart ファイルの追加または削除は、テクニカルサポートから指示があった場合にのみ行ってください。
+
+サービスの起動を防ぐには、起動を阻止したいサービスのディレクトリに DoNotStart ファイルを配置してください。起動時に、Server Manager は DoNotStart ファイルを検索します。ファイルが存在する場合、サービス（およびそれに依存するすべてのサービス）は起動できません。DoNotStart ファイルが削除されると、以前停止していたサービスは、次回の Server Manager の起動または再起動時に開始されます。DoNotStart ファイルが削除されても、サービスは自動的に起動されません。
+
+すべてのサービスが再起動するのを防ぐ最も効率的な方法は、NTPサービスが起動しないようにすることです。すべてのサービスはNTPサービスに依存しており、NTPサービスが実行されていない場合は動作しません。
+
+
+
+[[add-donotstart-file-for-service]]
+== サービス用の DoNotStart ファイルを追加する
+
+グリッド ノード上の該当するサービスのディレクトリに DoNotStart ファイルを追加することで、個々のサービスが起動しないようにすることができます。
+
+.開始する前に
+あなたは `Passwords.txt`ファイルを持っています。
+
+.手順
+. グリッドノードにログインします。
++
+.. 次のコマンドを入力します： `ssh admin@_grid_node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+
+
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+. DoNotStart ファイルを追加します： `touch /etc/sv/_service_/DoNotStart`
++
+ `service`は、起動を阻止するサービスの名前です。例：
+
++
+[listing]
+----
+touch /etc/sv/ldr/DoNotStart
+----
++
+A DoNotStart ファイルが作成されました。ファイルの内容は不要です。
+
++
+サーバーマネージャーまたはグリッドノードが再起動されると、サーバーマネージャーは再起動しますが、サービスは再起動しません。
+
+. コマンドシェルからログアウトします： `exit`
+
+
+
+
+[[remove-donotstart-file-for-service]]
+== サービスの DoNotStart ファイルを削除する
+
+サービスの起動を妨げている DoNotStart ファイルを削除した場合は、そのサービスを起動する必要があります。
+
+.開始する前に
+あなたは `Passwords.txt`ファイルを持っています。
+
+.手順
+. グリッドノードにログインします。
++
+.. 次のコマンドを入力します： `ssh admin@_grid_node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+
+
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+. サービスディレクトリから DoNotStart ファイルを削除します： `rm /etc/sv/_service_/DoNotStart`
++
+ `service`はサービスの名前です。例：
+
++
+[listing]
+----
+rm /etc/sv/ldr/DoNotStart
+----
+. サービスを開始します： `service _servicename_ start`
+. コマンドシェルからログアウトします： `exit`
+

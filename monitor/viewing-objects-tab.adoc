@@ -1,0 +1,18 @@
+---
+permalink: monitor/viewing-objects-tab.html 
+sidebar: sidebar 
+keywords: objects tab 
+summary: 「オブジェクト」タブには、S3 の取り込みおよび取得レートに関する情報が表示されます。 
+---
+= StorageGRID オブジェクトタブを表示します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+オブジェクトタブには、link:../s3/index.html["S3の取り込みおよび取得レート"]に関する情報が表示されます。
+
+「オブジェクト」タブは、各ストレージノード、各サイト、およびグリッド全体について表示されます。ストレージノードの場合、「オブジェクト」タブには、オブジェクト数、メタデータクエリ、およびバックグラウンド検証に関する情報も表示されます。
+
+image:nodes_page_objects_tab.png["ノードページ オブジェクトタブ"]

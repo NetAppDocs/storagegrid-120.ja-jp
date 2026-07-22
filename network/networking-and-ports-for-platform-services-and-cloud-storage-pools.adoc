@@ -1,0 +1,56 @@
+---
+permalink: network/networking-and-ports-for-platform-services-and-cloud-storage-pools.html 
+sidebar: sidebar 
+keywords: networking for platform services, networking for cloud storage pools 
+summary: StorageGRID プラットフォームサービスまたはクラウドストレージプールを使用する予定がある場合は、宛先エンドポイントに到達できるように、グリッドネットワークとファイアウォールを設定する必要があります。 
+---
+= プラットフォームサービスおよびクラウドストレージプール用のネットワークとポート
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID プラットフォームサービスまたはクラウドストレージプールを使用する予定がある場合は、宛先エンドポイントに到達できるように、グリッドネットワークとファイアウォールを設定する必要があります。
+
+
+
+[[networking-for-platform-services]]
+== プラットフォームサービスのためのネットワーク構築
+
+link:../admin/manage-platform-services-for-tenants.html["テナント向けプラットフォームサービスの管理"]およびlink:../tenant/considerations-for-platform-services.html["プラットフォームサービスを管理する"]に記載されているとおり、プラットフォームサービスには、検索統合、イベント通知、およびCloudMirrorレプリケーションを提供する外部サービスが含まれます。
+
+プラットフォームサービスには、StorageGRID ADC サービスをホストするストレージノードから外部サービスエンドポイントへのアクセスが必要です。アクセスを提供する例としては、次のものがあります：
+
+* ADCサービスが稼働しているストレージノード上で、ターゲットエンドポイントにルーティングするAESLエントリを含む固有の管理ネットワークを設定します。
+* クライアントネットワークが提供するデフォルトルートに依存します。デフォルトルートを使用する場合は、link:../admin/manage-firewall-controls.html["信頼できないクライアントネットワーク機能"]を使用して受信接続を制限できます。
+
+
+
+
+[[networking-for-cloud-storage-pools]]
+== クラウドストレージプールのネットワーク構築
+
+クラウドストレージプールでは、Amazon S3 GlacierやMicrosoft Azure Blob ストレージなど、使用する外部サービスが提供するエンドポイントへのストレージノードからのアクセスも必要です。詳細については、link:../ilm/what-cloud-storage-pool-is.html["クラウドストレージプールとは何ですか？"]を参照してください。
+
+
+
+[[ports-for-platform-services-and-cloud-storage-pools]]
+== プラットフォームサービスおよびクラウドストレージプール用のポート
+
+デフォルトでは、プラットフォームサービスとCloud Storage Poolの通信には、以下のポートが使用されます。
+
+* *80*: エンドポイント URI が次で始まる場合 `http`
+* *443*: エンドポイント URI が以下で始まる場合 `https`
+
+
+エンドポイントの作成時または編集時に、別のポートを指定できます。link:internal-grid-node-communications.html["ネットワークポートリファレンス"]を参照してください。
+
+非透過型のプロキシ サーバを使用する場合は、インターネット上のエンドポイントなどの外部エンドポイントにメッセージを送信できるようにするために、link:../admin/configuring-storage-proxy-settings.html["ストレージ プロキシ設定を構成する"]も必要です。
+
+
+
+[[vlans-and-platform-services-and-cloud-storage-pools]]
+== VLANとプラットフォームサービスおよびCloud Storage Pool
+
+プラットフォームサービスやクラウドストレージプールには、VLANネットワークを使用できません。宛先エンドポイントは、グリッドネットワーク、管理ネットワーク、またはクライアントネットワーク経由で到達可能である必要があります。

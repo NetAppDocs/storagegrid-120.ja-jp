@@ -1,0 +1,66 @@
+---
+permalink: maintain/configuring-dns-servers.html 
+sidebar: sidebar 
+keywords: storagegrid, dns, configuring dns, configure dns, domain name system 
+summary: DNSサーバーを追加、削除、更新することで、IPアドレスではなく完全修飾ドメイン名（FQDN）ホスト名を使用できるようになります。 
+---
+= StorageGRIDでDNSサーバーを設定する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+DNSサーバーを追加、更新、削除することで、IPアドレスではなく完全修飾ドメイン名（FQDN）ホスト名を使用できるようになります。
+
+外部宛先のホスト名を指定する際に、IPアドレスの代わりに完全修飾ドメイン名（FQDN）を使用するには、使用する各DNSサーバーのIPアドレスを指定してください。これらのエントリは、AutoSupport、アラートメール、SNMP通知、プラットフォームサービスエンドポイント、クラウドストレージプールなどに使用されます。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* あなたはlink:../admin/admin-group-permissions.html["メンテナンス権限またはルートアクセス権限"]があります。
+* 設定するDNSサーバーのIPアドレスが分かっています。
+
+
+.タスク概要
+適切な動作を確保するため、DNSサーバーを2つまたは3つ指定してください。3つ以上指定した場合、一部のプラットフォームにおける既知のOS制限により、3つしか使用されない可能性があります。環境にルーティング制限がある場合は、link:../maintain/modifying-dns-configuration-for-single-grid-node.html["DNSサーバーリストをカスタマイズする"]個々のノード（通常はサイト内のすべてのノード）が、最大3つの異なるDNSサーバーセットを使用するように設定できます。
+
+可能であれば、各サイトがローカルからアクセスできるDNSサーバを使用し、独立したサイトが外部宛先のFQDNを解決できるようにしてください。
+
+
+
+[[add-a-dns-server]]
+== DNSサーバーを追加する
+
+DNSサーバーを追加するには、以下の手順に従ってください。
+
+.手順
+. *Maintenance* > *Network* > *DNS servers* を選択します。
+. DNSサーバーを追加するには、*別のサーバーを追加*を選択してください。
+. * 保存 * を選択します。
+
+
+
+
+[[modify-a-dns-server]]
+== DNSサーバを変更する
+
+DNSサーバーを変更するには、以下の手順に従ってください。
+
+.手順
+. *Maintenance* > *Network* > *DNS servers* を選択します。
+. 編集するサーバー名のIPアドレスを選択し、必要な変更を加えてください。
+. * 保存 * を選択します。
+
+
+
+
+[[delete-a-dns-server]]
+== DNSサーバを削除する
+
+DNSサーバーのIPアドレスを削除するには、以下の手順に従ってください。
+
+.手順
+. *Maintenance* > *Network* > *DNS servers* を選択します。
+. IPアドレスの横にある削除アイコンimage:icon-x-to-remove.png["削除アイコン"]を選択します。
+. * 保存 * を選択します。
+

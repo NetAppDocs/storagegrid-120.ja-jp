@@ -1,0 +1,19 @@
+---
+permalink: network/network-gateway-requirements.html 
+sidebar: sidebar 
+keywords: network gateway requirements 
+summary: ネットワークゲートウェイまたはルーターに関する以下の要件とガイドラインに従ってください。 
+---
+= StorageGRID のネットワーク ゲートウェイ要件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ネットワークゲートウェイまたはルーターに関する以下の要件とガイドラインに従ってください。
+
+* 設定されている場合、特定のネットワークのゲートウェイは、そのネットワークのサブネット内に存在する必要があります。
+* 静的アドレス指定を使用してインターフェースを設定する場合は、0.0.0.0以外のゲートウェイアドレスを指定する必要があります。
+* ゲートウェイがない場合は、ゲートウェイアドレスをネットワーク インターフェイスの IP アドレスに設定することをお勧めします。
+

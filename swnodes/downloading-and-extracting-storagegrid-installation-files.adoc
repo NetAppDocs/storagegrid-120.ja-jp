@@ -1,0 +1,307 @@
+---
+permalink: swnodes/downloading-and-extracting-storagegrid-installation-files.html 
+sidebar: sidebar 
+keywords: how to download installation files 
+summary: StorageGRID インストールアーカイブをダウンロードして、必要なファイルを展開する必要があります。必要に応じて、インストールパッケージ内のファイルを手動で確認することもできます。 
+---
+= StorageGRID インストールファイルのダウンロードと展開
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID インストールアーカイブをダウンロードし、必要なファイルを展開する必要があります。必要に応じて、インストールパッケージ内のファイルを手動で検証することもできます。
+
+.手順
+.  https://mysupport.netapp.com/site/products/all/details/storagegrid/downloads-tab["NetApp StorageGRID のダウンロードページ"^]に移動します。
+. 最新リリースをダウンロードするには、ボタンを選択するか、ドロップダウンメニューから別のバージョンを選択して*Go*を選択してください。
+. ご利用の NetApp アカウントのユーザー名とパスワードでサインインしてください。
+. 注意/MustReadの文面が表示されたら、内容を確認してチェックボックスを選択してください。
++
+
+CAUTION: StorageGRID リリースをインストールした後、必要なホットフィックスを適用する必要があります。詳細については、link:../maintain/storagegrid-hotfix-procedure.html["復旧およびメンテナンス手順書に記載されているホットフィックス手順"]を参照してください。
+
+. エンドユーザー使用許諾契約書を読み、チェックボックスを選択してから、*Accept & Continue* を選択してください。
+. *StorageGRID のインストール*列で、ソフトウェアベースのノードタイプ（RHEL、Ubuntu または Debian、または VMware）に対応する .tgz または .zip インストールアーカイブを選択します。
++
+
+NOTE: サービス用ノートパソコンで Windows を実行している場合は、 `.zip` ファイルを使用してください。
+
+. インストールアーカイブを保存します。
+. [[download-verification-package]]Linuxノードではコード署名検証は手動で行います。必要に応じて、インストールアーカイブを検証する場合は、次の手順を実行します。
++
+.. StorageGRID コード署名検証パッケージをダウンロードします。このパッケージのファイル名は `StorageGRID_<version-number>_Code_Signature_Verification_Package.tar.gz`の形式を使用します。ここで、 `<version-number>`は StorageGRID ソフトウェアバージョンです。
+.. 手順に従ってlink:download-files-verify.html["インストールファイルを手動で検証する"]ください。
+
+
+. インストールアーカイブからファイルを抽出してください。
+. 必要なファイルを選択してください。
++
+必要なファイルは、計画しているグリッドトポロジーと StorageGRID システムの導入方法によって異なります。
+
++
+
+NOTE: 表に記載されているパスは、展開されたインストールアーカイブによってインストールされた最上位ディレクトリからの相対パスです。
+
+
+
+[role="tabbed-block"]
+====
+.RHEL
+--
+[cols="1a,1a"]
+|===
+| パスとファイル名 | 説明 
+
+
+| ./rpms/README  a| 
+StorageGRID ダウンロード ファイルに含まれるすべてのファイルを説明するテキスト ファイル。
+
+
+
+| ./rpms/NLF000000.txt  a| 
+製品に対するサポートは一切含まれない無料ライセンス。
+
+
+
+| ./rpms/StorageGRID-Webscale-Images-_version_-SHA.rpm  a| 
+RHEL ホストに StorageGRID ノードイメージをインストールするための RPM パッケージ。
+
+
+
+| ./rpms/StorageGRID-Webscale-Service-_version_-SHA.rpm  a| 
+RHEL ホストに StorageGRID ホストサービスをインストールするための RPM パッケージ。
+
+
+
+| デプロイメントスクリプトツール | 説明 
+
+
+| ./rpms/configure-storagegrid.py  a| 
+StorageGRID システムの設定を自動化するために使用される Python スクリプト。
+
+
+
+| ./rpms/configure-sga.py  a| 
+StorageGRID アプライアンスの設定を自動化するために使用される Python スクリプト。
+
+
+
+| ./rpms/configure-storagegrid.sample.json  a| 
+ `configure-storagegrid.py`スクリプトで使用するための設定ファイルの例。
+
+
+
+| ./rpms/storagegrid-ssoauth.py  a| 
+Grid Management API にサインインする際に使用できる Python スクリプトの例（シングル サインオンが有効になっている場合）。このスクリプトは、Ping Federate との連携にも使用できます。
+
+
+
+| ./rpms/configure-storagegrid.blank.json  a| 
+ `configure-storagegrid.py`スクリプトで使用するための空の設定ファイル。
+
+
+
+| ./rpms/extras/ansible  a| 
+StorageGRID コンテナのデプロイ用に RHEL ホストを設定するための Ansible ロールとプレイブックの例。必要に応じて、ロールやプレイブックをカスタマイズできます。
+
+
+
+| ./rpms/storagegrid-ssoauth-azure.py  a| 
+Active Directory または Ping Federate を使用してシングル サインオン（SSO）が有効になっている場合に、Grid Management API へのサインインに使用できる Python スクリプトの例です。
+
+
+
+| ./rpms/storagegrid-ssoauth-azure.js  a| 
+コンパニオン `storagegrid-ssoauth-azure.py` Python スクリプトによって呼び出され、Azure とのシングル サインオン操作を実行するヘルパースクリプト。
+
+
+
+| ./rpms/extras/api-schemas  a| 
+StorageGRID のAPIスキーマ。
+
+*注*: アップグレードを実行する前に、アップグレード互換性テスト用の非本番 StorageGRID 環境がない場合、これらのスキーマを使用して、StorageGRID 管理 API を使用するために作成したコードが新しい StorageGRID リリースと互換性があることを確認できます。
+
+|===
+--
+.UbuntuまたはDebian
+--
+[cols="1a,1a"]
+|===
+| パスとファイル名 | 説明 
+
+
+| ./debs/README  a| 
+StorageGRID ダウンロード ファイルに含まれるすべてのファイルを説明するテキスト ファイル。
+
+
+
+| ./debs/NLF000000.txt  a| 
+テスト環境およびコンセプトの実証環境に使用できる、非本番環境のNetAppライセンス ファイル。
+
+
+
+| ./debs/storagegrid-webscale-images-version-SHA.deb  a| 
+UbuntuまたはDebianホストにStorageGRIDノードイメージをインストールするためのDEBパッケージ。
+
+
+
+| ./debs/storagegrid-webscale-images-version-SHA.deb.md5  a| 
+MD5 チェックサム（ファイル `/debs/storagegrid-webscale-images-version-SHA.deb`）。
+
+
+
+| ./debs/storagegrid-webscale-service-version-SHA.deb  a| 
+UbuntuまたはDebianホストにStorageGRIDホストサービスをインストールするためのDEBパッケージ。
+
+
+
+| デプロイメントスクリプトツール | 説明 
+
+
+| ./debs/configure-storagegrid.py  a| 
+StorageGRID システムの設定を自動化するために使用される Python スクリプト。
+
+
+
+| ./debs/configure-sga.py  a| 
+StorageGRID アプライアンスの設定を自動化するために使用される Python スクリプト。
+
+
+
+| ./debs/storagegrid-ssoauth.py  a| 
+Grid Management API にサインインする際に使用できる Python スクリプトの例（シングル サインオンが有効になっている場合）。このスクリプトは、Ping Federate との連携にも使用できます。
+
+
+
+| ./debs/configure-storagegrid.sample.json  a| 
+ `configure-storagegrid.py`スクリプトで使用するための設定ファイルの例。
+
+
+
+| ./debs/configure-storagegrid.blank.json  a| 
+ `configure-storagegrid.py`スクリプトで使用するための空の設定ファイル。
+
+
+
+| ./debs/extras/ansible  a| 
+StorageGRID コンテナのデプロイ用に Ubuntu または Debian ホストを設定するための Ansible ロールとプレイブックの例。必要に応じて、ロールやプレイブックをカスタマイズできます。
+
+
+
+| ./debs/storagegrid-ssoauth-azure.py  a| 
+Active Directory または Ping Federate を使用してシングル サインオン（SSO）が有効になっている場合に、Grid Management API へのサインインに使用できる Python スクリプトの例です。
+
+
+
+| ./debs/storagegrid-ssoauth-azure.js  a| 
+コンパニオン `storagegrid-ssoauth-azure.py` Python スクリプトによって呼び出され、Azure とのシングル サインオン操作を実行するヘルパースクリプト。
+
+
+
+| ./debs/extras/api-schemas  a| 
+StorageGRID のAPIスキーマ。
+
+*注*: アップグレードを実行する前に、アップグレード互換性テスト用の非本番 StorageGRID 環境がない場合、これらのスキーマを使用して、StorageGRID 管理 API を使用するために作成したコードが新しい StorageGRID リリースと互換性があることを確認できます。
+
+|===
+--
+.VMware
+--
+[cols="1a,1a"]
+|===
+| パスとファイル名 | 説明 
+
+
+| ./vsphere/README  a| 
+StorageGRID ダウンロード ファイルに含まれるすべてのファイルを説明するテキスト ファイル。
+
+
+
+| ./vsphere/NLF000000.txt  a| 
+製品に対するサポートは一切含まれない無料ライセンス。
+
+
+
+| ./vsphere/NetApp-SG-version-SHA.vmdk  a| 
+グリッドノード仮想マシンを作成するためのテンプレートとして使用される仮想マシンディスクファイル。
+
+
+
+| ./vsphere/vsphere-primary-admin.ovf ./vsphere/vsphere-primary-admin.mf  a| 
+Open Virtualization Formatテンプレートファイル(`.ovf`）とマニフェストファイル(`.mf`）は、プライマリ管理ノードをデプロイするためのものです。
+
+
+
+| ./vsphere/vsphere-non-primary-admin.ovf ./vsphere/vsphere-non-primary-admin.mf  a| 
+テンプレートファイル(`.ovf`）とマニフェストファイル(`.mf`）は、プライマリ以外の管理ノードをデプロイするためのものです。
+
+
+
+| ./vsphere/vsphere-gateway.ovf ./vsphere/vsphere-gateway.mf  a| 
+テンプレートファイル(`.ovf`）とマニフェストファイル(`.mf`）は、Gateway Nodes をデプロイするためのものです。
+
+
+
+| ./vsphere/vsphere-storage.ovf ./vsphere/vsphere-storage.mf  a| 
+テンプレートファイル(`.ovf`）とマニフェストファイル(`.mf`）は、仮想マシンベースのストレージノードをデプロイするためのものです。
+
+
+
+| デプロイメントスクリプトツール | 説明 
+
+
+| ./vsphere/deploy-vsphere-ovftool.sh  a| 
+仮想グリッドノードのデプロイを自動化するために使用されるBashシェルスクリプト。
+
+
+
+| ./vsphere/deploy-vsphere-ovftool-sample.ini  a| 
+ `deploy-vsphere-ovftool.sh`スクリプトで使用するための設定ファイルの例。
+
+
+
+| ./vsphere/configure-storagegrid.py  a| 
+StorageGRID システムの設定を自動化するために使用される Python スクリプト。
+
+
+
+| ./vsphere/configure-sga.py  a| 
+StorageGRID アプライアンスの設定を自動化するために使用される Python スクリプト。
+
+
+
+| ./vsphere/storagegrid-ssoauth.py  a| 
+シングル サインオン（SSO）が有効になっている場合に Grid Management API へのサインインに使用できる Python スクリプトの例です。このスクリプトは、Ping Federate との連携にも使用できます。
+
+
+
+| ./vsphere/configure-storagegrid.sample.json  a| 
+ `configure-storagegrid.py`スクリプトで使用するための設定ファイルの例。
+
+
+
+| ./vsphere/configure-storagegrid.blank.json  a| 
+ `configure-storagegrid.py`スクリプトで使用するための空の設定ファイル。
+
+
+
+| ./vsphere/storagegrid-ssoauth-azure.py  a| 
+Active Directory または Ping Federate を使用してシングル サインオン（SSO）が有効になっている場合に、Grid Management API へのサインインに使用できる Python スクリプトの例です。
+
+
+
+| ./vsphere/storagegrid-ssoauth-azure.js  a| 
+コンパニオン `storagegrid-ssoauth-azure.py` Python スクリプトによって呼び出され、Azure とのシングル サインオン操作を実行するヘルパースクリプト。
+
+
+
+| ./vsphere/extras/api-schemas  a| 
+StorageGRID のAPIスキーマ。
+
+*注*: アップグレードを実行する前に、アップグレード互換性テスト用の非本番 StorageGRID 環境がない場合、これらのスキーマを使用して、StorageGRID 管理 API を使用するために作成したコードが新しい StorageGRID リリースと互換性があることを確認できます。
+
+|===
+--
+====

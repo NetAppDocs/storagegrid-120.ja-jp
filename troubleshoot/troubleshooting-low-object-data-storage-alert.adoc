@@ -1,0 +1,84 @@
+---
+permalink: troubleshoot/troubleshooting-low-object-data-storage-alert.html 
+sidebar: sidebar 
+keywords: how to troubleshoot the Low object data storage alert 
+summary: オブジェクトデータストレージ容量不足アラートは、各ストレージノードでオブジェクトデータを保存するために利用可能な容量を監視します。 
+---
+= StorageGRID でオブジェクトデータストレージ不足の警告を解決する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+*オブジェクトデータストレージ不足*アラートは、各ストレージノードでオブジェクトデータを保存するために利用可能な容量を監視します。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* link:../admin/admin-group-permissions.html["特定のアクセス権限"]があります。
+
+
+.タスク概要
+*Low object data storage* アラートは、ストレージノード上のレプリケートおよびイレイジャーコーディングされたオブジェクトデータの合計量が、アラートルールで設定された条件のいずれかを満たした場合にトリガーされます。
+
+デフォルトでは、この条件が真と評価された場合に重大なアラートがトリガーされます。
+
+[listing]
+----
+(storagegrid_storage_utilization_data_bytes/
+(storagegrid_storage_utilization_data_bytes + storagegrid_storage_utilization_usable_space_bytes)) >=0.90
+----
+この状態では：
+
+* `storagegrid_storage_utilization_data_bytes` は、Storage Node のレプリケートされた消去コーディングされたオブジェクトデータの合計サイズの推定値です。
+* `storagegrid_storage_utilization_usable_space_bytes` は、ストレージノードに残っているオブジェクトストレージ容量の合計です。
+
+
+重大または軽微な「Low object data storage」アラートが発生した場合は、できるだけ早く拡張手順を実行してください。
+
+.手順
+. 「アラート」 > 「現在」を選択してください。
++
+アラートページが表示されます。
+
+. アラート一覧表から、必要に応じて *Low object data storage* アラートグループを展開し、表示したいアラートを選択します。
++
+
+NOTE: アラートのグループの見出しではなく、アラートを選択してください。
+
+. ダイアログボックスの詳細を確認し、以下の点に注意してください。
++
+** 時間トリガー
+** サイト名とノード名
+** このアラートのメトリクスの現在の値
+
+
+. 「ノード」>「_ストレージノードまたはサイト_」>「ストレージ」を選択します。
+. カーソルを「使用ストレージ - オブジェクトデータ」グラフの上に移動します。
++
+以下の値が表示されます：
+
++
+** *使用率（％）*：オブジェクトデータに使用されている総使用可能スペースの割合。
+** *使用済み*：オブジェクトデータに使用されている総使用可能容量の量。
+** *複製データ*：このノード、サイト、またはグリッド上の複製オブジェクトデータの量の推定値。
+** *イレイジャー コーディング データ*：このノード、サイト、またはグリッド上のイレイジャー コーディング オブジェクトデータの量の推定値。
+** *合計*：このノード、サイト、またはグリッドで使用可能なスペースの合計量。使用済みの値は `storagegrid_storage_utilization_data_bytes`メトリックです。
+
+
++
+image:nodes_page_storage_used_object_data.png["ノードページのストレージ：使用済みオブジェクトデータ"]
+
+. グラフ上部の時間コントロールを選択すると、異なる期間におけるストレージ使用量を表示できます。
++
+ストレージの使用状況を時系列で確認することで、アラート発生前後のストレージ使用量を把握でき、ノードの残りの容量がいっぱいになるまでにかかる時間を推定するのに役立ちます。
+
+. できるだけ早く、link:../expand/guidelines-for-adding-object-capacity.html["ストレージ容量を追加する"]グリッドに追加してください。
++
+既存のストレージノードにストレージボリューム（LUN）を追加することも、新しいストレージノードを追加することもできます。
+
++
+
+NOTE: 詳細については、link:../admin/managing-full-storage-nodes.html["ストレージノード全体を管理する"]を参照してください。
+
+

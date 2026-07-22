@@ -1,0 +1,37 @@
+---
+permalink: tenant/manage-bucket-policy.html 
+sidebar: sidebar 
+keywords: bucket policy, S3 bucket policy, manage bucket policy 
+summary: S3バケットとそのバケット内のオブジェクトに対するユーザーアクセスを制御できます。 
+---
+= StorageGRIDバケットポリシーを管理
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+S3バケットとそのバケット内のオブジェクトに対するユーザーアクセスを制御できます。
+
+.開始する前に
+* テナントマネージャーに link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用してサインインしています。
+* あなたは、link:tenant-management-permissions.html["ルートアクセス権限"]を持つユーザーグループに属しています。「すべてのバケットを表示」および「すべてのバケットを管理」の権限では、表示のみが許可されます。
+* 必要な数のストレージノードとサイトが利用可能であることを確認しました。いずれかのサイト内で2つ以上のストレージノードが利用できない場合、またはサイト自体が利用できない場合、これらの設定を変更できない可能性があります。
+
+
+.手順
+. 「Buckets」を選択し、管理するバケットを選択します。
+. バケットの詳細ページで、「Bucket access」＞「Bucket policy」を選択します。
+. 次のいずれかを実行します。
++
+** *Enable policy* チェックボックスを選択して、バケットポリシーを入力します。次に、有効な JSON 形式の文字列を入力します。
++
+各バケットポリシーには、20,480バイトのサイズ制限があります。
+
+** 文字列を編集することで、既存のポリシーを変更します。
+** *ポリシーを有効にする* の選択を解除すると、ポリシーが無効になります。
+
+
+
+
+バケットポリシーに関する詳細情報（言語構文や例を含む）については、link:../s3/example-bucket-policies.html["バケットポリシーの例"]を参照してください。

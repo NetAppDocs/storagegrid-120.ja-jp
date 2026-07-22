@@ -1,0 +1,165 @@
+---
+permalink: s3/use-s3-select.html 
+sidebar: sidebar 
+keywords: use S3 Select, S3 Select 
+summary: StorageGRID は、SelectObjectContent コマンドに対して、以下の Amazon S3 Select 句、データ型、演算子、および予約済みキーワードをサポートしています。 
+---
+= StorageGRID でサポートされている Amazon S3 Select 操作
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID は、link:select-object-content.html["SelectObjectContent コマンド"]に対して以下の Amazon S3 Select 句、データ型、および演算子をサポートしています。
+
+
+NOTE: 記載されていない項目はサポート対象外です。
+
+構文については、link:select-object-content.html["SelectObjectContent"]を参照してください。S3 Selectの詳細については、 https://docs.aws.amazon.com/AmazonS3/latest/userguide/selecting-content-from-objects.html["S3 SelectのAWSドキュメント"^]を参照してください。
+
+S3 Select が有効になっているテナントアカウントのみが SelectObjectContent クエリを発行できます。link:../admin/manage-s3-select-for-tenant-accounts.html["S3 Selectを使用する際の考慮事項と要件"] を参照してください。
+
+
+
+[[clauses]]
+== 条項
+
+* SELECTリスト
+* FROM句
+* WHERE句
+* LIMIT句
+
+
+
+
+[[data-types]]
+== データ型
+
+* ブール値
+* integer
+* string
+* float
+* 小数、数値
+* タイムスタンプ
+
+
+
+
+[[operators]]
+== 有人対応
+
+
+
+[[logical-operators]]
+=== 論理演算子
+
+* および
+* NOT
+* または
+
+
+
+
+[[comparison-operators]]
+=== 比較演算子
+
+* <
+* >
+* <=
+* >=
+* =
+* =
+* <>
+* !=
+* 間
+* で
+
+
+
+
+[[pattern-matching-operators]]
+=== パターンマッチング演算子
+
+* LIKE
+* _
+* %
+
+
+
+
+[[unitary-operators]]
+=== ユニタリ演算子
+
+* IS NULL
+* IS NOT NULL
+
+
+
+
+[[math-operators]]
+=== 数学演算子
+
+* +
+* -
+* *
+* /
+* %
+
+
+StorageGRIDはAmazon S3 Selectの演算子の優先順位に従います。
+
+
+
+[[aggregate-functions]]
+== 集計関数
+
+* AVG()
+* COUNT(*)
+* MAX()
+* MIN()
+* SUM()
+
+
+
+
+[[conditional-functions]]
+== 条件関数
+
+* ケース
+* COALESCE
+* NULLIF
+
+
+
+
+[[conversion-functions]]
+== 変換関数
+
+* CAST（サポートされているデータ型の場合）
+
+
+
+
+[[date-functions]]
+== 日付関数
+
+* DATE_ADD
+* DATE_DIFF
+* EXTRACT
+* TO_STRING
+* TO_TIMESTAMP
+* UTCNOW
+
+
+
+
+[[string-functions]]
+== 文字列関数
+
+* CHAR_LENGTH、CHARACTER_LENGTH
+* LOWER
+* SUBSTRING
+* TRIM
+* アッパー
+

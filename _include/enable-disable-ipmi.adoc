@@ -1,0 +1,6 @@
+= 
+:allow-uri-read: 
+
+
+
+NOTE: BMC を含むすべてのアプライアンスに対して、リモート IPMI アクセスを有効または無効にすることができます。リモート IPMI インターフェイスを使用すると、BMC アカウントとパスワードを持つすべてのユーザーが StorageGRID アプライアンスへの低レベルのハードウェア アクセスを行えるようになります。BMC へのリモート IPMI アクセスが不要な場合は、次のいずれかの方法を使用してこのオプションを無効にしてください：+ Grid Manager で、*Configuration* > *Security* > *Security settings* > *Appliances* に移動し、*Enable remote IPMI access* チェックボックスをオフにします。+ Grid 管理 API で、プライベートエンドポイントを使用します： `PUT /private/bmc`。

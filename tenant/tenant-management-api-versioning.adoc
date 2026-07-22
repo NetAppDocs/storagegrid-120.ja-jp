@@ -1,0 +1,103 @@
+---
+permalink: tenant/tenant-management-api-versioning.html 
+sidebar: sidebar 
+keywords: tenant management api version 
+summary: テナント管理APIは、バージョン管理を利用して、システムへの影響を最小限に抑えたアップグレードをサポートします。 
+---
+= StorageGRID テナント管理 API のバージョン管理
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+テナント管理APIは、バージョン管理を利用して、システムへの影響を最小限に抑えたアップグレードをサポートします。
+
+例えば、このリクエスト URL は API のバージョン 4 を指定しています。
+
+`https://_hostname_or_ip_address_/api/v4/authorize`
+
+APIのメジャーバージョンは、古いバージョンと互換性のない変更が行われた場合、更新されます。APIのマイナーバージョンは、古いバージョンと互換性のある変更が行われた場合、更新されます。互換性のある変更には、新しいエンドポイントまたは新しいプロパティの追加が含まれます。
+
+以下の例は、行われた変更の種類に基づいてAPIバージョンがどのように更新されるかを示しています。
+
+[cols="1a,1a,1a"]
+|===
+| APIに対する変更の種類 | 旧バージョン | 新バージョン 
+
+
+ a| 
+旧バージョンとの互換性あり
+ a| 
+2.1
+ a| 
+2.2
+
+
+
+ a| 
+旧バージョンとの互換性はありません
+ a| 
+2.1
+ a| 
+3.0
+
+
+
+ a| 
+3.0
+ a| 
+4.0
+
+|===
+StorageGRID ソフトウェアを初めてインストールする場合、最新バージョンの API のみが有効になります。ただし、StorageGRID の新しい機能リリースにアップグレードした場合でも、少なくとも 1 つの StorageGRID 機能リリースの間は、古い API バージョンに引き続きアクセスできます。
+
+
+NOTE: 対応バージョンを設定できます。詳細については、link:../admin/using-grid-management-api.html["グリッド管理API"] の Swagger API ドキュメントの *config* セクションを参照してください。すべての API クライアントを新しいバージョンに更新した後、古いバージョンのサポートを無効にする必要があります。
+
+古いリクエストは、以下の方法で非推奨としてマークされます。
+
+* レスポンスヘッダーは「Deprecated: true」です。
+* JSON レスポンスボディには「deprecated」：true が含まれています
+* 非推奨の警告がnms.logに追加されます。例：
++
+[listing]
+----
+Received call to deprecated v2 API at POST "/api/v2/authorize"
+----
+
+
+
+
+[[determine-which-api-versions-are-supported-in-the-current-release]]
+== 現在のリリースでサポートされているAPIバージョンを確認する
+
+ `GET /versions`API リクエストを使用して、サポートされている API のメジャーバージョンのリストを返します。このリクエストは、Swagger API ドキュメントの *config* セクションに記載されています。
+
+[listing]
+----
+GET https://{{IP-Address}}/api/versions
+{
+  "responseTime": "2023-06-27T22:13:50.750Z",
+  "status": "success",
+  "apiVersion": "4.0",
+  "data": [
+    2,
+    3,
+    4
+  ]
+}
+----
+
+
+[[specify-an-api-version-for-a-request]]
+== リクエストのAPIバージョンを指定します
+
+パスパラメータ（(`/api/v4`）またはヘッダー（(`Api-Version: 4`）を使用して API バージョンを指定できます。両方の値を指定した場合、ヘッダーの値がパスの値を上書きします。
+
+[listing]
+----
+curl https://[IP-Address]/api/v4/grid/accounts
+
+curl -H "Api-Version: 4" https://[IP-Address]/api/grid/accounts
+----

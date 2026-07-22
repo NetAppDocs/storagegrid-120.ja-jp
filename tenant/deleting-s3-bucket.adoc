@@ -1,0 +1,58 @@
+---
+permalink: tenant/deleting-s3-bucket.html 
+sidebar: sidebar 
+keywords: how to delete S3 bucket 
+summary: テナントマネージャーを使用して、空のS3バケットを削除できます。 
+---
+= StorageGRID S3 バケットを削除する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+テナントマネージャーを使用すると、空になった S3 バケットを 1 つまたは複数削除できます。
+
+.開始する前に
+* テナントマネージャーに link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用してサインインしています。
+* あなたは、link:tenant-management-permissions.html["すべてのバケットを管理する、またはルートアクセス権限"]を持つユーザーグループに属しています。これらの権限は、グループポリシーまたはバケットポリシーの権限設定を上書きします。
+* 削除しようとしているバケットは空です。削除したいバケットが空でない場合、link:../tenant/deleting-s3-bucket-objects.html["バケットからオブジェクトを削除する"]。
+
+
+.タスク概要
+これらの手順では、テナントマネージャーを使用してS3バケットを削除する方法について説明します。S3バケットは、link:understanding-tenant-management-api.html["テナント管理API"]またはlink:../s3/operations-on-buckets.html["S3 REST API"]を使用して削除することもできます。
+
+S3バケットにオブジェクト、最新ではないオブジェクトバージョン、または削除マーカーが含まれている場合、そのバケットを削除することはできません。S3バージョン管理されたオブジェクトの削除方法については、link:../ilm/how-objects-are-deleted.html["オブジェクトが削除される方法"]を参照してください。
+
+.手順
+. ダッシュボードから「バケットの表示」を選択するか、*STORAGE (S3)* > *Buckets* を選択してください。
++
+「バケット」ページが表示され、既存のすべての S3 バケットが表示されます。
+
+. 特定のバケットの *Actions* メニューまたは詳細ページを使用してください。
++
+[role="tabbed-block"]
+====
+.[操作]メニュー
+--
+.. 削除する各バケットのチェックボックスを選択します。
+.. *Actions* > *Delete buckets* を選択します。
+
+
+--
+.詳細ページ
+--
+.. 詳細を表示するには、バケット名を選択してください。
+.. 「バケットを削除」を選択します。
+
+
+--
+====
+. 確認ダイアログボックスが表示されたら、*Yes* を選択してください。
++
+StorageGRID は各バケットが空であることを確認し、その後各バケットを削除します。この操作には数分かかる場合があります。
+
++
+バケットが空でない場合、エラーメッセージが表示されます。バケットを削除する前に、link:../tenant/deleting-s3-bucket-objects.html["バケット内のすべてのオブジェクトと削除マーカーを削除します"]必要があります。
+
+

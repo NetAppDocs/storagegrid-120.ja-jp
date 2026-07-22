@@ -1,0 +1,40 @@
+---
+permalink: admin/configuring-storagegrid-certificates-for-fabricpool.html 
+sidebar: sidebar 
+keywords: fabricpool, ONTAP certificates 
+summary: 厳密なホスト名検証を実行し、厳密なホスト名検証の無効化をサポートしていない S3 クライアント（FabricPool を使用する ONTAP クライアントなど）の場合、ロードバランサーエンドポイントを設定する際にサーバー証明書を生成またはアップロードできます。 
+---
+= StorageGRID 証明書を FabricPool 用に設定する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+厳密なホスト名検証を実行し、厳密なホスト名検証の無効化をサポートしていない S3 クライアント（FabricPool を使用する ONTAP クライアントなど）の場合、ロードバランサーエンドポイントを設定する際にサーバー証明書を生成またはアップロードできます。
+
+.開始する前に
+* link:admin-group-permissions.html["特定のアクセス権限"]があります。
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+
+
+.タスク概要
+ロードバランサーのエンドポイントを作成する際、自己署名サーバー証明書を生成するか、既知の認証局（CA）によって署名された証明書をアップロードすることができます。本番環境では、既知の認証局（CA）によって署名された証明書を使用する必要があります。認証局（CA）が署名した証明書は、システムへの影響を最小限に抑えながらローテーションできます。また、中間者攻撃に対する保護性能が高いため、セキュリティ面でも優れています。
+
+以下の手順は、FabricPool を使用する S3 クライアントの一般的なガイドラインを示しています。詳細な情報と手順については、link:../fabricpool/index.html["StorageGRID を FabricPool 用に設定する"] を参照してください。
+
+.手順
+. オプションで、FabricPoolが使用する高可用性（HA）グループを構成します。
+. FabricPool が使用する S3 ロードバランサーエンドポイントを作成します。
++
+HTTPS ロードバランサーエンドポイントを作成する際、サーバー証明書、証明書の秘密鍵、およびオプションの CA バンドルをアップロードするように求められます。
+
+. StorageGRID をクラウド階層として ONTAP に接続します。
++
+アップロードした CA 証明書で使用されているロードバランサーのエンドポイントポートと完全修飾ドメイン名を指定してください。次に、CA 証明書を提供してください。
+
++
+
+NOTE: 中間 CA が StorageGRID 証明書を発行した場合は、中間 CA 証明書を提供する必要があります。StorageGRID 証明書がルート CA によって直接発行された場合は、ルート CA 証明書を提供する必要があります。
+
+

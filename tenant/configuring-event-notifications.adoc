@@ -1,0 +1,135 @@
+---
+permalink: tenant/configuring-event-notifications.html 
+sidebar: sidebar 
+keywords: how to configure event notifications, bucket notification 
+summary: バケットの通知を有効にするには、通知設定XMLを作成し、テナントマネージャーを使用してそのXMLをバケットに適用します。 
+---
+= StorageGRID でイベント通知を設定
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+バケットの通知を有効にするには、通知設定XMLを作成し、テナントマネージャーを使用してそのXMLをバケットに適用します。
+
+.開始する前に
+* プラットフォームサービスは、StorageGRID管理者によってテナントアカウントで有効化されました。
+* 通知の送信元となるバケットは既に作成済みです。
+* イベント通知の送信先として使用しようとしているエンドポイントは既に存在しており、そのURNも取得済みです。
+* あなたは、link:tenant-management-permissions.html["すべてのバケットを管理する、またはルートアクセス権限"] を持つユーザーグループに属しています。これらの権限は、テナントマネージャーを使用してバケットを設定する際に、グループポリシーまたはバケットポリシーの権限設定を上書きします。
+
+
+.タスク概要
+イベント通知を設定するには、通知設定XMLをソースバケットに関連付けます。通知設定XMLは、バケット通知の設定に関するS3の規則に従い、宛先となるAmazon SNSトピック、Kafkaトピック、またはWebhookエンドポイントは、エンドポイントのURNとして指定されます。
+
+イベント通知とその設定方法に関する一般的な情報については、 https://docs.aws.amazon.com/s3/["Amazonのドキュメント"^]を参照してください。StorageGRID が S3 バケット通知設定 API を実装する方法については、link:../s3/index.html["S3クライアントアプリケーションを実装するための手順"]を参照してください。
+
+バケットのイベント通知を設定する際には、以下の要件と特性に注意してください。
+
+* 有効な通知設定XMLを作成して適用する場合、各宛先に対してイベント通知エンドポイントのURNを使用する必要があります。
+* S3オブジェクトロックが有効になっているバケットでイベント通知を設定することは可能ですが、オブジェクトのS3オブジェクトロックメタデータ（Retain Until DateやLegal Hold statusなど）は通知メッセージには含まれません。
+* イベント通知を設定すると、ソースバケット内のオブジェクトに対して指定されたイベントが発生するたびに、通知が生成され、宛先として指定された Amazon SNS トピック、Kafka トピック、または Webhook エンドポイントに送信されます。
+* オブジェクトを含むバケットに対してイベント通知を有効にした場合、通知は通知設定が保存された後に実行されたアクションに対してのみ送信されます。
+
+
+.手順
+. ソースバケットの通知を有効にする：
++
+** S3通知APIで指定されているとおり、イベント通知を有効にするために必要な通知設定XMLをテキストエディタを使用して作成します。
+** XMLを設定する際は、イベント通知エンドポイントのURNを宛先トピックとして使用してください。
++
+[listing]
+----
+<NotificationConfiguration>
+  <TopicConfiguration>
+     <Id>Image-created</Id>
+     <Filter>
+        <S3Key>
+          <FilterRule>
+            <Name>prefix</Name>
+            <Value>images/</Value>
+          </FilterRule>
+        </S3Key>
+    </Filter>
+    <Topic>arn:aws:sns:us-east-1:050340950352:sgws-topic</Topic>
+    <Event>s3:ObjectCreated:*</Event>
+   </TopicConfiguration>
+ </NotificationConfiguration>
+----
+
+
+. テナントマネージャーで、*STORAGE (S3)* > *バケット*を選択します。
+. ソースバケットの名前を選択してください。
++
+バケットの詳細ページが表示されます。
+
+. *Platform services* > *Event notifications* を選択します。
+. 「イベント通知を有効にする」チェックボックスを選択します。
+. 通知設定のXMLをテキストボックスに貼り付け、*変更を保存*を選択してください。
++
+
+NOTE: プラットフォームサービスは、Grid ManagerまたはGrid Management APIを使用するStorageGRID管理者が、テナントアカウントごとに有効化する必要があります。設定XMLを保存する際にエラーが発生した場合は、StorageGRID管理者にお問い合わせください。
+
+. イベント通知が正しく設定されていることを確認してください：
++
+.. 構成XMLで設定されている通知トリガーの要件を満たす、ソースバケット内のオブジェクトに対してアクションを実行します。
++
+この例では、 `images/`プレフィックスを使用してオブジェクトが作成されるたびに、イベント通知が送信されます。
+
+.. 通知が宛先のAmazon SNSトピック、Kafkaトピック、またはWebhookエンドポイントに配信されたことを確認してください。
++
+例えば、宛先トピックがAmazon SNSでホストされている場合、通知が配信されたときにメールを送信するようにサービスを設定できます。
+
++
+[listing]
+----
+{
+   "Records":[
+      {
+         "eventVersion":"2.0",
+         "eventSource":"sgws:s3",
+         "eventTime":"2017-08-08T23:52:38Z",
+         "eventName":"ObjectCreated:Put",
+         "userIdentity":{
+            "principalId":"1111111111111111111"
+         },
+         "requestParameters":{
+            "sourceIPAddress":"193.51.100.20"
+         },
+         "responseElements":{
+            "x-amz-request-id":"122047343"
+         },
+         "s3":{
+            "s3SchemaVersion":"1.0",
+            "configurationId":"Image-created",
+            "bucket":{
+               "name":"test1",
+               "ownerIdentity":{
+                  "principalId":"1111111111111111111"
+               },
+               "arn":"arn:sgws:s3:::test1"
+            },
+            "object":{
+               "key":"images/cat.jpg",
+               "size":0,
+               "eTag":"d41d8cd98f00b204e9800998ecf8427e",
+               "sequencer":"14D90402421461C7"
+            }
+         }
+      }
+   ]
+}
+----
++
+宛先トピックで通知が受信された場合、StorageGRID 通知用のソースバケットの設定が正常に完了しています。
+
+
+
+
+
+.関連情報
+* link:understanding-notifications-for-buckets.html["バケットに関する通知を理解する"]
+* link:../s3/index.html["S3 REST APIを使用する"]
+* link:creating-platform-services-endpoint.html["プラットフォームサービスエンドポイントを作成する"]
+

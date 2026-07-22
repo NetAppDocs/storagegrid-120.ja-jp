@@ -1,0 +1,237 @@
+---
+permalink: s3/example-bucket-policies.html 
+sidebar: sidebar 
+keywords: bucket policy examples 
+summary: このセクションの例を使用して、バケットの StorageGRID アクセスポリシーを作成します。 
+---
+= StorageGRID S3 REST API バケットポリシーの例
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+このセクションの例を使用して、バケットの StorageGRID アクセスポリシーを作成します。
+
+バケットポリシーは、そのポリシーが適用されるバケットへのアクセス権限を指定します。S3 PutBucketPolicy API を使用して、以下のいずれかのツールからバケットポリシーを設定します：
+
+* link:../tenant/manage-bucket-policy.html["Tenant Manager"]。
+* AWS CLI でこのコマンドを使用します（link:operations-on-buckets.html["バケットに対する操作"] を参照）：
++
+[listing, subs="specialcharacters,quotes"]
+----
+> aws s3api put-bucket-policy --bucket examplebucket --policy _file://policy.json_
+----
+
+
+
+
+[[example-allow-everyone-read-only-access-to-a-bucket]]
+== 例：バケットへの読み取り専用アクセスを全員に許可する
+
+この例では、匿名ユーザーを含むすべてのユーザーがバケット内のオブジェクトを一覧表示し、バケット内のすべてのオブジェクトに対してGetObject操作を実行することができます。その他のすべての操作は拒否されます。アカウントのルート以外にはバケットへの書き込み権限がないため、このポリシーはあまり役に立たない可能性があることに注意してください。
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Sid": "AllowEveryoneReadOnlyAccess",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": [ "s3:GetObject", "s3:ListBucket" ],
+      "Resource": ["arn:aws:s3:::examplebucket","arn:aws:s3:::examplebucket/*"]
+    }
+  ]
+}
+----
+
+
+[[example-allow-everyone-in-one-account-full-access-and-everyone-in-another-account-read-only-access-to-a-bucket]]
+== 例：あるアカウントの全員にバケットへのフルアクセス権限を、別のアカウントの全員には読み取り専用アクセス権限を付与する
+
+この例では、指定された1つのアカウントのすべてのユーザーにはバケットへのフルアクセスが許可されますが、別の指定されたアカウントのすべてのユーザーには、バケットの一覧表示と、 `shared/`オブジェクトキープレフィックスで始まるバケット内のオブジェクトに対するGetObject操作の実行のみが許可されます。
+
+
+NOTE: StorageGRID では、非所有者アカウント（匿名アカウントを含む）によって作成されたオブジェクトは、バケット所有者アカウントが所有します。バケットポリシーはこれらのオブジェクトに適用されます。
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "95390887230002558202"
+      },
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::examplebucket",
+        "arn:aws:s3:::examplebucket/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "31181711887329436680"
+      },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::examplebucket/shared/*"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "31181711887329436680"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::examplebucket",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": "shared/*"
+        }
+      }
+    }
+  ]
+}
+----
+
+
+[[example-allow-everyone-read-only-access-to-a-bucket-and-full-access-by-specified-group]]
+== 例：バケットへの読み取り専用アクセスを全員に許可し、指定されたグループにはフルアクセスを許可する
+
+この例では、匿名ユーザーを含むすべてのユーザーがバケットを一覧表示し、バケット内のすべてのオブジェクトに対してGetObject操作を実行できますが、指定されたアカウントのグループ `Marketing`に属するユーザーのみがフルアクセス権限を持ちます。
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::95390887230002558202:federated-group/Marketing"
+      },
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::examplebucket",
+        "arn:aws:s3:::examplebucket/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": ["s3:ListBucket","s3:GetObject"],
+      "Resource": [
+        "arn:aws:s3:::examplebucket",
+        "arn:aws:s3:::examplebucket/*"
+      ]
+    }
+  ]
+}
+----
+
+
+[[example-allow-everyone-read-and-write-access-to-a-bucket-if-client-in-ip-range]]
+== 例：クライアントがIPアドレス範囲内にいる場合、バケットへの読み取りおよび書き込みアクセスを全員に許可する
+
+この例では、匿名ユーザーを含むすべてのユーザーが、指定されたIP範囲（54.240.143.0～54.240.143.255、ただし54.240.143.188を除く）からのリクエストであれば、バケットを一覧表示し、バケット内のすべてのオブジェクトに対して任意のオブジェクト操作を実行できます。その他の操作はすべて拒否され、IPアドレス範囲外からのすべてのリクエストも拒否されます。
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Sid": "AllowEveryoneReadWriteAccessIfInSourceIpRange",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": [ "s3:*Object", "s3:ListBucket" ],
+      "Resource": ["arn:aws:s3:::examplebucket","arn:aws:s3:::examplebucket/*"],
+      "Condition": {
+        "IpAddress": {"aws:SourceIp": "54.240.143.0/24"},
+        "NotIpAddress": {"aws:SourceIp": "54.240.143.188"}
+      }
+    }
+  ]
+}
+----
+
+
+[[example-allow-full-access-to-a-bucket-exclusively-by-a-specified-federated-user]]
+== 例：指定されたフェデレーションユーザーのみにバケットへのフルアクセスを許可する
+
+この例では、フェデレーションユーザーの Alex には、 `examplebucket`バケットとそのオブジェクトへのフルアクセスが許可されています。'`root`' を含むその他のすべてのユーザーは、すべての操作を明示的に拒否されます。ただし、'`root`' は Put/Get/DeleteBucketPolicy の権限を拒否されることはありません。
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::95390887230002558202:federated-user/Alex"
+      },
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::examplebucket",
+        "arn:aws:s3:::examplebucket/*"
+      ]
+    },
+    {
+      "Effect": "Deny",
+      "NotPrincipal": {
+        "AWS": "arn:aws:iam::95390887230002558202:federated-user/Alex"
+      },
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::examplebucket",
+        "arn:aws:s3:::examplebucket/*"
+      ]
+    }
+  ]
+}
+----
+
+
+[[example-putoverwriteobject-permission]]
+== 例：PutOverwriteObject 権限
+
+この例では、 `Deny` PutOverwriteObject および DeleteObject の Effect により、オブジェクトのデータ、ユーザー定義のメタデータ、および S3 オブジェクトタグが誰にも上書きまたは削除されないことが保証されます。
+
+[listing]
+----
+{
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": [
+        "s3:PutOverwriteObject",
+        "s3:DeleteObject",
+        "s3:DeleteObjectVersion"
+      ],
+      "Resource": "arn:aws:s3:::wormbucket/*"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::95390887230002558202:federated-group/SomeGroup"
+
+},
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::wormbucket"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::95390887230002558202:federated-group/SomeGroup"
+
+},
+      "Action": "s3:*",
+      "Resource": "arn:aws:s3:::wormbucket/*"
+    }
+  ]
+}
+----

@@ -1,0 +1,66 @@
+---
+permalink: maintain/restoring-prometheus-metrics-primary-admin-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, restore metrics, restore prometheus, primary admin node 
+summary: オプションとして、障害が発生したプライマリ管理ノード上で Prometheus によって保持されている履歴データのメトリクスを保持することができます。Prometheus メトリクスは、StorageGRID システムに別の管理ノードが含まれている場合にのみリストアできます。 
+---
+= プライマリ StorageGRID 管理ノードの復旧時に Prometheus メトリクスを復元します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+オプションとして、障害が発生したプライマリ管理ノード上で Prometheus によって保持されている履歴データのメトリクスを保持することができます。Prometheus メトリクスは、StorageGRID システムに別の管理ノードが含まれている場合にのみリストアできます。
+
+.開始する前に
+* 復旧した管理ノードはインストールされ、稼働中です。
+* StorageGRID システムには、少なくとも2つの管理ノードが含まれています。
+* あなたは `Passwords.txt`ファイルを持っています。
+* プロビジョニングパスフレーズをお持ちです。
+
+
+.タスク概要
+管理ノードが故障した場合、その管理ノード上のPrometheusデータベースに保存されているメトリクスは失われます。管理ノードを復旧すると、ソフトウェアのインストールプロセスによって新しいPrometheusデータベースが作成されます。復旧した管理ノードが起動すると、StorageGRIDシステムを新規インストールした場合と同様にメトリクスが記録されます。
+
+プライマリ管理ノードをリストアした場合、StorageGRID システムに別の管理ノードがあれば、プライマリ以外の管理ノード（_ソース管理ノード_）から復旧したプライマリ管理ノードに Prometheus データベースをコピーすることで、履歴データのメトリクスをリストアできます。システムにプライマリ管理ノードしかない場合、Prometheus データベースをリストアすることはできません。
+
+
+NOTE: Prometheusデータベースのコピーには1時間以上かかる場合があります。ソース管理ノードでサービスが停止している間は、Grid Managerの一部の機能が利用できなくなります。
+
+.手順
+. ソース管理ノードにログインします：
++
+.. 次のコマンドを入力します： `ssh admin@_grid_node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+
+
+. ソース管理ノードから、Prometheusサービスを停止します： `service prometheus stop`
+. 復旧した管理ノードで、以下の手順を実行します。
++
+.. 復旧した管理ノードにログインします。
++
+... 次のコマンドを入力します： `ssh admin@_grid_node_IP_`
+...  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+... 以下のコマンドを入力して root に切り替えます： `su -`
+...  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+
+
+.. Prometheusサービスを停止します： `service prometheus stop`
+.. SSHエージェントにSSH秘密鍵を追加します。入力：``ssh-add``
+..  `Passwords.txt`ファイルに記載されている SSH アクセスパスワードを入力してください。
+.. ソース管理ノードから復旧した管理ノードへPrometheusデータベースをコピーします。 `/usr/local/prometheus/bin/prometheus-clone-db.sh Source_Admin_Node_IP`
+.. プロンプトが表示されたら、*Enter* キーを押して、復旧した管理ノード上の新しい Prometheus データベースを削除することを確認します。
++
+元の Prometheus データベースとその履歴データは、復旧した管理ノードにコピーされます。コピー操作が完了すると、スクリプトは復旧した管理ノードを起動します。次のステータスが表示されます：
+
++
+データベースのクローン作成、サービスの開始
+
+.. 他のサーバーへのパスワードなしアクセスが不要になった場合は、SSHエージェントから秘密鍵を削除してください。入力：``ssh-add -D``
+
+
+. ソース管理ノードでPrometheusサービスを再起動します.`service prometheus start`
+

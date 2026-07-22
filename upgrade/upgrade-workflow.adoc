@@ -1,0 +1,52 @@
+---
+permalink: upgrade/upgrade-workflow.html 
+sidebar: sidebar 
+keywords: upgrade workflow 
+summary: アップグレードを開始する前に、全体のワークフローを確認してください。StorageGRID のアップグレードページでは、アップグレードの手順をご案内します。 
+---
+= StorageGRIDアップグレードのクイックスタート
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+アップグレードを開始する前に、全体のワークフローを確認してください。StorageGRID のアップグレードページでは、各アップグレード手順を順を追って説明します。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["1"] Linuxホストを準備する
+[role="quick-margin-para"]
+StorageGRIDノードがLinuxホストにデプロイされている場合は、アップグレードを開始する前にlink:linux-installing-rpm-or-deb-package-on-all-hosts.html["各ホストにRPMまたはDEBパッケージをインストールする"]してください。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["2"]アップグレードファイルとホットフィックスファイルをアップロードする
+[role="quick-margin-para"]
+プライマリ管理ノードから StorageGRID のアップグレードページにアクセスし、必要に応じてアップグレードファイルとホットフィックスファイルをアップロードしてください。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["3つ"]リカバリーパッケージをダウンロード
+[role="quick-margin-para"]
+アップグレードを開始する前に、最新のリカバリパッケージをダウンロードしてください。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["4"]アップグレード前のチェックを実行する
+[role="quick-margin-para"]
+アップグレードの事前チェックは、問題を検出して、実際のアップグレードを開始する前に解決するのに役立ちます。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-5.png["五"]アップグレードを開始する
+[role="quick-margin-para"]
+アップグレードを開始すると、事前チェックが再度実行され、プライマリ管理ノードが自動的にアップグレードされます。プライマリ管理ノードのアップグレード中は、グリッドマネージャーにアクセスできません。監査ログも利用できなくなります。このアップグレードには最大30分かかる場合があります。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-6.png["六"]リカバリーパッケージをダウンロード
+[role="quick-margin-para"]
+プライマリ管理ノードのアップグレードが完了したら、新しいリカバリパッケージをダウンロードしてください。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-7.png["セブン"]ノードを承認する
+[role="quick-margin-para"]
+個々のグリッドノード、グリッドノードのグループ、またはすべてのグリッドノードを承認できます。
+
+
+CAUTION: グリッドノードのアップグレードを承認するのは、そのノードが停止および再起動の準備ができていることを確信できる場合に限ってください。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-8.png["8"] 業務を再開する
+[role="quick-margin-para"]
+すべてのグリッドノードのアップグレードが完了すると、新機能が有効になり、運用を再開できます。バックグラウンドで実行される「データベースのアップグレード」タスクと「最終アップグレード手順」タスクが完了するまで、廃止または拡張手順を実行するのをお待ちください。
+
+.関連情報
+link:estimating-time-to-complete-upgrade.html["アップグレード完了までの所要時間を見積もる"]

@@ -1,0 +1,23 @@
+---
+permalink: maintain/recovering-from-admin-node-failures.html 
+sidebar: sidebar 
+keywords: recover, admin node failure, workflow 
+summary: 管理ノードの復旧プロセスは、それがプライマリ管理ノードであるか、非プライマリ管理ノードであるかによって異なります。 
+---
+= StorageGRIDにおけるプライマリまたは非プライマリ管理ノードの復旧
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+管理ノードの復旧プロセスは、それがプライマリ管理ノードであるか、非プライマリ管理ノードであるかによって異なります。
+
+プライマリまたは非プライマリの管理ノードを復旧するための概要手順は同じですが、手順の詳細は異なります。
+
+復旧する管理ノードに応じて、必ず正しい復旧手順に従ってください。手順は概要レベルでは同じように見えますが、詳細において違いがあります。
+
+.オプション
+* link:recovering-from-primary-admin-node-failures.html["プライマリ管理ノードの障害からの復旧"]
+* link:recovering-from-non-primary-admin-node-failures.html["プライマリ以外の管理ノードの障害から復旧する"]
+

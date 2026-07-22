@@ -1,0 +1,36 @@
+---
+permalink: maintain/stopping-server-manager-and-all-services.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, stop server manager, stop all services, stop services 
+summary: サーバーマネージャーは常に実行されることを想定していますが、グリッドノード上で実行されているサーバーマネージャーおよびすべてのサービスを停止する必要がある場合があります。 
+---
+= StorageGRIDサーバーマネージャーとすべてのサービスを停止します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+サーバーマネージャーは常に実行されることを想定していますが、グリッドノード上で実行されているサーバーマネージャーおよびすべてのサービスを停止する必要がある場合があります。
+
+.開始する前に
+あなたは `Passwords.txt`ファイルを持っています。
+
+.手順
+. グリッドノードにログインします。
++
+.. 次のコマンドを入力します： `ssh admin@_grid_node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+
+
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+. サーバーマネージャーとグリッドノード上で実行されているすべてのサービスを停止します： `service servermanager stop`
++
+サーバーマネージャーおよびグリッドノード上で実行されているすべてのサービスは、正常に終了されます。サービスの停止には最大15分かかる場合があります。
+
+. コマンドシェルからログアウトします： `exit`
+

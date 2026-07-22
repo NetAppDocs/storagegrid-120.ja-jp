@@ -1,0 +1,49 @@
+---
+permalink: maintain/gathering-required-materials-node-decom.html 
+sidebar: sidebar 
+keywords: storagegrid, node decommission, decommission 
+summary: グリッドノードの廃止措置を実施する前に、以下の情報を入手する必要があります。 
+---
+= StorageGRIDノードの運用停止に必要な資料を収集
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+グリッドノードの廃止措置を実施する前に、以下の情報を入手する必要があります。
+
+[cols="1a,2a"]
+|===
+| 項目 | Notes 
+
+
+ a| 
+復旧パッケージ `.zip`ファイル
+ a| 
+必ずlink:downloading-recovery-package.html["最新のリカバリパッケージをダウンロードしてください"] `.zip`ファイル(`sgws-recovery-package-_id-revision_.zip`）。障害が発生した場合は、リカバリパッケージファイルを使用してシステムを復元できます。
+
+
+
+ a| 
+`Passwords.txt`ファイル
+ a| 
+このファイルには、コマンドラインからグリッドノードにアクセスするために必要なパスワードが含まれており、リカバリパッケージに同梱されています。
+
+
+
+ a| 
+プロビジョニングパスフレーズ
+ a| 
+パスフレーズは、StorageGRID システムが最初にインストールされるときに作成され、記録されます。プロビジョニングパスフレーズは `Passwords.txt`ファイルには含まれていません。
+
+
+
+ a| 
+廃止前のStorageGRIDシステムトポロジーの概要
+ a| 
+入手可能であれば、システムの現在のトポロジーを説明する文書を入手してください。
+
+|===
+.関連情報
+link:../admin/web-browser-requirements.html["ウェブブラウザの要件"]

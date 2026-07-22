@@ -1,0 +1,52 @@
+---
+permalink: swnodes/navigating-to-grid-manager.html 
+sidebar: sidebar 
+keywords: how to navigate to Grid Manager 
+summary: Grid Manager を使用して、StorageGRID システムを設定するために必要なすべての情報を定義します。 
+---
+= StorageGRID Grid Managerに移動します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Grid Manager を使用して、StorageGRID システムを設定するために必要なすべての情報を定義します。
+
+.開始する前に
+プライマリ管理ノードがデプロイされ、初期起動シーケンスが完了している必要があります。
+
+.手順
+. ウェブブラウザを開き、次のアドレスにアクセスしてください：
++
+`https://_primary_admin_node_ip_`
+
++
+または、ポート 8443 でグリッドマネージャーにアクセスすることもできます：
+
++
+`https://_primary_admin_node_ip_:8443`
+
++
+ネットワーク構成に応じて、グリッドネットワークまたは管理ネットワーク上のプライマリ管理ノードのIPアドレスを使用できます。信頼されていない証明書にアクセスするには、ブラウザのセキュリティ/詳細設定オプションを使用する必要がある場合があります。
+
+. 必要に応じて一時的なインストーラーパスワードを管理します。
++
+** これらの方法のいずれかを使用して既にパスワードが設定されている場合は、パスワードを入力して続行してください。
++
+*** 以前インストーラーにアクセスした際に、ユーザーがパスワードを設定しました。
+*** Linuxの場合、パスワードは `/etc/storagegrid/nodes/_<node_name>_.conf`にあるノード構成ファイルから自動的にインポートされました。
+*** VMwareの場合、SSH/コンソールパスワードはOVFプロパティから自動的にインポートされました。
+
+
+** パスワードが設定されていない場合は、必要に応じてパスワードを設定して StorageGRID インストーラを保護してください。
+
+
+. *StorageGRID システムのインストール*を選択します。
++
+StorageGRID グリッドを設定するためのページが表示されます。
+
++
+image:gmi_installer_first_screen.gif["StorageGRIDインストーラーの最初の画面"]
+
+

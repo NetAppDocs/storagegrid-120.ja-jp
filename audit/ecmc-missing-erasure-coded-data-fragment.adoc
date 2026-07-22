@@ -1,0 +1,46 @@
+---
+permalink: audit/ecmc-missing-erasure-coded-data-fragment.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, ECMC, Missing Erasure-Coded Data Fragment 
+summary: この監査メッセージは、システムが欠落している消去符号化データフラグメントを検出したことを示しています。 
+---
+= StorageGRIDにおける消失訂正符号化データの欠落に関するECMC監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+この監査メッセージは、システムが欠落している消去符号化データフラグメントを検出したことを示しています。
+
+[cols="1a,1a,4a"]
+|===
+| Code | フィールド | 説明 
+
+
+ a| 
+VCMC
+ a| 
+VCS ID
+ a| 
+欠落しているチャンクを含むVCSの名前。
+
+
+
+ a| 
+MCID
+ a| 
+チャンクID
+ a| 
+欠落している消去符号化フラグメントの識別子。
+
+
+
+ a| 
+RSLT
+ a| 
+結果
+ a| 
+このフィールドの値は「NONE」です。RSLTは必須のメッセージ項目ですが、このメッセージには関係ありません。このメッセージがフィルタリングされないように、「SUCS」ではなく「NONE」が使用されます。
+
+|===

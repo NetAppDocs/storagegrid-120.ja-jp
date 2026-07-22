@@ -1,0 +1,33 @@
+---
+permalink: s3/list-multipart-uploads.html 
+sidebar: sidebar 
+keywords: ListMultipartUploads, uploads, multipart uploads, bucket 
+summary: ListMultipartUploads オペレーションは、バケットに対して進行中のマルチパートアップロードの一覧を表示します。 
+---
+= S3 ListMultipartUploads 操作と StorageGRID でサポートされているパラメータ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ListMultipartUploads オペレーションは、バケットに対して進行中のマルチパートアップロードの一覧を表示します。
+
+以下のリクエストパラメータがサポートされています：
+
+* `encoding-type`
+* `key-marker`
+* `max-uploads`
+* `prefix`
+* `upload-id-marker`
+* `Host`
+* `Date`
+* `Authorization`
+
+
+
+
+[[versioning]]
+== バージョン管理
+
+マルチパートアップロードは、アップロードの開始、アップロードの一覧表示、パートのアップロード、アップロードされたパートの組み立て、およびアップロードの完了という、それぞれ独立した操作で構成されます。オブジェクトは、CompleteMultipartUpload操作が実行されると作成されます（該当する場合はバージョン管理されます）。

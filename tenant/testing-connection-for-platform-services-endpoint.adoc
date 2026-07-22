@@ -1,0 +1,39 @@
+---
+permalink: tenant/testing-connection-for-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to test platform services endpoint connection 
+summary: プラットフォームサービスへの接続が変更された場合は、エンドポイントへの接続をテストして、宛先リソースが存在すること、および指定した認証情報を使用してアクセスできることを検証できます。 
+---
+= StorageGRIDプラットフォームサービスエンドポイントの接続をテストします
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+プラットフォームサービスへの接続が変更された場合は、エンドポイントへの接続をテストして、宛先リソースが存在すること、および指定した認証情報を使用してアクセスできることを検証できます。
+
+.開始する前に
+* テナントマネージャーに link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用してサインインしています。
+* あなたは、link:tenant-management-permissions.html["エンドポイントの管理またはルートアクセス権限"] を持つユーザーグループに属しています。
+
+
+.タスク概要
+StorageGRIDは、認証情報に適切な権限があるかどうかを検証しません。
+
+.手順
+. *STORAGE (S3)* ＞ *Platform services endpoints* を選択します。
++
+プラットフォームサービスエンドポイントページが表示され、既に設定済みのプラットフォームサービスエンドポイントの一覧が表示されます。
+
+. 接続テストを行うエンドポイントを選択してください。
++
+エンドポイントの詳細ページが表示されます。
+
+. 「接続テスト」を選択します。
++
+** 指定された認証情報を使用してエンドポイントにアクセスできた場合、成功メッセージが表示されます。エンドポイントへの接続は、各サイトの1つのノードから検証されます。
+** エンドポイントの検証に失敗すると、エラーメッセージが表示されます。エラーを修正するためにエンドポイントを変更する必要がある場合は、*Configuration* を選択して情報を更新してください。次に、*Test and save changes* を選択します。
+
+
+

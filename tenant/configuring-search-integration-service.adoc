@@ -1,0 +1,311 @@
+---
+permalink: tenant/configuring-search-integration-service.html 
+sidebar: sidebar 
+keywords: how to configure search integration service 
+summary: バケットの検索統合を有効にするには、検索統合構成XMLを作成し、Tenant Managerを使用してそのXMLをバケットに適用します。 
+---
+= StorageGRID で検索統合サービスを設定します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+バケットの検索統合を有効にするには、検索統合XMLを作成し、テナントマネージャーを使用してそのXMLをバケットに適用します。
+
+.開始する前に
+* プラットフォームサービスは、StorageGRID管理者によってテナントアカウントで有効化されました。
+* 既にS3バケットを作成済みで、そのバケットの内容をインデックス化したいと考えています。
+* 検索統合サービスの宛先として使用しようとしているエンドポイントは既に存在しており、そのURNも取得済みです。
+* あなたは、link:tenant-management-permissions.html["すべてのバケットを管理する、またはルートアクセス権限"] を持つユーザーグループに属しています。これらの権限は、テナントマネージャーを使用してバケットを設定する際に、グループポリシーまたはバケットポリシーの権限設定を上書きします。
+
+
+.タスク概要
+ソースバケットの検索統合サービスを設定した後、オブジェクトを作成したり、オブジェクトのメタデータやタグを更新したりすると、オブジェクトのメタデータが宛先エンドポイントに送信されます。
+
+オブジェクトが既に含まれているバケットに対して検索統合サービスを有効にした場合、既存のオブジェクトに関するメタデータ通知は自動的に送信されません。これらの既存オブジェクトを更新して、メタデータが宛先検索インデックスに追加されるようにしてください。
+
+.手順
+. バケットの検索統合を有効にする：
++
+** 検索統合を有効にするために必要なメタデータ通知XMLを作成するには、テキストエディタを使用します。
+** XMLを設定する際は、検索統合エンドポイントのURNを宛先として使用してください。
++
+オブジェクトは、オブジェクト名のプレフィックスに基づいてフィルタリングできます。たとえば、プレフィックス `images`を持つオブジェクトのメタデータを1つの宛先に送信し、プレフィックス `videos`を持つオブジェクトのメタデータを別の宛先に送信できます。プレフィックスが重複している設定は無効であり、送信時に拒否されます。たとえば、プレフィックス `test`を持つオブジェクトに対するルールと、プレフィックス `test2`を持つオブジェクトに対する2つ目のルールを含む設定は許可されていません。
+
++
+必要に応じて、<<example-notification-config,メタデータ構成XMLの例>>を参照してください。
+
++
+[listing]
+----
+<MetadataNotificationConfiguration>
+ <Rule>
+    <Status>Enabled</Status>
+    <Prefix></Prefix>
+    <Destination>
+       <Urn>/Urn>
+       </Destination>
+ </Rule>
+</MetadataNotificationConfiguration>
+----
++
+メタデータ通知設定XMLの要素：
+
++
+[cols="1a,3a,1a"]
+|===
+| Name | 説明 | 必須 
+
+
+ a| 
+MetadataNotificationConfiguration
+ a| 
+メタデータ通知の対象となるオブジェクトと宛先を指定するために使用されるルールを格納するタグ。
+
+1つ以上のルール要素を含みます。
+ a| 
+はい
+
+
+
+ a| 
+Rule
+ a| 
+メタデータを特定のインデックスに追加すべきオブジェクトを識別するルールのコンテナタグ。
+
+接頭辞が重複するルールは拒否されます。
+
+MetadataNotificationConfiguration 要素に含まれます。
+ a| 
+はい
+
+
+
+ a| 
+ID
+ a| 
+ルールの一意の識別子。
+
+ルール要素に含まれています。
+ a| 
+いいえ
+
+
+
+ a| 
+ステータス
+ a| 
+ステータスは「有効」または「無効」のいずれかになります。無効化されたルールに対しては、何も措置は講じられません。
+
+ルール要素に含まれています。
+ a| 
+はい
+
+
+
+ a| 
+Prefix
+ a| 
+プレフィックスに一致するオブジェクトはルールの影響を受け、そのメタデータは指定された宛先に送信されます。
+
+すべてのオブジェクトに一致させるには、空のプレフィックスを指定します。
+
+ルール要素に含まれています。
+ a| 
+はい
+
+
+
+ a| 
+デスティネーション
+ a| 
+ルールの適用先を示すコンテナタグ。
+
+ルール要素に含まれています。
+ a| 
+はい
+
+
+
+ a| 
+Urn
+ a| 
+オブジェクトのメタデータが送信される宛先のURN。以下のプロパティを持つStorageGRIDエンドポイントのURNである必要があります：
+
+*** `es`3番目の要素でなければなりません。
+*** URNは、メタデータが格納されているインデックスとタイプで終わる必要があります。形式は `domain-name/myindex/mytype`です。
+
+
+エンドポイントは、Tenant ManagerまたはTenant Management APIを使用して設定します。形式は次のとおりです：
+
+*** `arn:aws:es:region:account-ID:domain/mydomain/myindex/mytype`
+*** `urn:mysite:es:::mydomain/myindex/mytype`
+
+
+エンドポイントは、設定XMLを送信する前に設定しておく必要があります。設定されていない場合、設定は404エラーで失敗します。
+
+URNはDestination要素に含まれています。
+ a| 
+はい
+
+|===
+
+
+. テナントマネージャーで、*STORAGE (S3)* > *Buckets*を選択します。
+. ソースバケットの名前を選択してください。
++
+バケットの詳細ページが表示されます。
+
+. 「プラットフォームサービス」 > 「検索統合」を選択します。
+. *検索統合を有効にする* チェックボックスを選択します。
+. メタデータ通知の設定をテキストボックスに貼り付け、*変更を保存*を選択します。
++
+
+NOTE: プラットフォームサービスは、Grid Managerまたは管理APIを使用して、StorageGRID管理者がテナントアカウントごとに有効化する必要があります。設定XMLを保存する際にエラーが発生した場合は、StorageGRID管理者にお問い合わせください。
+
+. 検索統合サービスが正しく設定されていることを確認してください。
++
+.. 構成XMLで指定されているメタデータ通知をトリガーするための要件を満たすオブジェクトをソースバケットに追加します。
++
+先に示した例では、バケットに追加されたすべてのオブジェクトがメタデータ通知をトリガーします。
+
+.. エンドポイントで指定された検索インデックスに、オブジェクトのメタデータとタグを含む JSON ドキュメントが追加されたことを確認してください。
+
+
+
+
+.終了後の操作
+必要に応じて、以下のいずれかの方法を使用して、バケットの検索統合を無効にすることができます。
+
+* *STORAGE (S3)* ＞ *Buckets* を選択し、*Enable search integration* チェックボックスをオフにします。
+* S3 APIを直接使用する場合は、DELETE Bucket metadata notificationリクエストを使用してください。S3クライアントアプリケーションの実装手順を参照してください。
+
+
+
+
+[[example-notification-configexample-metadata-notification-configuration-that-applies-to-all-objects]]
+== [[example-notification-config]]例：すべてのオブジェクトに適用されるメタデータ通知設定
+
+この例では、すべてのオブジェクトのメタデータが同じ宛先に送信されます。
+
+[listing]
+----
+<MetadataNotificationConfiguration>
+    <Rule>
+        <ID>Rule-1</ID>
+        <Status>Enabled</Status>
+        <Prefix></Prefix>
+        <Destination>
+           <Urn>urn:myes:es:::sgws-notifications/test1/all</Urn>
+        </Destination>
+    </Rule>
+</MetadataNotificationConfiguration>
+----
+
+
+[[example-metadata-notification-configuration-with-two-rules]]
+== 例：2つのルールを使用したメタデータ通知の設定
+
+この例では、プレフィックス `/images`に一致するオブジェクトのオブジェクトメタデータは1つの宛先に送信され、プレフィックス `/videos`に一致するオブジェクトのオブジェクトメタデータは2番目の宛先に送信されます。
+
+[listing]
+----
+
+<MetadataNotificationConfiguration>
+    <Rule>
+        <ID>Images-rule</ID>
+        <Status>Enabled</Status>
+        <Prefix>/images</Prefix>
+        <Destination>
+           <Urn>arn:aws:es:us-east-1:3333333:domain/es-domain/graphics/imagetype</Urn>
+        </Destination>
+    </Rule>
+    <Rule>
+        <ID>Videos-rule</ID>
+        <Status>Enabled</Status>
+        <Prefix>/videos</Prefix>
+        <Destination>
+           <Urn>arn:aws:es:us-west-1:22222222:domain/es-domain/graphics/videotype</Urn>
+        </Destination>
+    </Rule>
+</MetadataNotificationConfiguration>
+----
+
+
+[[metadata-notification-format]]
+== メタデータ通知フォーマット
+
+バケットの検索統合サービスを有効にすると、オブジェクトのメタデータまたはタグが追加、更新、または削除されるたびに、JSONドキュメントが生成され、宛先エンドポイントに送信されます。
+
+この例は、キー `SGWS/Tagging.txt`を持つオブジェクトが `test`という名前のバケットに作成された場合に生成される可能性のある JSON の例を示しています。 `test`バケットはバージョン管理されていないため、 `versionId`タグは空です。
+
+[listing]
+----
+{
+  "bucket": "test",
+  "key": "SGWS/Tagging.txt",
+  "versionId": "",
+  "accountId": "86928401983529626822",
+  "size": 38,
+  "md5": "3d6c7634a85436eee06d43415012855",
+  "region":"us-east-1",
+  "metadata": {
+    "age": "25"
+  },
+  "tags": {
+    "color": "yellow"
+  }
+}
+----
+
+
+[[fields-included-in-the-json-document]]
+=== JSONドキュメントに含まれるフィールド
+
+ドキュメント名には、バケット名、オブジェクト名、およびバージョンID（存在する場合）が含まれます。
+
+バケットとオブジェクトの情報::
++
+--
+`bucket`：バケットの名前
+
+`key`：Object key name
+
+`versionID`：バージョン管理されたバケット内のオブジェクトのバージョン
+
+`region`：バケットリージョン（例： `us-east-1`）
+
+--
+システムメタデータ::
++
+--
+`size`：HTTPクライアントから見えるオブジェクトサイズ（バイト単位）
+
+`md5`：オブジェクトハッシュ
+
+--
+ユーザーメタデータ::
++
+--
+`metadata`：オブジェクトに関するすべてのユーザーメタデータ（キーと値のペア形式）
+
+`key:value`
+
+--
+Tags::
++
+--
+`tags`：オブジェクトに定義されているすべてのオブジェクトタグ（キーと値のペア）
+
+`key:value`
+
+--
+
+
+
+
+[[how-to-view-results-in-elasticsearch]]
+=== Elasticsearchで結果を表示する方法
+
+タグとユーザーメタデータについては、StorageGRID は日付と数値を文字列またはS3イベント通知としてElasticsearchに渡します。Elasticsearchがこれらの文字列を日付または数値として解釈するように設定するには、Elasticsearchの動的フィールドマッピングおよび日付形式のマッピングに関する手順に従ってください。検索統合サービスを設定する前に、インデックス上で動的フィールドマッピングを有効にしてください。ドキュメントがインデックス化された後は、インデックス内のドキュメントのフィールドタイプを編集することはできません。

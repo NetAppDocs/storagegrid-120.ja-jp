@@ -1,0 +1,124 @@
+---
+permalink: fabricpool/configure-ontap.html 
+sidebar: sidebar 
+keywords: fabricPool, StorageGRID, system manager, ONTAP CLI, add cloud tier 
+summary: 必要な StorageGRID 情報を取得したら、ONTAP に移動して StorageGRID をクラウド階層として追加できます。 
+---
+= ONTAP System Manager を設定して、StorageGRID を FabricPool クラウド階層として追加します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+必要な StorageGRID 情報を取得したら、ONTAP に移動して StorageGRID をクラウド階層として追加できます。
+
+.開始する前に
+* FabricPool のセットアップ ウィザードを完了している場合は、ダウンロードした `ONTAP_FabricPool_settings___bucketname__.txt`ファイルがあります。
+* StorageGRID を手動で設定した場合は、StorageGRID に使用している完全修飾ドメイン名（FQDN）または StorageGRID HA グループの仮想 IP（VIP）アドレス、ロード バランシング エンドポイントのポート番号、ロード バランサー証明書、テナントアカウントのルートユーザーのアクセスキー ID とシークレットキー、および ONTAP がそのテナントで使用するバケットの名前が必要です。
+
+
+
+
+[[access-ontap-system-manager]]
+== ONTAP System Manager へのアクセス
+
+ここでは、ONTAP System Manager を使用して StorageGRID をクラウド階層として追加する方法について説明します。同じ設定を ONTAP CLI を使用して完了することもできます。手順については、 https://docs.netapp.com/us-en/ontap/fabricpool/index.html["ONTAP の FabricPool ドキュメント"^]を参照してください。
+
+.手順
+. StorageGRID への階層化対象となる ONTAP クラスターの System Manager にアクセスします。
+. クラスターの管理者としてサインインしてください。
+. *STORAGE* ＞ *Tiers* ＞ *Add Cloud Tier* に移動します。
+. オブジェクトストアプロバイダのリストから *StorageGRID* を選択します。
+
+
+
+
+[[enter-storagegrid-values]]
+== StorageGRID の値を入力します
+
+詳細については、 https://docs.netapp.com/us-en/ontap/fabricpool/index.html["ONTAP の FabricPool ドキュメント"^]を参照してください。
+
+.手順
+.  `ONTAP_FabricPool_settings___bucketname__.txt`ファイルまたは手動で取得した値を使用して、クラウドティアの追加フォームに入力してください。
++
+[cols="1a,3a"]
+|===
+| フィールド | 説明 
+
+
+ a| 
+Name
+ a| 
+このクラウド階層に固有の名前を入力してください。デフォルト値を受け入れることもできます。
+
+
+
+ a| 
+URLスタイル
+ a| 
+link:../admin/configuring-s3-api-endpoint-domain-names.html["設定済みのS3エンドポイントドメイン名"]の場合は、*仮想ホスト型URL*を選択してください。
+
+*パス形式のURL* は ONTAP のデフォルトですが、StorageGRID では仮想ホスト形式のリクエストの使用が推奨されます。*サーバー名（FQDN）* フィールドにドメイン名の代わりに IP アドレスを指定する場合は、*パス形式のURL* を使用する必要があります。
+
+
+
+ a| 
+サーバー名（FQDN）
+ a| 
+StorageGRID に使用している完全修飾ドメイン名（FQDN）または StorageGRID HA グループの仮想 IP（VIP）アドレスを入力してください。例： `s3.storagegrid.__company__.com`。
+
+次の点に注意してください。
+
+** ここで指定する IP アドレスまたはドメイン名は、StorageGRID ロード バランシング エンドポイント用にアップロードまたは生成した証明書と一致している必要があります。
+** ドメイン名を指定する場合は、DNS レコードが StorageGRID への接続に使用する各 IP アドレスにマッピングされている必要があります。参照してください link:configure-dns-server.html["DNSサーバーを設定する"]。
+
+
+
+
+ a| 
+SSL
+ a| 
+有効（デフォルト）。
+
+
+
+ a| 
+オブジェクト ストアの証明書
+ a| 
+StorageGRID ロード バランシング エンドポイントに使用している証明書 PEM を貼り付けてください（以下を含む）：
+`-----BEGIN CERTIFICATE-----`および `-----END CERTIFICATE-----`。
+
+*注:* 中間 CA が StorageGRID 証明書を発行した場合は、中間 CA 証明書を提供する必要があります。StorageGRID 証明書がルート CA によって直接発行された場合は、ルート CA 証明書を提供する必要があります。
+
+
+
+ a| 
+ポート
+ a| 
+StorageGRID ロード バランシング エンドポイントで使用するポートを入力してください。ONTAP は StorageGRID に接続する際にこのポートを使用します。例：10433。
+
+
+
+ a| 
+アクセスキーと秘密キー
+ a| 
+StorageGRID テナントアカウントのルートユーザーのアクセスキー ID とシークレットアクセスキーを入力してください。
+
+*ヒント*：将来 StorageGRID で新しいアクセスキーとシークレットアクセスキーを生成する場合は、StorageGRID から古い値を削除する前に、新しいキーを ONTAP に入力してください。そうしないと、ONTAP が一時的に StorageGRID へのアクセスを失う可能性があります。
+
+
+
+ a| 
+コンテナ名
+ a| 
+このONTAP階層で使用するために作成したStorageGRIDバケットの名前を入力してください。
+
+|===
+. ONTAP で FabricPool の最終設定を完了します。
++
+.. クラウド層に1つ以上のアグリゲートをアタッチします。
+.. 必要に応じて、ボリューム階層化ポリシーを作成します。
+
+
+

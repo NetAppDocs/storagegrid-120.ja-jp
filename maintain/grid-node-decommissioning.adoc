@@ -1,0 +1,65 @@
+---
+permalink: maintain/grid-node-decommissioning.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission, remove grid node 
+summary: ノード廃止手順を使用すると、1つまたは複数のサイトで1つまたは複数のグリッドノードを削除できます。プライマリ管理ノードを廃止することはできません。 
+---
+= StorageGRIDグリッドノードの運用停止
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ノード廃止手順を使用すると、1つまたは複数のサイトで1つまたは複数のグリッドノードを削除できます。プライマリ管理ノードを廃止することはできません。
+
+
+
+[[when-to-decommission-a-node]]
+== ノードを廃止するタイミング
+
+次のいずれかに該当する場合は、ノード廃止手順を使用してください。
+
+* 拡張時により大きなストレージノードを追加し、オブジェクトを保持したまま、1つ以上の小さなストレージノードを削除したい場合。
++
+
+TIP: 古いアプライアンスを新しいアプライアンスに交換する場合は、拡張時に新しいアプライアンスを追加して古いアプライアンスを廃止するのではなく、 https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/how-appliance-node-cloning-works.html["アプライアンスノードのクローン作成"^]を検討してください。
+
+* 必要なストレージ容量は少なくなります。
+* ゲートウェイノードは不要になりました。
+* プライマリ以外の管理ノードは不要になりました。
+* お使いのグリッドには、復旧またはオンラインに戻すことができない切断されたノードが含まれています。
+* グリッドにはアーカイブノードが含まれています。
+
+
+
+
+[[how-to-decommission-a-node]]
+== ノードを廃止する方法
+
+接続されているグリッドノード、または切断されたグリッドノードを廃止することができます。
+
+接続されたノードを廃止する:: 一般的に、グリッドノードの運用停止は、StorageGRIDシステムに接続されており、かつすべてのノードが正常な状態にある場合（*ノード*ページおよび*ノードの運用停止*ページに緑色のアイコンが表示されている場合）にのみ実行してください。
++
+--
+手順については、link:decommissioning-connected-grid-nodes.html["接続されたグリッドノードを廃止する"]を参照してください。
+
+--
+切断されたノードを廃止する:: 場合によっては、現在グリッドに接続されていないグリッドノード（状態が「不明」または「管理上停止中」のノード）を廃止する必要があります。
++
+--
+手順については、link:decommissioning-disconnected-grid-nodes.html["切断されたグリッドノードを廃止する"]を参照してください。
+
+--
+
+
+
+
+[[what-to-consider-before-decommissioning-a-node]]
+== ノードを廃止する前に考慮すべき事項
+
+いずれの手順を実行する前にも、各タイプのノードに関する考慮事項を確認してください。
+
+* link:considerations-for-decommissioning-admin-or-gateway-nodes.html["管理者ノードまたはゲートウェイノードの廃止に関する考慮事項"]
+* link:considerations-for-decommissioning-storage-nodes.html["ストレージノードの廃止に関する考慮事項"]
+

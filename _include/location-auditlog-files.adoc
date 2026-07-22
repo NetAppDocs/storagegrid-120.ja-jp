@@ -1,0 +1,36 @@
+= 
+:allow-uri-read: 
+
+
+監査ログのディレクトリと適用可能なノードは、監査先の設定によって異なります。
+
+[cols="1a,2a"]
+|===
+| オプション | デスティネーション 
+
+
+ a| 
+ローカルノード（デフォルト）
+ a| 
+`/var/local/log/localaudit.log`
+
+
+
+ a| 
+管理者ノード／ローカルノード
+ a| 
+* 管理ノード（プライマリおよび非プライマリ）： `/var/local/audit/export/audit.log`
+* すべてのノード： `/var/local/log/localaudit.log`このモードでは、ファイルは通常空であるか、存在しません。
+
+
+
+
+ a| 
+外部のsyslogサーバ
+ a| 
+`/var/local/log/localaudit.log`
+
+|===
+監査先の設定に応じて、以下を入力してください： `cd /var/local/log`または `/var/local/audit/export/`
+
+詳細については、link:../monitor/configure-log-management.html#select-log-location["ログの保存場所を選択"] を参照してください。

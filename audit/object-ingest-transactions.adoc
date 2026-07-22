@@ -1,0 +1,102 @@
+---
+permalink: audit/object-ingest-transactions.html 
+sidebar: sidebar 
+keywords: object ingest transaction, S3 ingest, SPUT, ORLM, WPUT 
+summary: 監査ログ内でS3 API固有の監査メッセージを探すことで、クライアントのデータ取り込みトランザクションを特定できます。 
+---
+= StorageGRID でのオブジェクト取り込みトランザクションの監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+監査ログ内でS3 API固有の監査メッセージを探すことで、クライアントのデータ取り込みトランザクションを特定できます。
+
+以下の表には、取り込みトランザクション中に生成されるすべての監査メッセージが記載されているわけではありません。取り込みトランザクションを追跡するために必要なメッセージのみが含まれます。
+
+
+
+[[s3-ingest-audit-messages]]
+== S3取り込み監査メッセージ
+
+[cols="1a,1a,2a,1a,2a"]
+|===
+| Code | Name | 説明 | トレース | 詳細については、 
+
+
+ a| 
+SPUT
+ a| 
+S3 PUTトランザクション
+ a| 
+S3へのPUTによるデータ取り込みトランザクションが正常に完了しました。
+ a| 
+CBID、S3BK、S3KY
+ a| 
+link:sput-s3-put.html["SPUT：S3 PUT"]
+
+
+
+ a| 
+ORLM
+ a| 
+対象ルールを満たしました
+ a| 
+このオブジェクトについては、ILMポリシーの要件が満たされています。
+ a| 
+CBID
+ a| 
+link:orlm-object-rules-met.html["ORLM: オブジェクトルールを満たしました"]
+
+|===
+
+
+[[example-s3-object-ingest]]
+== 例：S3オブジェクトの取り込み
+
+以下に示す一連の監査メッセージは、S3クライアントがストレージノード（LDR サービス）にオブジェクトを取り込んだ際に生成され、監査ログに保存される監査メッセージの例です。
+
+この例では、有効なILMポリシーには「Make 2 Copies」ILMルールが含まれています。
+
+
+NOTE: 以下の例には、トランザクション中に生成されるすべての監査メッセージが記載されているわけではありません。S3取り込みトランザクション（SPUT）に関連するもののみが表示されます。
+
+この例では、S3バケットが既に作成されていることを前提としています。
+
+
+
+[[sput-s3-put]]
+=== SPUT：S3 PUT
+
+SPUTメッセージは、特定のバケットにオブジェクトを作成するためのS3 PUTトランザクションが発行されたことを示すために生成されます。
+
+[listing, subs="specialcharacters,quotes"]
+----
+2017-07-17T21:17:58.959669[AUDT:[RSLT(FC32):SUCS][TIME(UI64):25771][SAIP(IPAD):"10.96.112.29"][S3AI(CSTR):"70899244468554783528"][SACC(CSTR):"test"][S3AK(CSTR):"SGKHyalRU_5cLflqajtaFmxJn946lAWRJfBF33gAOg=="][SUSR(CSTR):"urn:sgws:identity::70899244468554783528:root"][SBAI(CSTR):"70899244468554783528"][SBAC(CSTR):"test"][S3BK(CSTR):"example"][S3KY(CSTR):"testobject-0-3"][CBID\(UI64\):0x8EF52DF8025E63A8][CSIZ(UI64):30720][AVER(UI32):10][ATIM(UI64):150032627859669][ATYP\(FC32\):SPUT][ANID(UI32):12086324][AMID(FC32):S3RQ][ATID(UI64):14399932238768197038]]
+----
+
+
+[[orlm-object-rules-met]]
+=== ORLM: オブジェクトルールを満たしました
+
+ORLMメッセージは、このオブジェクトに対してILMポリシーが満たされたことを示しています。メッセージには、オブジェクトのCBIDと適用されたILMルールの名前が含まれています。
+
+複製されたオブジェクトの場合、LOCSフィールドには、オブジェクトの場所を示すLDRノードIDとボリュームIDが含まれます。
+
+[listing, subs="specialcharacters,quotes"]
+----
+2019-07-17T21:18:31.230669[AUDT:[CBID\(UI64\):0x50C4F7AC2BC8EDF7][RULE(CSTR):"Make 2 Copies"][STAT(FC32):DONE][CSIZ(UI64):0][UUID(CSTR):"0B344E18-98ED-4F22-A6C8-A93ED68F8D3F"][LOCS(CSTR):"CLDI 12828634 2148730112, CLDI 12745543 2147552014"][RSLT(FC32):SUCS][AVER(UI32):10][ATYP\(FC32\):ORLM][ATIM(UI64):1563398230669][ATID(UI64):15494889725796157557][ANID(UI32):13100453][AMID(FC32):BCMS]]
+----
+イレイジャー コーディングオブジェクトの場合、LOCSフィールドにはイレイジャー コーディングプロファイルIDとイレイジャー コーディンググループIDが含まれます
+
+[listing, subs="specialcharacters,quotes"]
+----
+2019-02-23T01:52:54.647537 [AUDT:[CBID(UI64):0xFA8ABE5B5001F7E2][RULE(CSTR):"EC_2_plus_1"][STAT(FC32):DONE][CSIZ(UI64):10000][UUID(CSTR):"E291E456-D11A-4701-8F51-D2F7CC9AFECA"][LOCS(CSTR):"CLEC 1 A471E45D-A400-47C7-86AC-12E77F229831"][RSLT(FC32):SUCS][AVER(UI32):10][ATIM(UI64):1550929974537]\[ATYP\(FC32\):ORLM\][ANID(UI32):12355278][AMID(FC32):ILMX][ATID(UI64):4168559046473725560]]
+----
+PATHフィールドには、S3バケットとキーの情報が含まれます。
+
+[listing]
+----
+2019-09-15.txt:2018-01-24T13:52:54.131559 [AUDT:[CBID(UI64):0x82704DFA4C9674F4][RULE(CSTR):"Make 2 Copies"][STAT(FC32):DONE][CSIZ(UI64):3145729][UUID(CSTR):"8C1C9CAC-22BB-4880-9115-CE604F8CE687"][PATH(CSTR):"frisbee_Bucket1/GridDataTests151683676324774_1_1vf9d"][LOCS(CSTR):"CLDI 12525468, CLDI 12222978"][RSLT(FC32):SUCS][AVER(UI32):10][ATIM(UI64):1568555574559][ATYP(FC32):ORLM][ANID(UI32):12525468][AMID(FC32):OBDI][ATID(UI64):344833886538369336]]
+----

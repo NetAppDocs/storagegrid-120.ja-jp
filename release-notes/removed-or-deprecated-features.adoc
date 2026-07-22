@@ -1,0 +1,238 @@
+---
+permalink: release-notes/removed-or-deprecated-features.html 
+sidebar: sidebar 
+keywords:  
+summary: StorageGRID 12.0で削除または廃止された機能について説明します。アップグレードする前に、削除または廃止された機能がクライアントアプリケーションまたはグリッド構成に影響するかどうかを確認してください。 
+---
+= StorageGRIDで削除または廃止された機能
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID 12.0で削除または廃止された機能について説明します。アップグレードする前に、削除または廃止された機能がクライアントアプリケーションまたはグリッド構成に影響するかどうかを確認してください。
+
+
+
+[[definitions]]
+== 用語の意味
+
+非推奨:: この機能は、新規の運用環境では使用すべきではありません。既存の運用環境では、引き続きこの機能を使用できます。
+サポート終了:: この機能をサポートする最終出荷バージョン。場合によっては、この段階でその機能に関するドキュメントが削除されることがあります。
+取り外し:: この機能をサポートしていない最初のバージョン。
+
+
+
+
+[[storagegrid-end-of-feature-support]]
+== StorageGRID機能サポート終了
+
+非推奨の機能は、N+2番目のメジャーバージョンで削除されます。例えば、ある機能がバージョンN（例えば6.3）で非推奨になった場合、その機能が存在する最後のバージョンはN+1（例えば6.4）になります。バージョンN+2（例えば6.5）は、その機能が製品に存在しない最初のリリースです。
+
+ https://mysupport.netapp.com/site/info/version-support["ソフトウェアバージョンのサポートページ"^]の詳細については、こちらを参照してください。
+
+
+NOTE: 特定の状況では、NetApp が特定の機能のサポートを、表示されているよりも早く終了する場合があります。
+
+[cols="2a,1a,1a,1a,3a"]
+|===
+| 機能 | 非推奨 | サポート終了 | 取り外し | 以前のドキュメントへのリンク 
+
+
+ a| 
+アラーム、従来型 （_アラートではありません_）
+ a| 
+11.7
+ a| 
+11.8
+ a| 
+11.9
+ a| 
+https://docs.netapp.com/us-en/storagegrid-118/monitor/alarms-reference.html["アラーム参照（StorageGRID 11.8）"^]
+
+
+
+ a| 
+アーカイブノードのサポート
+ a| 
+11.7
+ a| 
+11.8
+ a| 
+11.9
+ a| 
+https://docs.netapp.com/us-en/storagegrid-118/maintain/considerations-for-decommissioning-admin-or-gateway-nodes.html["アーカイブノードの廃止に関する考慮事項（StorageGRID 11.8）"^]
+
+*注*：アップグレードを開始する前に、以下の手順を実行する必要があります。
+
+. すべてのアーカイブノードを廃止します。 https://docs.netapp.com/us-en/storagegrid-118/maintain/grid-node-decommissioning.html["グリッドノードの廃止（StorageGRID 11.8 ドキュメントサイト）"^]を参照してください。
+. ストレージプールおよびILMポリシーから、すべてのアーカイブノード参照を削除します。 https://kb.netapp.com/hybrid/StorageGRID/Maintenance/StorageGRID_11.9_software_upgrade_resolution_guide["NetApp ナレッジベース：StorageGRID 11.9 ソフトウェアアップグレード解決ガイド"^]を参照してください。
+
+
+
+
+ a| 
+CIFS/Sambaを介した監査データのエクスポート
+ a| 
+11.1
+ a| 
+11.6
+ a| 
+11.7
+ a| 
+
+
+
+ a| 
+CLB service（RSMサービス）
+ a| 
+11.4
+ a| 
+11.6
+ a| 
+11.7
+ a| 
+
+
+
+ a| 
+Dockerコンテナエンジン
+ a| 
+11.8
+ a| 
+11.9
+ a| 
+TBD
+ a| 
+ソフトウェアのみのデプロイメントにおけるコンテナエンジンとしての Docker のサポートは非推奨となりました。今後のリリースでは、Docker は別のコンテナエンジンに置き換えられる予定です。現在サポートされている Docker バージョンの一覧については、link:../swnodes/software-requirements.html["ソフトウェアベースノードのソフトウェア要件"]を参照してください。
+
+
+
+ a| 
+メール設定（レガシー）
+ a| 
+11.9
+ a| 
+12.0
+ a| 
+12.1
+ a| 
+https://docs.netapp.com/us-en/storagegrid-118/monitor/managing-alarms.html#configure-notifications-for-alarms-legacy-system["アラームの通知を設定する（レガシーシステム）（StorageGRID 11.8）"^]
+
+
+
+ a| 
+NFS監査エクスポート
+ a| 
+11.8
+ a| 
+11.9
+ a| 
+12.0
+ a| 
+https://docs.netapp.com/us-en/storagegrid-118/admin/configuring-audit-client-access.html["NFS の監査クライアントアクセスを設定する（StorageGRID 11.8）"^]
+
+
+
+ a| 
+ポートリマップ
+ a| 
+12.0
+ a| 
+12.1
+ a| 
+12.2
+ a| 
+
+
+
+ a| 
+Swift APIのサポート
+ a| 
+11.7
+ a| 
+11.9
+ a| 
+12.0
+ a| 
+https://docs.netapp.com/us-en/storagegrid-118/swift/index.html["Swift REST APIを使用する（StorageGRID 11.8）"^]
+
+
+
+ a| 
+RHEL 8.8
+ a| 
+11.9
+ a| 
+11.9
+ a| 
+12.0
+ a| 
+
+
+
+ a| 
+RHEL 9.0
+ a| 
+11.9
+ a| 
+11.9
+ a| 
+12.0
+ a| 
+
+
+
+ a| 
+RHEL 9.2
+ a| 
+11.9
+ a| 
+11.9
+ a| 
+12.0
+ a| 
+
+
+
+ a| 
+Ubuntu 18.04
+ a| 
+11.9
+ a| 
+11.9
+ a| 
+12.0
+ a| 
+
+
+
+ a| 
+Ubuntu 20.04
+ a| 
+11.9
+ a| 
+11.9
+ a| 
+12.0
+ a| 
+
+
+
+ a| 
+Debian 11
+ a| 
+11.9
+ a| 
+11.9
+ a| 
+12.0
+ a| 
+
+|===
+参照：
+
+* link:changes-to-grid-management-api.html["グリッド管理APIの変更点"]
+* link:changes-to-tenant-management-api.html["テナント管理APIの変更点"]
+

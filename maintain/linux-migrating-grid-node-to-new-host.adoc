@@ -1,0 +1,160 @@
+---
+permalink: maintain/linux-migrating-grid-node-to-new-host.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, linux, migrate node, migrating node, new host for node 
+summary: 1つまたは複数のStorageGRIDノードをあるLinuxホストから別のLinuxホストに移行することで、グリッドの機能や可用性に影響を与えることなくホストのメンテナンスを実行できます。 
+---
+= StorageGRIDノードを新しいLinuxホストに移行する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+1つ以上のStorageGRIDノードをあるLinuxホスト（_ソースホスト_）から別のLinuxホスト（_ターゲットホスト_）に移行することで、グリッドの機能や可用性に影響を与えることなくホストのメンテナンスを実行できます。
+
+例えば、OSのパッチ適用と再起動を実行するためにノードを移行したい場合があります。
+
+.開始する前に
+* 移行サポートを含む StorageGRID デプロイメントを計画済みであること。link:../swnodes/node-container-migration-requirements.html["ノードコンテナ移行の要件"] を参照してください。
+* ターゲットホストはすでに StorageGRID で使用できる状態に準備されています。
+* ノードごとのストレージボリュームはすべて共有ストレージを使用します。
+* ネットワークインターフェースは、ホスト間で一貫した名前を持ちます。
+
+
+[NOTE]
+====
+本番環境へのデプロイでは、1台のホスト上で複数のストレージノードを実行しないでください。各ストレージノードに専用ホストを使用することで、障害発生時のドメインを分離できます。
+
+管理ノードやゲートウェイノードなど、他の種類のノードも同じホスト上にデプロイできます。ただし、同じタイプのノードが複数ある場合（たとえば、ゲートウェイノードが2つある場合）、すべてのインスタンスを同じホストにインストールしないでください。
+
+====
+
+
+[[export-node-from-source-host]]
+== ソースホストからノードをエクスポートします
+
+まず最初に、グリッドノードをシャットダウンし、ソースのLinuxホストからエクスポートします。
+
+以下のコマンドをソースホストで実行します。
+
+.手順
+. ソースホスト上で現在稼働しているすべてのノードの状態を取得します。
++
+`sudo storagegrid node status all`
+
++
+出力例：
+
++
+[listing]
+----
+Name Config-State Run-State
+DC1-ADM1 Configured Running
+DC1-ARC1 Configured Running
+DC1-GW1 Configured Running
+DC1-S1 Configured Running
+DC1-S2 Configured Running
+DC1-S3 Configured Running
+----
+. 移行するノードの名前を特定し、実行状態が「実行中」の場合は停止します。
++
+`sudo storagegrid node stop DC1-S3`
+
++
+出力例：
+
++
+[listing]
+----
+Stopping node DC1-S3
+Waiting up to 630 seconds for node shutdown
+----
+. ソースホストからノードをエクスポートします。
++
+`sudo storagegrid node export DC1-S3`
+
++
+出力例：
+
++
+[listing]
+----
+Finished exporting node DC1-S3 to /dev/mapper/sgws-dc1-s3-var-local.
+Use 'storagegrid node import /dev/mapper/sgws-dc1-s3-var-local' if you
+want to import it again.
+----
+. 出力に表示された `import`コマンドをメモしておいてください。
++
+次のステップでは、対象ホスト上でこのコマンドを実行します。
+
+
+
+
+
+[[import-node-on-target-host]]
+== ターゲットホスト上のノードをインポート
+
+ソースホストからノードをエクスポートした後、ターゲットホストにノードをインポートして検証します。検証により、ノードがソースホスト上と同じブロックストレージおよびネットワークインターフェースデバイスにアクセスできることが確認されます。
+
+_ターゲットホスト_で以下のコマンドを実行します。
+
+.手順
+. ターゲットホストにノードをインポートします。
++
+`sudo storagegrid node import /dev/mapper/sgws-dc1-s3-var-local`
+
++
+出力例：
+
++
+[listing]
+----
+Finished importing node DC1-S3 from /dev/mapper/sgws-dc1-s3-var-local.
+You should run 'storagegrid node validate DC1-S3'
+----
+. 新しいホスト上のノード構成を検証します。
++
+`sudo storagegrid node validate DC1-S3`
+
++
+出力例：
+
++
+[listing]
+----
+Confirming existence of node DC1-S3... PASSED
+Checking configuration file /etc/storagegrid/nodes/DC1-S3.conf for node DC1-S3... PASSED
+Checking for duplication of unique values... PASSED
+----
+. 検証エラーが発生した場合は、移行したノードを起動する前にそれらを解決してください。
++
+トラブルシューティング情報については、ご使用の Linux オペレーティングシステム向けの StorageGRID link:../swnodes/index.html["インストール手順"] を参照してください。
+
+
+
+
+
+[[start-migrated-node]]
+== 移行されたノードを起動する
+
+移行したノードを検証したら、_ターゲットホスト_上でコマンドを実行してノードを起動します。
+
+.手順
+. 新しいホスト上でノードを起動します。
++
+`sudo storagegrid node start DC1-S3`
+
+. グリッドマネージャーにサインインし、ノードの状態が緑色で、アラートがないことを確認してください。
++
+
+CAUTION: ノードの状態が緑色であることを確認することで、移行されたノードが完全に再起動し、グリッドに再接続したことが保証されます。ステータスが緑色でない場合は、サービス停止中のノードが複数発生しないように、追加のノードを移行しないでください。
+
+. グリッドマネージャーにアクセスできない場合は、10分待ってから、次のコマンドを実行してください：
++
+`sudo storagegrid node status _node-name`
+
++
+移行したノードの実行状態が「実行中」であることを確認してください。
+
+

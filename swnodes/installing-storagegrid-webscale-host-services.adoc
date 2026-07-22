@@ -1,0 +1,88 @@
+---
+permalink: swnodes/installing-storagegrid-webscale-host-services.html 
+sidebar: sidebar 
+keywords: how to install StorageGRID host services 
+summary: お使いのオペレーティングシステムタイプに対応した StorageGRID パッケージを使用して、StorageGRID ホストサービスをインストールします。 
+---
+= LinuxへのStorageGRIDホストサービスのインストール
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+お使いのオペレーティングシステムタイプに対応した StorageGRID パッケージを使用して、StorageGRID ホストサービスをインストールします。
+
+
+NOTE: 「Linux」とは、RHEL、Ubuntu、またはDebianのいずれかの環境を指します。サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool（IMT）"^]を参照してください。
+
+[role="tabbed-block"]
+====
+.RHEL
+--
+StorageGRID RPM パッケージを使用して、StorageGRID ホストサービスをインストールします。
+
+.タスク概要
+これらの手順では、RPMパッケージからホストサービスをインストールする方法について説明します。代替手段として、インストールアーカイブに含まれているDNFリポジトリのメタデータを使用して、RPMパッケージをリモートでインストールすることもできます。お使いのLinuxオペレーティングシステムに対応するDNFリポジトリの手順を参照してください。
+
+.手順
+. StorageGRID RPM パッケージを各ホストにコピーするか、共有ストレージ上で利用できるようにしてください。
++
+例えば、 `/tmp`ディレクトリに配置すると、次のステップでサンプルコマンドを使用できます。
+
+. 各ホストにrootユーザーとして、またはsudo権限を持つアカウントでログインし、以下のコマンドを記載されている順序で実行してください。
++
+[listing]
+----
+sudo dnf --nogpgcheck localinstall /tmp/StorageGRID-Webscale-Images-version-SHA.rpm
+----
++
+[listing]
+----
+sudo dnf --nogpgcheck localinstall /tmp/StorageGRID-Webscale-Service-version-SHA.rpm
+----
++
+
+CAUTION: まずイメージパッケージをインストールし、次にサービスパッケージをインストールする必要があります。
+
++
+
+NOTE: パッケージを `/tmp`以外のディレクトリに配置した場合は、使用したパスに合わせてコマンドを修正してください。
+
+
+
+--
+.UbuntuまたはDebian
+--
+StorageGRID DEB パッケージを使用して、Ubuntu または Debian 用の StorageGRID ホストサービスをインストールします。
+
+.タスク概要
+これらの手順では、DEBパッケージからホストサービスをインストールする方法について説明します。代替手段として、インストールアーカイブに含まれているAPTリポジトリのメタデータを使用して、DEBパッケージをリモートでインストールすることもできます。お使いのLinuxオペレーティングシステムに対応するAPTリポジトリの手順を参照してください。
+
+.手順
+. StorageGRID の DEB パッケージを各ホストにコピーするか、共有ストレージ上で利用できるようにしてください。
++
+例えば、 `/tmp`ディレクトリに配置すると、次のステップでサンプルコマンドを使用できます。
+
+. 各ホストにrootユーザーとして、またはsudo権限を持つアカウントでログインし、以下のコマンドを実行してください。
++
+最初に `images`パッケージをインストールし、次に `service`パッケージをインストールする必要があります。パッケージを `/tmp`以外のディレクトリに配置した場合は、使用したパスに合わせてコマンドを修正してください。
+
++
+[listing]
+----
+sudo dpkg --install /tmp/storagegrid-webscale-images-version-SHA.deb
+----
++
+[listing]
+----
+sudo dpkg --install /tmp/storagegrid-webscale-service-version-SHA.deb
+----
++
+
+NOTE: StorageGRID パッケージをインストールする前に、Python 3 がインストールされている必要があります。 `sudo dpkg --install /tmp/storagegrid-webscale-images-version-SHA.deb`コマンドは、Python 3 をインストールするまで失敗します。
+
+
+
+--
+====

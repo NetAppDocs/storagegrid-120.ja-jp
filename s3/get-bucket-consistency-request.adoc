@@ -1,0 +1,97 @@
+---
+permalink: s3/get-bucket-consistency-request.html 
+sidebar: sidebar 
+keywords: S3 REST API, S3 operations, GET bucket consistency 
+summary: GET Bucket 整合性リクエストを使用すると、特定のバケットに適用されている整合性を確認できます。 
+---
+= StorageGRIDでGET Bucket整合性リクエストを使用してバケットの整合性レベルを取得する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+GET Bucket 整合性リクエストを使用すると、特定のバケットに適用されている整合性を確認できます。
+
+デフォルトの整合性設定では、新しく作成されたオブジェクトに対して書き込み後の読み取りを保証するようになっています。
+
+この操作を完了するには、s3:GetBucketConsistency 権限が必要です。またはアカウントのrootである必要があります。
+
+
+
+[[request-example]]
+== リクエスト例
+
+[listing, subs="specialcharacters,quotes"]
+----
+GET /bucket?x-ntap-sg-consistency HTTP/1.1
+Date: _date_
+Authorization: _authorization string_
+Host: _host_
+----
+
+
+[[response]]
+== 応答
+
+レスポンスXMLでは、 `<Consistency>`は次のいずれかの値を返します。
+
+[cols="1a,2a"]
+|===
+| 一貫性 | 説明 
+
+
+ a| 
+all
+ a| 
+すべてのノードがデータを即座に受信しなければ、リクエストは失敗します。
+
+
+
+ a| 
+strong-global
+ a| 
+すべてのサイトにおけるすべてのクライアントリクエストに対して、書き込み後の読み取りの一貫性を保証します。
+
+
+
+ a| 
+strong-site
+ a| 
+サイト内のすべてのクライアントリクエストに対して、書き込み後の読み取りの一貫性を保証します。
+
+
+
+ a| 
+新規書き込み後の読み取り
+ a| 
+（デフォルト）新規オブジェクトに対しては書き込み後の読み取り一貫性を、オブジェクト更新に対しては結果整合性を提供します。高可用性とデータ保護を保証します。ほとんどの場合に推奨されます。
+
+
+
+ a| 
+使用可能
+ a| 
+新規オブジェクトとオブジェクト更新の両方に対して、最終的な整合性を提供します。S3バケットの場合は、必要な場合にのみ使用してください（たとえば、めったに読み取られないログ値を含むバケット、または存在しないキーに対する HEAD または GET 操作の場合など）。S3 FabricPool バケットではサポートされていません。
+
+|===
+
+
+[[response-example]]
+== 回答例
+
+[listing]
+----
+HTTP/1.1 200 OK
+Date: Fri, 18 Sep 2020 01:02:18 GMT
+Connection: CLOSE
+Server: StorageGRID/11.5.0
+x-amz-request-id: 12345
+Content-Length: 127
+Content-Type: application/xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Consistency xmlns="http://s3.storagegrid.com/doc/2015-02-01/">read-after-new-write</Consistency>
+----
+.関連情報
+link:consistency.html["一貫性"]

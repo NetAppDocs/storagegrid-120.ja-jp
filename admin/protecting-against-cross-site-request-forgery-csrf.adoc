@@ -1,0 +1,42 @@
+---
+permalink: admin/protecting-against-cross-site-request-forgery-csrf.html 
+sidebar: sidebar 
+keywords: csrf, cross site request forgery, token 
+summary: CSRFトークンを使用してCookieを使用する認証を強化することで、StorageGRIDに対するクロスサイトリクエストフォージェリ（CSRF）攻撃からの保護に役立てることができます。 
+---
+= StorageGRID でクロスサイトリクエストフォージェリ（CSRF）から保護する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+CSRFトークンを使用してCookieを使用する認証を強化することで、StorageGRIDに対するクロスサイトリクエストフォージェリ（CSRF）攻撃からの保護に役立てることができます。Grid ManagerとTenant Managerはこのセキュリティ機能を自動的に有効にします。その他のAPIクライアントは、サインイン時に有効にするかどうかを選択できます。
+
+別のサイトへのリクエスト（HTTPフォームPOSTなど）をトリガーできる攻撃者は、ログインしているユーザーのCookieを使用して特定のリクエストを実行させることができます。
+
+StorageGRID は、CSRF トークンを使用することで、CSRF 攻撃に対する保護に役立ちます。有効にした場合、特定のクッキーの内容は、特定のヘッダーまたは特定の POST ボディパラメータの内容と一致する必要があります。
+
+この機能を有効にするには、認証中に `csrfToken`パラメータを `true`に設定します。デフォルトは `false`です。
+
+[listing]
+----
+curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" -d "{
+  \"username\": \"MyUserName\",
+  \"password\": \"MyPassword\",
+  \"cookie\": true,
+  \"csrfToken\": true
+}" "https://example.com/api/v3/authorize"
+----
+true の場合、 `GridCsrfToken` クッキーには Grid Manager へのサインイン用のランダムな値が設定され、 `AccountCsrfToken` クッキーには Tenant Manager へのサインイン用のランダムな値が設定されます。
+
+Cookieが存在する場合、システムの状態を変更できるすべてのリクエスト（POST、PUT、PATCH、DELETE）には、以下のいずれかを含める必要があります。
+
+*  `X-Csrf-Token`ヘッダー。ヘッダーの値は、CSRFトークンクッキーの値に設定されます。
+* フォームエンコードされたボディを受け入れるエンドポイントの場合：A `csrfToken`フォームエンコードされたリクエストボディパラメータ。
+
+
+その他の例や詳細については、オンラインAPIドキュメントを参照してください。
+
+
+NOTE: CSRFトークンCookieが設定されているリクエストは、CSRF攻撃に対する追加の保護として、JSONリクエストボディを想定するすべてのリクエストに対して「Content-Type: application/json」ヘッダーを強制的に適用します。

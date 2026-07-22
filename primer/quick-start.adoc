@@ -1,0 +1,123 @@
+---
+permalink: primer/quick-start.html 
+sidebar: sidebar 
+keywords: StorageGRID, quick start, tasks 
+summary: StorageGRID システムを設定して使用するための概要手順を以下に示します。 
+---
+= StorageGRID のクイックスタート
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID システムを設定して使用するための概要手順を以下に示します。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["1"]学習、計画、データ収集
+[role="quick-margin-para"]
+NetApp のアカウント担当者と協力して、オプションを理解し、新しい StorageGRID システムを計画してください。次のような質問について検討してください。
+
+[role="quick-margin-list"]
+* 初期段階で、また時間の経過とともに、どのくらいの量のオブジェクトデータを保存することを想定していますか？
+* 必要なサイト数はいくつですか？
+* 各拠点には、いくつのノードとどのような種類のノードが必要ですか？
+* どの StorageGRID ネットワークを使用しますか？
+* グリッドを使用してオブジェクトを保存するのは誰ですか？どのアプリケーションを使用しますか？
+* セキュリティや保管に関して、特別な要件はありますか？
+* 法令や規制上の要件を遵守する必要はありますか？
+
+
+[role="quick-margin-para"]
+必要に応じて、NetApp プロフェッショナルサービスコンサルタントと協力して、NetApp ConfigBuilder ツールにアクセスし、新しいシステムのインストールおよび導入時に使用する構成ワークブックを完成させてください。このツールを使用して、StorageGRID アプライアンスの構成の自動化を支援することもできます。参照 https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/automating-appliance-installation-and-configuration.html["機器の設置と設定を自動化する"^]。
+
+[role="quick-margin-para"]
+link:index.html["StorageGRID について"]とlink:../network/index.html["ネットワーク構築ガイドライン"]を確認します。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["2"]ノードをインストールする
+[role="quick-margin-para"]
+StorageGRID システムは、個々のハードウェアベースおよびソフトウェアベースのノードで構成されています。まず、各アプライアンスノードのハードウェアをインストールし、各 Linux または VMware ホストを設定します。
+
+[role="quick-margin-para"]
+インストールを完了するには、各アプライアンスまたはソフトウェアホストに StorageGRID ソフトウェアをインストールし、ノードをグリッドに接続します。この手順では、サイト名とノード名、サブネットの詳細、および NTP サーバーと DNS サーバーの IP アドレスを指定します。
+
+[role="quick-margin-para"]
+方法を学ぶ：
+
+[role="quick-margin-list"]
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html["アプライアンスハードウェアの取り付け"^]
+* link:../swnodes/index.html["ソフトウェアベースのノードへの StorageGRID のインストール"]
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["3つ"] サインインしてシステムの状態を確認する
+[role="quick-margin-para"]
+グリッドのインストールが完了したら、グリッドマネージャーにログインできます。そこから、新しいシステムの全体的な状態を確認し、AutoSupportとアラートメールを有効にして、S3エンドポイントドメイン名を設定できます。
+
+[role="quick-margin-para"]
+方法を学ぶ：
+
+[role="quick-margin-list"]
+* link:../admin/signing-in-to-grid-manager.html["グリッドマネージャーにサインインする"]
+* link:../monitor/monitoring-system-health.html["システムの状態を監視する"]
+* link:../admin/configure-autosupport-grid-manager.html["AutoSupportを設定する"]
+* link:../monitor/email-alert-notifications.html["アラートのメール通知を設定する"]
+* link:../admin/configuring-s3-api-endpoint-domain-names.html["S3エンドポイントのドメイン名を設定する"]
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["4"]設定と管理
+[role="quick-margin-para"]
+新しい StorageGRID システムに対して実行する必要がある設定タスクは、グリッドをどのように使用するかによって異なります。最低限、システムアクセスを設定し、FabricPool および S3 ウィザードを使用して、各種ストレージとセキュリティの設定を管理します。
+
+[role="quick-margin-para"]
+方法を学ぶ：
+
+[role="quick-margin-list"]
+* link:../admin/controlling-storagegrid-access.html["StorageGRID アクセスの制御"]
+* link:../admin/use-s3-setup-wizard.html["S3 セットアップ ウィザードを使用する"]
+* link:../fabricpool/use-fabricpool-setup-wizard.html["FabricPool セットアップ ウィザードを使用する"]
+* link:../admin/manage-security.html["セキュリティを管理する"]
+* link:../harden/index.html["システム強化"]
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-5.png["五"] ILMの設定
+[role="quick-margin-para"]
+1つ以上のILMルールで構成される情報ライフサイクル管理（ILM）ポリシーを設定することで、StorageGRIDシステム内のすべてのオブジェクトの配置と保持期間を制御できます。ILMルールは、オブジェクトデータのコピーを作成および配布する方法と、それらのコピーを長期にわたって管理する方法をStorageGRIDに指示します。
+
+[role="quick-margin-para"]
+方法を確認する：link:../ilm/index.html["ILMを使用してオブジェクトを管理する"]
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-6.png["六"] StorageGRID を使用する
+[role="quick-margin-para"]
+初期設定が完了したら、StorageGRID テナントアカウントは、S3 クライアントアプリケーションを使用して、オブジェクトの取り込み、取得、および削除を行うことができます。
+
+[role="quick-margin-para"]
+方法を学ぶ：
+
+[role="quick-margin-list"]
+* link:../tenant/index.html["テナントアカウントを使用する"]
+* link:../s3/index.html["S3 REST APIを使用する"]
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-7.png["セブン"]監視とトラブルシューティング
+[role="quick-margin-para"]
+システムが稼働したら、定期的にその動作を監視し、発生したアラートをトラブルシューティングして解決する必要があります。外部 syslog サーバーの設定、SNMP 監視の使用、または追加データの収集も検討することをお勧めします。
+
+[role="quick-margin-para"]
+方法を学ぶ：
+
+[role="quick-margin-list"]
+* link:../monitor/index.html["StorageGRID の監視"]
+* link:../troubleshoot/index.html["StorageGRID のトラブルシューティング"]
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-8.png["8"]拡大、維持、回復
+[role="quick-margin-para"]
+ノードやサイトを追加することで、システムの容量や機能を拡張できます。障害から復旧したり、StorageGRID システムを最新の状態に保ち、効率的に動作させたりするために、さまざまなメンテナンス手順を実行することもできます。
+
+[role="quick-margin-para"]
+方法を学ぶ：
+
+[role="quick-margin-list"]
+* link:../landing-expand/index.html["グリッドを拡張する"]
+* link:../landing-maintain/index.html["グリッドを管理する"]
+* link:../maintain/warnings-and-considerations-for-grid-node-recovery.html["ノードを復旧する"]
+

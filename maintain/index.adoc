@@ -1,0 +1,35 @@
+---
+permalink: maintain/index.html 
+sidebar: sidebar 
+keywords: maintain overview, maintenance overview, about maintain, about maintenance 
+summary: グリッド保守作業には、ノードまたはサイトの廃止、グリッド、ノードまたはサイトの名前変更、およびネットワークの保守が含まれます。ホストとミドルウェアの手順およびグリッドノードの手順を実行することもできます。 
+---
+= StorageGRIDグリッドのメンテナンス
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+グリッド保守作業には、ノードまたはサイトの廃止、グリッド、ノードまたはサイトの名前変更、およびネットワークの保守が含まれます。ホストとミドルウェアの手順およびグリッドノードの手順を実行することもできます。
+
+
+NOTE: これらの手順において、「Linux」とは、Red Hat® Enterprise Linux® (RHEL)、Ubuntu®、またはDebian®環境を指します。サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool"^]を参照してください。
+
+
+
+[[before-you-begin]]
+== 開始する前に
+
+* StorageGRID システムについて幅広く理解しています。
+* StorageGRID システムのトポロジーを確認し、グリッド構成を把握していること。
+* すべての指示に正確に従い、すべての警告に注意を払う必要があることを理解してください。
+* 記載されていない保守手順については、サポート対象外となるか、サービス契約が必要となることをご理解ください。
+
+
+
+
+[[maintenance-procedures-for-appliances]]
+== アプライアンスのメンテナンス手順
+
+ハードウェアの手順については、 https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/index.html["StorageGRID アプライアンスのメンテナンス手順"^]を参照してください。

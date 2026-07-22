@@ -1,0 +1,14 @@
+---
+permalink: maintain/preparing-to-decommission-grid-nodes.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission 
+summary: グリッドノードを削除する際の考慮事項を確認し、イレイジャーコーディングデータに対してアクティブな修復ジョブがないことを確認する必要があります。 
+---
+= StorageGRIDノードの運用停止を準備
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+グリッドノードを削除する際の考慮事項を確認し、イレイジャーコーディングデータに対してアクティブな修復ジョブがないことを確認する必要があります。

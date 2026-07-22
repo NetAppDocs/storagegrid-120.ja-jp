@@ -1,0 +1,61 @@
+---
+permalink: maintain/vmware-adding-trunk-or-access-interfaces-to-node.html 
+sidebar: sidebar 
+keywords: add extra interface to node, access interface, VM interface 
+summary: VMノードのインストール後でも、追加のトランクインターフェースまたはアクセスインターフェースを追加できます。追加したインターフェースは、VLANインターフェースページとHAグループページに表示されます。 
+---
+= StorageGRIDのVMwareノードにトランクインターフェイスまたはアクセスインターフェイスを追加する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+VMノードのインストール後でも、トランクインターフェースまたはアクセスインターフェースをVMノードに追加できます。追加したインターフェースは、VLANインターフェースページとHAグループページに表示されます。
+
+.開始する前に
+* 以下の手順にアクセスできます：link:../swnodes/index.html["VMwareプラットフォームへのStorageGRIDのインストール"]
+* 管理ノードとゲートウェイノードのVMware仮想マシンがあります。
+* グリッド、管理、またはクライアントネットワークとして使用されていないネットワークサブネットがあります。
+* あなたは `Passwords.txt`ファイルを持っています。
+* link:../admin/admin-group-permissions.html["特定のアクセス権限"]があります。
+
+
+
+CAUTION: ソフトウェアのアップグレード、復旧手順、または拡張手順が実行中の場合は、ノードにインターフェースを追加しないでください。
+
+.タスク概要
+VMwareノードのインストール後に、以下の手順に従って1つ以上の追加インターフェイスをノードに追加します。例えば、管理ノードやゲートウェイノードにトランクインターフェイスを追加することで、VLANインターフェイスを使用して、異なるアプリケーションやテナントに属するトラフィックを分離できます。あるいは、高可用性（HA）グループで使用するアクセスインターフェイスを追加することもできます。
+
+トランクインターフェイスを追加する場合は、StorageGRID で VLAN インターフェイスを設定する必要があります。アクセスインターフェイスを追加する場合は、そのインターフェイスを直接 HA グループに追加できます。VLAN インターフェイスを設定する必要はありません。
+
+インターフェースを追加する際、ノードが一時的に利用できなくなる場合があります。
+
+.手順
+. vCenter で、管理ノードおよびゲートウェイノードの仮想マシンに新しいネットワークアダプタ（タイプ VMXNET3）を追加します。「接続済み」と「電源投入時に接続」のチェックボックスを選択します。
++
+image:vcenter.png["vCenter"]
+
+. SSHを使用して、管理ノードまたはゲートウェイノードにログインします。
+.  `ip link show`を使用して、新しいネットワークインターフェース ens256 が検出されたことを確認します。
++
+[listing]
+----
+ip link show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 00:50:56:a0:4e:5b brd ff:ff:ff:ff:ff:ff
+3: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 00:50:56:a0:fa:ce brd ff:ff:ff:ff:ff:ff
+4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1400 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 00:50:56:a0:d6:87 brd ff:ff:ff:ff:ff:ff
+5: ens256: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master ens256vrf state UP mode DEFAULT group default qlen 1000
+    link/ether 00:50:56:a0:ea:88 brd ff:ff:ff:ff:ff:ff
+----
+
+
+.終了後の操作
+* 1 つ以上のトランク インターフェイスを追加した場合は、link:../admin/configure-vlan-interfaces.html["VLANインターフェースを設定する"]に移動して、新しい親インターフェイスごとに 1 つ以上の VLAN インターフェイスを設定します。
+* アクセスインターフェイスを 1 つ以上追加した場合は、link:../admin/configure-high-availability-group.html["高可用性グループを構成する"]に移動して、新しいインターフェイスを HA グループに直接追加してください。
+

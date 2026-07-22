@@ -1,0 +1,46 @@
+---
+permalink: audit/ilm-audit-messages.html 
+sidebar: sidebar 
+keywords: audit messages, ILM, IDEL, LKCU, ORLM 
+summary: ILM監査カテゴリに属する監査メッセージは、情報ライフサイクル操作に関連するイベントに使用されます。 
+---
+= StorageGRID ILM監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ILM監査カテゴリに属する監査メッセージは、情報ライフサイクル管理（ILM）操作に関連するイベントに使用されます。
+
+[cols="1a,3a,1a"]
+|===
+| Code | メッセージのタイトルと説明 | 詳細については、 
+
+
+ a| 
+IDEL
+ a| 
+ILM Initiated Delete：この監査メッセージは、ILMがオブジェクトの削除プロセスを開始したときに生成されます。
+ a| 
+link:idel-ilm-initiated-delete.html["IDEL: ILM による削除開始"]
+
+
+
+ a| 
+LKCU
+ a| 
+上書きされたオブジェクトのクリーンアップ。この監査メッセージは、上書きされたオブジェクトがストレージ容量を解放するために自動的に削除されたときに生成されます。
+ a| 
+link:lkcu-overwritten-object-cleanup.html["LKCU: 上書きされたオブジェクトのクリーンアップ"]
+
+
+
+ a| 
+ORLM
+ a| 
+オブジェクトルールが満たされました：この監査メッセージは、オブジェクトデータが ILM ルールで指定されたとおりに保存された場合に生成されます。
+ a| 
+link:orlm-object-rules-met.html["ORLM: オブジェクトルールを満たしました"]
+
+|===

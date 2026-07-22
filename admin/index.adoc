@@ -1,0 +1,37 @@
+---
+permalink: admin/index.html 
+sidebar: sidebar 
+keywords: how to administer storagegrid 
+summary: これらの手順を使用して、StorageGRID システムを設定および管理します。 
+---
+= StorageGRID の管理
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+これらの手順を使用して、StorageGRID システムを設定および管理します。
+
+
+
+[[about-these-instructions]]
+== これらの説明書について
+
+StorageGRID の設定および管理における主なタスクでは、以下のことが可能です：
+
+* グリッドマネージャーを使用してグループとユーザーを設定します
+* S3クライアントアプリケーションがオブジェクトを保存および取得できるように、テナントアカウントを作成します。
+* StorageGRID ネットワークの設定と管理
+* AutoSupportを設定する
+* ノード設定の管理
+
+
+
+
+[[before-you-begin]]
+== 開始する前に
+
+* StorageGRID システムについて、全般的な理解があります。
+* Linux のコマンドシェル、ネットワーク、サーバーハードウェアのセットアップと構成について、十分な知識をお持ちであることを前提としています。
+

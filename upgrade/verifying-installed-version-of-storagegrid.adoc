@@ -1,0 +1,52 @@
+---
+permalink: upgrade/verifying-installed-version-of-storagegrid.html 
+sidebar: sidebar 
+keywords: storagegrid, version, current version, previous version 
+summary: アップグレードを開始する前に、以前のバージョンの StorageGRID が現在インストールされており、最新の利用可能なホットフィックスが適用されていることを確認してください。 
+---
+= アップグレードする前に、インストールされているStorageGRIDのバージョンを確認します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+アップグレードを開始する前に、以前のバージョンの StorageGRID が現在インストールされており、最新の利用可能なホットフィックスが適用されていることを確認してください。
+
+.タスク概要
+StorageGRID 12.0 にアップグレードする前に、グリッドに StorageGRID 11.9.0.8 以降がインストールされている必要があります。現在以前のバージョンの StorageGRID を使用している場合は、グリッドの現在のバージョンが少なくとも StorageGRID 11.9.0.8 になるまで、以前のすべてのアップグレードファイルと最新のホットフィックス（強く推奨）をインストールする必要があります。
+
+考えられるアップグレードパスの1つを以下に示します<<example-upgrade-path,例>>。
+
+
+CAUTION: NetAppは、次のバージョンにアップグレードする前に各 StorageGRID バージョンの最新のホットフィックスを適用すること、およびインストールする新しいバージョンごとに最新のホットフィックスを適用することを強くお勧めします。場合によっては、データ損失のリスクを回避するためにホットフィックスを適用する必要があります。詳細については、 https://mysupport.netapp.com/site/products/all/details/storagegrid/downloads-tab["NetAppのダウンロード：StorageGRID"^]および各ホットフィックスのリリースノートを参照してください。
+
+
+
+[[verify-installed-version]]
+== インストールされているバージョンを確認する
+
+.手順
+. グリッドマネージャーにlink:../admin/web-browser-requirements.html["対応ウェブブラウザ"]を使用してサインインします。
+. グリッドマネージャの上部から、「ヘルプ」>「バージョン情報」を選択します。
+. *バージョン*が11.9.0.8以降であることを確認してください。
+. *Version* が11.9.0.8以降でない場合は、 https://mysupport.netapp.com/site/products/all/details/storagegrid/downloads-tab["NetAppのダウンロード：StorageGRID"^]にアクセスして、必要なアップグレードファイルとホットフィックスファイルをダウンロードしてください。
+. link:../upgrade/index.html["アップグレード手順に従ってください"]ダウンロードしたリリースごとに。link:../maintain/storagegrid-hotfix-procedure.html["最新のホットフィックスを適用する"]各リリースごとに（強く推奨）。
+
+
+以下のアップグレード例を参照してください。
+
+
+
+[[example-upgrade-pathexample-upgrade-to-storagegrid-12-0-from-version-11-8]]
+== [[example-upgrade-path]]例：StorageGRID 12.0へのアップグレード（バージョン11.8から）
+
+次の例は、StorageGRID 12.0へのアップグレードに備えて、StorageGRIDバージョン11.8からバージョン11.9にアップグレードする手順を示しています。
+
+システムをアップグレードする準備として、以下の順序でソフトウェアをダウンロードしてインストールしてください。
+
+. StorageGRID 11.8.0メジャーリリースへのアップグレード。
+. 最新の StorageGRID 11.8.0._y_ ホットフィックスを適用してください。
+. StorageGRID 11.9.0 メジャーリリースへのアップグレード。
+. StorageGRID 11.9.0.8 以降のホットフィックスを適用してください。
+

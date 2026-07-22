@@ -1,0 +1,48 @@
+---
+permalink: fabricpool/best-practices-ilm.html 
+sidebar: sidebar 
+keywords: FabricPool, StorageGRID, best practices, ILM, information lifecycle management, ILM rule, ILM policy, erasure-coding, replication 
+summary: FabricPool を使用してデータを StorageGRID に階層化する場合は、FabricPool データで StorageGRID 情報ライフサイクル管理（ILM）を使用するための要件を理解する必要があります。 
+---
+= StorageGRID ILMをFabricPoolデータで使用するためのベストプラクティス
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FabricPool を使用してデータを StorageGRID に階層化する場合は、FabricPool データで StorageGRID 情報ライフサイクル管理（ILM）を使用するための要件を理解する必要があります。
+
+
+CAUTION: FabricPoolは、StorageGRID の ILM ルールまたはポリシーを認識しません。StorageGRID の ILM ポリシーの設定が誤っている場合、データが失われる可能性があります。詳細については、link:../ilm/what-ilm-rule-is.html["ILMルールを使用してオブジェクトを管理する"]およびlink:../ilm/creating-ilm-policy.html["ILMポリシーを作成する"]を参照してください。
+
+
+
+[[guidelines-for-using-ilm-with-fabricpool]]
+== ILMとFabricPoolを使用するためのガイドライン
+
+FabricPool セットアップ ウィザードを使用すると、ウィザードは作成する S3 バケットごとに新しい ILM ルールを自動的に作成し、そのルールを非アクティブなポリシーに追加します。ポリシーを有効にするよう求められます。自動的に作成されたルールは、推奨されるベスト プラクティスに従っています。単一サイトで 2+1 イレイジャー コーディングを使用します。
+
+FabricPoolセットアップ ウィザードを使用せずにStorageGRIDを手動で設定する場合は、ILMルールおよびILMポリシーがFabricPoolデータとビジネス要件に適していることを確認するために、以下のガイドラインを確認してください。これらのガイドラインを満たすために、新しいルールを作成し、アクティブなILMポリシーを更新する必要がある場合があります。
+
+* クラウド層のデータを保護するには、レプリケーションとイレイジャー コーディングのルールを任意の組み合わせで使用できます。
++
+推奨されるベストプラクティスは、コスト効率の高いデータ保護を実現するために、サイト内で 2+1 イレイジャー コーディングを使用することです。イレイジャー コーディングは、レプリケーションよりも多くの CPU リソースを消費しますが、ストレージ容量は大幅に少なくなります。4+1 方式と 6+1 方式は、2+1 方式よりも使用容量が少なくなります。ただし、グリッド拡張時にストレージ ノードを追加する必要がある場合、4+1 および 6+1 構成は柔軟性に劣ります。詳細については、link:../expand/adding-storage-capacity-for-erasure-coded-objects.html["イレイジャー コーディング オブジェクト用のストレージ容量を追加する"] を参照してください。
+
+* FabricPoolデータに適用される各ルールは、イレイジャー コーディングを使用するか、または少なくとも2つの複製コピーを作成する必要があります。
++
+
+CAUTION: 一定期間ごとに複製コピーを1つしか作成しないILMルールは、データが永久に失われるリスクをもたらします。オブジェクトの複製コピーが1つしか存在しない場合、ストレージノードが故障したり重大なエラーが発生したりすると、そのオブジェクトは失われます。また、アップグレードなどのメンテナンス手順の実行中は、オブジェクトへのアクセスが一時的に失われる場合があります。
+
+* 必要に応じてlink:remove-fabricpool-data.html["StorageGRIDからFabricPoolデータを削除する"]場合は、ONTAP を使用して FabricPool ボリュームのすべてのデータを取得し、パフォーマンス層に昇格させます。
++
+
+CAUTION: データ損失を避けるため、FabricPool クラウド階層データを期限切れにしたり削除したりする ILM ルールは使用しないでください。各 ILM ルールの保持期間を *forever* に設定して、FabricPool オブジェクトが StorageGRID ILM によって削除されないようにしてください。
+
+* FabricPoolクラウド ティア データをバケットから別の場所に移動するようなルールは作成しないでください。Cloud Storage Poolを使用してFabricPoolデータを別のオブジェクト ストアに移動することはできません。
++
+
+NOTE: クラウドストレージプールターゲットからオブジェクトを取得する際のレイテンシが増加するため、FabricPoolでクラウドストレージプールを使用することはサポートされていません。
+
+* ONTAP 9.8 以降では、オプションでオブジェクトタグを作成し、階層化されたデータを分類およびソートして管理を容易にすることができます。たとえば、StorageGRID に接続された FabricPool ボリュームにのみタグを設定できます。次に、StorageGRID で ILM ルールを作成する際に、「オブジェクトタグ」詳細フィルターを使用してこのデータを選択し、配置することができます。
+

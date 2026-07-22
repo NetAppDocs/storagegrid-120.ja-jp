@@ -1,0 +1,26 @@
+---
+permalink: release-notes/changes-to-tenant-management-api.html 
+sidebar: sidebar 
+keywords: tenant management api, api, api version, swagger, rest api 
+summary: StorageGRID 12.0では、テナント管理APIのバージョン4を使用しています。バージョン4はバージョン3を非推奨とします。ただし、バージョン1、2、3は引き続きサポートされています。 
+---
+= StorageGRID のテナント管理 API の変更
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID 12.0では、Tenant Management APIのバージョン4を使用しています。バージョン4ではバージョン3が非推奨となりますが、バージョン1、2、および3は引き続きサポートされます。
+
+
+NOTE: 非推奨バージョンのテナント管理 API は StorageGRID 12.0 で引き続き使用できます。ただし、これらのバージョンの API のサポートは、将来の StorageGRID のリリースで削除される予定です。StorageGRID 12.0 へのアップグレード後、 `PUT /grid/config/management` API を使用して非推奨の API を無効化できます。
+
+詳細については、link:../tenant/understanding-tenant-management-api.html["テナント管理APIを理解する"]をご覧ください。
+
+
+
+[[new-api-for-object-replication]]
+== オブジェクトレプリケーション用の新しいAPI
+
+ `/org/cross-grid-replication/{versionId}/replicate` APIを使用して、クロスグリッドレプリケーションが新たに構成された既存のバケット上のオブジェクトを手動で複製できます。

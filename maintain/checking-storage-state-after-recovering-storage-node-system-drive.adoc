@@ -1,0 +1,25 @@
+---
+permalink: maintain/checking-storage-state-after-recovering-storage-node-system-drive.html 
+sidebar: sidebar 
+keywords: storagegrid, storage node recovery, system drive, storage state 
+summary: ストレージノードのシステムドライブを復旧した後、ストレージノードの目的の状態がオンラインに設定されていることを確認し、ストレージノードサーバーが再起動されるたびにデフォルトでオンライン状態になるようにする必要があります。 
+---
+= StorageGRIDストレージノードシステムドライブの復元後にストレージの状態を確認する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ストレージノードのシステムドライブを復旧した後、ストレージノードの目的の状態がオンラインに設定されていることを確認し、ストレージノードサーバーが再起動されるたびにデフォルトでオンライン状態になるようにする必要があります。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* ストレージノードは復旧し、データ復旧は完了しました。
+
+
+.手順
+. 「ノード」＞「_ストレージノード_」＞「タスク」を選択します。
+. *ストレージの状態*ドロップダウンリストが「読み取り専用」または「オフライン」に設定されている場合は、*オンライン*を選択してください。
+. * 保存 * を選択します。
+

@@ -1,0 +1,62 @@
+---
+permalink: harden/hardening-guideline-for-server-certificates.html 
+sidebar: sidebar 
+keywords: StorageGRID, hardening guidelines, certificates 
+summary: インストール時に作成されたデフォルトの証明書を置き換え、TLSおよびSSH接続に適したセキュリティポリシーを選択する必要があります。 
+---
+= StorageGRID における TLS および SSH の強化ガイドライン
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+SSHアクセスを制御し、デフォルトのTLS証明書を置き換え、TLSおよびSSH接続に適したセキュリティポリシーを選択する必要があります。
+
+
+
+[[hardening-guidelines-for-certificates]]
+== 証明書のセキュリティ強化に関するガイドライン
+
+インストール時に作成されるデフォルトの証明書を、独自のカスタム証明書に置き換える必要があります。
+
+多くの組織にとって、StorageGRID Webアクセス用の自己署名デジタル証明書は、情報セキュリティポリシーに準拠していません。本番システムでは、StorageGRID の認証に使用するCA署名付きデジタル証明書をインストールする必要があります。
+
+具体的には、以下のデフォルト証明書の代わりにカスタムサーバー証明書を使用する必要があります：
+
+* *管理インターフェース証明書*：Grid Manager、Tenant Manager、Grid Management API、およびTenant Management APIへのアクセスを保護するために使用されます。
+* *S3 API証明書*：S3クライアントアプリケーションがオブジェクトデータのアップロードとダウンロードに使用するストレージノードとゲートウェイノードへのアクセスを保護するために使用されます。
+
+
+詳細および手順については、link:../admin/using-storagegrid-security-certificates.html["セキュリティ証明書を管理する"]を参照してください。
+
+
+NOTE: StorageGRID は、ロードバランサーエンドポイントで使用される証明書を個別に管理します。ロードバランサー証明書の設定については、link:../admin/configuring-load-balancer-endpoints.html["ロードバランサーのエンドポイントを設定する"]を参照してください。
+
+カスタムサーバー証明書を使用する場合は、以下のガイドラインに従ってください。
+
+* 証明書には、StorageGRID の DNS エントリに一致する `_subjectAltName_`が必要です。詳細については、 https://tools.ietf.org/html/rfc5280#section-4.2.1.6["RFC 5280: PKIX証明書およびCRLプロファイル"^]のセクション 4.2.1.6「Subject Alternative Name」を参照してください。
+* 可能な限り、ワイルドカード証明書の使用は避けてください。このガイドラインの例外として、S3仮想ホスト型エンドポイントの証明書があり、バケット名が事前にわからない場合はワイルドカードを使用する必要があります。
+* 証明書でワイルドカードを使用する必要がある場合は、リスクを軽減するために追加の手順を実施してください。 `*.s3.example.com`などのワイルドカードパターンを使用し、他のアプリケーションには `s3.example.com`サフィックスを使用しないでください。このパターンは、 `dc1-s1.s3.example.com/mybucket`などのパススタイルの S3 アクセスでも機能します。
+* 証明書の有効期限を短く設定し（例えば2か月）、Grid Management APIを使用して証明書のローテーションを自動化します。これは特にワイルドカード証明書において重要です。
+
+
+さらに、クライアントは StorageGRID との通信時に厳密なホスト名チェックを使用する必要があります。
+
+
+
+[[hardening-guidelines-for-tls-and-ssh-policy]]
+== TLSおよびSSHポリシーの強化ガイドライン
+
+セキュリティポリシーを選択することで、クライアントアプリケーションとの安全な TLS 接続および内部 StorageGRID サービスへの安全な SSH 接続を確立するために使用するプロトコルと暗号を決定できます。
+
+セキュリティポリシーは、TLSとSSHが転送中のデータをどのように暗号化するかを制御します。ベストプラクティスとして、アプリケーションの互換性に必要のない暗号化オプションは無効にすることをお勧めします。システムがCommon Criteria準拠、FIPS 140-2準拠である必要がある場合、または他の暗号を使用する必要がある場合を除き、デフォルトのModernポリシーを使用してください。
+
+詳細および手順については、link:../admin/manage-tls-ssh-policy.html["TLSおよびSSHポリシーを管理する"]を参照してください。
+
+
+
+[[manage-external-ssh-access]]
+== 外部SSHアクセスを管理する
+
+システムセキュリティを強化するため、外部からのSSHアクセスはデフォルトでブロックされています。トラブルシューティングなど、受信SSHアクセスが必要なタスクを実行する必要がある場合にのみ、SSHアクセスを有効にしてください。詳細および手順については、link:../admin/manage-external-ssh-access.html["外部SSHアクセスを管理する"]を参照してください。

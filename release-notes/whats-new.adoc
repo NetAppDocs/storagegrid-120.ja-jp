@@ -1,0 +1,119 @@
+---
+permalink: release-notes/whats-new.html 
+sidebar: sidebar 
+keywords: what is new in StorageGRID 12.0 
+summary: StorageGRID 12.0では、オブジェクトストレージ容量が拡張され、AI/MLワークロードのサポートが改善され、グリッドフェデレーションが強化され、システム管理が簡素化され、プラットフォーム全体のセキュリティが強化されます。 
+---
+= StorageGRID 12.0 の新機能
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID 12.0では、オブジェクトストレージ容量が拡張され、AI/MLワークロードのサポートが改善され、グリッドフェデレーションが強化され、システム管理が簡素化され、プラットフォーム全体のセキュリティが強化されます。
+
+最近の StorageGRID 12.0 リリースにおける修正された問題と既知の問題の詳細については、 https://library.netapp.com/ecm/ecm_download_file/ECMLP3351267["StorageGRID 12.0 リリースノート"^]を参照してください。NetAppアカウントでサインインするか、アカウントを作成してリリースノートにアクセスする必要があります。
+
+
+
+[[appliances]]
+== アプライアンス
+
+* ストレージ容量とコスト効率が大幅に向上しました。
+* 自動化されたドライブ ファームウェアのアップグレードにより、システムの信頼性が向上し、メンテナンスの手間が軽減されます。
+
+
+
+
+[[artificial-intelligence-ai-and-machine-learning-ml]]
+== 人工知能（AI）と機械学習（ML）
+
+* link:../tenant/what-is-branch-bucket.html["ブランチバケット"] バケットのポイントインタイムバージョンを許可することで、ランサムウェアからの迅速な復旧と、テストや実験用の隔離されたデータセットを実現します。
+* S3キャッシングレイヤーは、AI/MLトレーニングのパフォーマンスを向上させます。
+
+
+
+
+[[capacity]]
+== Capacity
+
+StorageGRID は現在1兆個のオブジェクトをサポートしており、これは以前の制限の2倍以上です。StorageGRID のサイジングと設計については、 https://fusion.netapp.com/["NetApp Fusion ツール"^]を参照してください。
+
+
+
+[[cassandra-updates]]
+== Cassandraのアップデート
+
+StorageGRID は、メタデータの保存に新しいバージョンの Cassandra を使用するようになりました。このバージョンの Cassandra は、より多くのメタデータを保存するために、ディスク容量をより効率的に使用します。
+
+link:../upgrade/index.html["StorageGRID 11.9 から 12.0 へのアップグレード"]を実行すると、メタデータ形式の更新がバックグラウンドで1～3日間行われます。この期間中、メタデータのストリーミングを伴う一部のメンテナンス手順（拡張など）は無効になります。
+
+link:../upgrade/performing-upgrade.html#upgrade-other-nodes["他のノードをアップグレードする"]を参照してください。
+
+
+
+[[federation]]
+== フェデレーション
+
+* これで StorageGRID にlink:../admin/managing-users.html#import-federated-users["最大100人のフェデレーションユーザーをインポート"]できるようになりました。
+* S3バケットに対してlink:../ilm/configuring-regions-optional-and-s3-only.html["デフォルト領域を変更する"]できるようになりました。この機能により、データのロケールとコンプライアンスの管理においてより高い柔軟性が得られます。
+* S3オブジェクトロックが有効になっているバケット間で、クロスグリッドレプリケーションを設定できるようになりました。link:../admin/grid-federation-what-is-cross-grid-replication.html#cgr-with-ol["S3オブジェクトロックを使用したクロスグリッドレプリケーション"]を参照してください。
++
+NetApp では、この機能はStorageGRID 12.0のソースバケットと宛先バケット間でのみ使用することを推奨します。ただし、この機能はS3オブジェクトロックが無効になっているStorageGRID 11.9ソースバケットと、S3オブジェクトロックが有効になっているStorageGRID 12.0宛先バケット間でもサポートされています。
+
+
+
+
+
+[[manageability]]
+== 管理性
+
+* 改善されたlink:../maintain/decommission-procedure.html["廃止措置手順"]により、時間と複雑さが軽減され、業務効率が向上します。
+* strong-global 整合性の動作が改善され、グリッドに3つ以上のサイトがある場合に、クライアント要求に対するサイト障害の許容性が提供されます。
++
+** StorageGRID 12.0以降の新規インストールでは、link:../s3/consistency.html["強力なグローバル整合性"]が設定されている場合、デフォルトでQuorumセマンティクスが使用されます。
+** StorageGRID 11.9 から StorageGRID 12.0 にアップグレードする場合、アップグレードされたグリッドは strong-global 整合性の以前の動作を維持します。
+
+
+
+
+
+NOTE: 強力なグローバル一貫性のために以前の動作に戻す必要がある場合は、手順については https://kb.netapp.com/hybrid/StorageGRID/Object_Mgmt/Configuring_StorageGRID_quorum_semantics_for_strong-global_consistency["強力なグローバル整合性のための StorageGRID クォーラムセマンティクスの設定"^]を参照してください。
+
+* ログアップロードをlink:../admin/configure-autosupport-grid-manager.html["AutoSupport"]に開始する機能は、サポート対応の迅速化に役立ちます。
+* 再起動時間の短縮 https://docs.netapp.com/us-en/storagegrid-appliances/index.html["アプライアンス"^]により、ダウンタイムを最小限に抑え、システム全体の可用性を向上させます。
+* link:../maintain/move-adc-service.html["ADCサービスを移動できる機能"]別のストレージノードに移動することで、ADCサービスをホストするストレージノードの管理における柔軟性と回復力が向上します。ストレージノードを廃止する前、またはストレージノードをデータ専用ノードに変換する前に、ADCサービスを移動することができます。
+* データストレージ容量を最大化するには、link:../maintain/convert-to-data-only-node.html["ストレージノードをデータ専用ノードに変換する"]。これにより、そのノード上のメタデータが、統合ストレージノードまたはメタデータ専用ストレージノードに移行されます。
+* 任意の管理ノードがlink:../maintain/selecting-node-recovery-procedure.html["他のノードを復元する"]できる機能（プライマリ管理ノードを除く）は、システムの復旧性と耐障害性を強化し、全体的な信頼性を向上させます。
+* ユーザーはS3バケットを使用してlink:../monitor/configure-log-management.html#use-a-bucket["監査ログを長期間保存する"]できるようになりました。
+
+
+
+
+[[security]]
+== セキュリティ
+
+* より強力なデータ暗号化と整合性保護により、セキュリティとパフォーマンスが向上します。
+* 保存されたパスワードのセキュリティを強化することで、不正アクセスのリスクを低減できます。
+* link:../admin/manage-external-ssh-access.html["SSHはデフォルトでブロックされています"]セキュリティを強化しながら、制御されたアクセスを可能にします。
+
+
+
+
+[[tenant-groups]]
+== テナントグループ
+
+* これでlink:../tenant/manage-groups.html["新しいS3信頼ポリシーを設定する"]を使用して、AssumeRole API をサポートできます。AssumeRole 機能は、セキュリティ強化と柔軟なアクセス制御のために短期的な認証情報を提供します。
+* バケットごとのオブジェクト数制限により、ストレージリソースをより適切に制御および管理できます。
+
+
+
+
+[[user-interface]]
+== ユーザーインターフェース
+
+* ダークテーマとシステムテーマの設定は、Grid Manager と Tenant Manager のユーザーメニューから利用できます。
+* 「監査と syslog サーバー」ページは link:../monitor/configure-log-management.html["ログ管理"] に名称変更され、リファクタリングが行われました。バックアップ目的でログをシステムバケットに保存する機能も追加されています。
+* 従来のグリッドトポロジーページは削除されました。過去数回の StorageGRID リリースにわたり、そのページから利用できる操作とメトリクスは、グリッドマネージャーの他のページ、特に link:../monitor/viewing-nodes-page.html["[Nodes]ページ"] に移行されました。
+

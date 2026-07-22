@@ -1,0 +1,219 @@
+---
+permalink: tenant/considerations-for-platform-services.html 
+sidebar: sidebar 
+keywords: considerations for using platform services 
+summary: プラットフォームサービスを導入する前に、これらのサービスの利用に関する概要と留意事項を確認してください。 
+---
+= StorageGRIDのプラットフォームサービスについて学ぶ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+プラットフォームサービスを導入する前に、これらのサービスの利用に関する概要と留意事項を確認してください。
+
+S3に関する情報については、link:../s3/index.html["S3 REST APIを使用する"]を参照してください。
+
+
+
+[[overview-of-platform-services]]
+== プラットフォームサービスの概要
+
+StorageGRID プラットフォームサービスは、イベント通知や S3 オブジェクトおよびオブジェクトメタデータのコピーを外部の宛先に送信できるようにすることで、ハイブリッドクラウド戦略の実装に役立ちます。
+
+プラットフォームサービスのターゲットロケーションは通常、StorageGRID デプロイメントの外部にあるため、プラットフォームサービスを利用することで、外部ストレージリソース、通知サービス、およびデータに対する検索または分析サービスを活用する際のパワーと柔軟性を享受できます。
+
+単一のS3バケットに対して、プラットフォームサービスの任意の組み合わせを設定できます。たとえば、StorageGRID S3バケットにlink:../tenant/understanding-cloudmirror-replication-service.html["CloudMirrorサービス"]とlink:../tenant/understanding-notifications-for-buckets.html["通知"]の両方を設定することで、特定のオブジェクトをAmazon Simple Storage Service（S3）にミラーリングしながら、AWSの費用を追跡するのに役立つサードパーティの監視アプリケーションに各オブジェクトの通知を送信できます。
+
+
+TIP: プラットフォームサービスの使用は、StorageGRID管理者がGrid ManagerまたはGrid Management APIを使用して、各テナントアカウントで有効にする必要があります。
+
+
+
+[[how-platform-services-are-configured]]
+== プラットフォームサービスの構成方法
+
+プラットフォームサービスは、link:configuring-platform-services-endpoints.html["Tenant Manager"]またはlink:understanding-tenant-management-api.html["テナント管理API"]を使用して設定した外部エンドポイントと通信します。各エンドポイントは、StorageGRID S3バケット、Amazon Web Servicesバケット、Amazon SNSトピック、Webhookエンドポイント、またはローカル、AWS、もしくはその他の場所でホストされているElasticsearchクラスターなどの外部宛先を表します。
+
+外部エンドポイントを作成した後、バケットにXML構成を追加することで、バケットのプラットフォームサービスを有効にできます。XML設定では、バケットが操作する対象となるオブジェクト、バケットが実行すべきアクション、およびバケットがサービスに使用するエンドポイントが識別されます。
+
+設定するプラットフォームサービスごとに、個別のXML設定を追加する必要があります。例：
+
+* キーが `/images`で始まるすべてのオブジェクトを Amazon S3 バケットにレプリケートする場合は、ソースバケットにレプリケーション設定を追加する必要があります。
+* これらのオブジェクトがバケットに保存されたときに通知も送信したい場合は、通知設定を追加する必要があります。
+* これらのオブジェクトのメタデータをインデックス化する場合は、検索統合を実装するために使用されるメタデータ通知設定を追加する必要があります。
+
+
+設定 XML の形式は、StorageGRID プラットフォームサービスの実装に使用される S3 REST API によって規定されます。
+
+[cols="1a,2a,1a"]
+|===
+| プラットフォームサービス | S3 REST API | 参照先 
+
+
+ a| 
+CloudMirror レプリケーション
+ a| 
+* GetBucketReplication
+* PutBucketReplication
+
+ a| 
+* link:configuring-cloudmirror-replication.html["CloudMirror レプリケーション"]
+* link:../s3/operations-on-buckets.html["バケットに対する操作"]
+
+
+
+
+ a| 
+通知
+ a| 
+* GetBucketNotificationConfiguration
+* PutBucketNotificationConfiguration
+
+ a| 
+* link:configuring-event-notifications.html["通知"]
+* link:../s3/operations-on-buckets.html["バケットに対する操作"]
+
+
+
+
+ a| 
+検索統合
+ a| 
+* バケットメタデータ通知設定を取得します
+* PUT Bucketメタデータ通知設定
+
+ a| 
+* link:configuring-search-integration-service.html["検索統合"]
+* link:../s3/custom-operations-on-buckets.html["StorageGRID カスタムオペレーション"]
+
+
+|===
+
+
+[[considerations-for-using-platform-services]]
+== プラットフォームサービスを利用する際の考慮事項
+
+[cols="1a,3a"]
+|===
+| 考慮事項 | 詳細 
+
+
+ a| 
+宛先エンドポイントの監視
+ a| 
+各宛先エンドポイントの可用性を監視する必要があります。宛先エンドポイントへの接続が長時間失われ、大量のリクエストがバックログに存在する場合、StorageGRID への追加のクライアントリクエスト（PUT リクエストなど）は失敗します。エンドポイントにアクセス可能になったら、これらの失敗したリクエストを再試行する必要があります。
+
+
+
+ a| 
+宛先エンドポイントのスロットリング
+ a| 
+StorageGRID ソフトウェアは、S3 バケットへの受信リクエストの送信速度が、宛先エンドポイントがリクエストを受信できる速度を超えた場合、受信リクエストを制限する可能性があります。スロットリングは、宛先エンドポイントへの送信を待機しているリクエストのバックログが存在する場合にのみ発生します。
+
+唯一目に見える影響は、受信する S3 リクエストの実行に時間がかかるようになることだけです。パフォーマンスが著しく低下し始めた場合は、取り込み速度を下げるか、より容量の大きいエンドポイントを使用してください。リクエストのバックログが増大し続けると、クライアントの S3 操作（PUT リクエストなど）は最終的に失敗します。
+
+CloudMirror のリクエストは、検索統合やイベント通知のリクエストよりもデータ転送量が多いため、宛先エンドポイントのパフォーマンスの影響を受けやすい傾向があります。
+
+
+
+ a| 
+順序保証
+ a| 
+StorageGRID は、サイト内のオブジェクトに対する操作の順序を保証します。オブジェクトに対するすべての操作が同じサイト内で行われる限り、最終的なオブジェクト状態（レプリケーション用）は常に StorageGRID の状態と等しくなります。
+
+StorageGRID は、StorageGRID サイト間で操作が行われる際に、リクエストを順序付けるために最善を尽くします。例えば、最初にサイト A にオブジェクトを書き込み、その後同じオブジェクトをサイト B で上書きした場合、CloudMirror によって宛先バケットにレプリケートされた最終的なオブジェクトが新しいオブジェクトであるとは限りません。
+
+
+
+ a| 
+ILM駆動型オブジェクト削除
+ a| 
+AWS CRR および Amazon Simple Notification Service の削除動作に合わせるため、StorageGRID ILM ルールによってソースバケット内のオブジェクトが削除された場合、CloudMirror およびイベント通知リクエストは送信されません。たとえば、ILM ルールによって 14 日後にオブジェクトが削除された場合、CloudMirror またはイベント通知リクエストは送信されません。
+
+一方、検索統合リクエストは、ILM によってオブジェクトが削除された場合に送信されます。
+
+
+
+ a| 
+Kafkaエンドポイントの使用
+ a| 
+Kafkaエンドポイントでは、相互TLSはサポートされていません。そのため、Kafkaブローカーの設定で `ssl.client.auth`を `required`に設定している場合、Kafkaエンドポイントの設定に問題が発生する可能性があります。
+
+Kafkaエンドポイントの認証には、以下の認証タイプが使用されます。これらの認証タイプは、Amazon SNSなどの他のエンドポイントの認証に使用されるものとは異なり、ユーザー名とパスワードの認証情報が必要です。
+
+* SASL/PLAIN
+* SASL/SCRAM-SHA-256
+* SASL/SCRAM-SHA-512
+
+
+*注:* 設定されたストレージプロキシ設定は、Kafkaプラットフォームサービスのエンドポイントには適用されません。
+
+|===
+
+
+[[considerations-for-using-cloudmirror-replication-service]]
+== CloudMirror レプリケーションサービスを使用する際の考慮事項
+
+[cols="1a,3a"]
+|===
+| 考慮事項 | 詳細 
+
+
+ a| 
+レプリケーションステータス
+ a| 
+StorageGRID は `x-amz-replication-status`ヘッダーをサポートしていません。
+
+
+
+ a| 
+オブジェクトサイズ
+ a| 
+CloudMirror レプリケーションサービスによって宛先バケットにレプリケートできるオブジェクトの最大サイズは 5 TiB であり、これはサポートされる最大オブジェクトサイズと同じです。
+
+*注*：単一のPutObject操作の最大推奨サイズは 5 GiB（5,368,709,120 バイト）です。5 GiB を超えるオブジェクトがある場合は、代わりにマルチパートアップロードを使用してください。
+
+
+
+ a| 
+バケットのバージョン管理とバージョンID
+ a| 
+StorageGRID のソース S3 バケットでバージョン管理が有効になっている場合は、宛先バケットでもバージョン管理を有効にする必要があります。
+
+バージョン管理を使用する場合、S3プロトコルの制限により、宛先バケット内のオブジェクトバージョンの順序はベストエフォートであり、CloudMirror サービスによって保証されるものではないことに注意してください。
+
+*注*: StorageGRID のソースバケットのバージョン ID は、宛先バケットのバージョン ID とは関係ありません。
+
+
+
+ a| 
+オブジェクトバージョンのタグ付け
+ a| 
+CloudMirrorサービスは、S3プロトコルの制限により、バージョンIDを指定するPutObjectTaggingまたはDeleteObjectTaggingリクエストを複製しません。ソースと宛先のバージョンIDは関連付けられていないため、特定のバージョンIDへのタグ更新が確実に複製されることを保証する方法はありません。
+
+対照的に、CloudMirror サービスは、バージョン ID を指定しない PutObjectTagging リクエストまたは DeleteObjectTagging リクエストを複製します。これらのリクエストは、最新のキー（バケットがバージョン管理されている場合は最新バージョン）のタグを更新します。タグ付きの通常のデータ取り込み（タグ付けの更新を除く）も複製されます。
+
+
+
+ a| 
+マルチパートアップロードと `ETag`値
+ a| 
+マルチパートアップロードを使用してアップロードされたオブジェクトをミラーリングする場合、CloudMirrorサービスではパーツが保存されません。その結果、ミラーリングされたオブジェクトの `ETag`値は、元のオブジェクトの `ETag`値とは異なります。
+
+
+
+ a| 
+SSE-C（顧客提供の鍵を使用したサーバー側暗号化）で暗号化されたオブジェクト
+ a| 
+CloudMirrorサービスは、SSE-C で暗号化されたオブジェクトをサポートしていません。CloudMirrorレプリケーションのソースバケットにオブジェクトを取り込もうとした際に、リクエストに SSE-C リクエストヘッダーが含まれている場合、操作は失敗します。
+
+
+
+ a| 
+S3オブジェクトロックが有効になっているバケット
+ a| 
+S3オブジェクトロックが有効になっているソースバケットまたは宛先バケットでは、レプリケーションはサポートされていません。
+
+|===

@@ -1,0 +1,51 @@
+---
+permalink: s3/put-bucket-last-access-time-request.html 
+sidebar: sidebar 
+keywords: S3 REST API, S3 operations, put bucket last access time request 
+summary: PUT Bucket last access time リクエストを使用すると、個々のバケットの最終アクセス時刻の更新を有効または無効にすることができます。 
+---
+= StorageGRID で PUT Bucket 最終アクセス時刻リクエストを使用して最終アクセス時刻の更新を有効または無効にする
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+PUT Bucket last access timeリクエストを使用すると、個々のバケットの最終アクセス時刻の更新を有効または無効にすることができます。最終アクセス時刻の更新を無効にするとパフォーマンスが向上し、バージョン10.3.0以降で作成されたすべてのバケットのデフォルト設定となっています。
+
+この操作を完了するには、バケットに対する s3:PutBucketLastAccessTime 権限、またはアカウントのルート権限が必要です。
+
+
+NOTE: StorageGRID バージョン 10.3 以降、すべての新規バケットにおいて、最終アクセス時刻の更新はデフォルトで無効になっています。以前のバージョンの StorageGRID を使用して作成されたバケットがあり、新しいデフォルトの動作に合わせたい場合は、以前のバケットそれぞれについて、最終アクセス時刻の更新を明示的に無効にする必要があります。PUT Bucket last access time リクエストを使用するか、テナントマネージャのバケットの詳細ページから、最終アクセス時刻の更新を有効または無効にすることができます。参照してください link:../tenant/enabling-or-disabling-last-access-time-updates.html["最終アクセス時刻の更新を有効または無効にする"]。
+
+バケットの最終アクセス時刻の更新が無効になっている場合、そのバケットに対する操作には以下の動作が適用されます。
+
+* GetObject、GetObjectAcl、GetObjectTagging、およびHeadObjectリクエストでは最終アクセス時刻が更新されません。オブジェクトは、情報ライフサイクル管理（ILM）評価のキューに追加されません。
+* CopyObject および PutObjectTagging のメタデータのみを更新するリクエストは、最終アクセス時刻も更新します。オブジェクトは ILM 評価のキューに追加されます。
+* ソースバケットの最終アクセス時刻の更新が無効になっている場合、CopyObjectリクエストでは、ソースバケットの最終アクセス時刻は更新されません。コピーされたオブジェクトは、ソースバケットのILM評価キューには追加されません。ただし、コピー先については、CopyObjectリクエストは常に最終アクセス時刻を更新します。オブジェクトのコピーは、ILM評価のキューに追加されます。
+* CompleteMultipartUpload リクエストは最終アクセス時刻を更新します。完成したオブジェクトは、ILM 評価のキューに追加されます。
+
+
+
+
+[[request-examples]]
+== リクエスト例
+
+この例では、バケットの最終アクセス時刻を有効にします。
+
+[listing, subs="specialcharacters,quotes"]
+----
+PUT /bucket?x-ntap-sg-lastaccesstime=enabled HTTP/1.1
+Date: _date_
+Authorization: _authorization string_
+Host: _host_
+----
+この例では、バケットの最終アクセス時刻を無効にします。
+
+[listing, subs="specialcharacters,quotes"]
+----
+PUT /bucket?x-ntap-sg-lastaccesstime=disabled HTTP/1.1
+Date: _date_
+Authorization: _authorization string_
+Host: _host_
+----

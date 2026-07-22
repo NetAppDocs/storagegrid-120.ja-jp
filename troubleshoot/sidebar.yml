@@ -1,0 +1,40 @@
+---
+section: troubleshoot
+title: StorageGRID システムのトラブルシューティング
+entries:
+- title: トラブルシューティングガイドライン
+  pdf-filename: StorageGRID システムのトラブルシューティング
+  url: "/troubleshoot/index.html"
+- title: オブジェクトとストレージの問題をトラブルシューティングする
+  entries:
+  - title: オブジェクトデータの場所を確認する
+    url: "/troubleshoot/confirming-object-data-locations.html"
+  - title: オブジェクトストアの障害
+    url: "/troubleshoot/object-store-storage-volume-failures.html"
+  - title: オブジェクトの整合性を確認する
+    url: "/troubleshoot/verifying-object-integrity.html"
+  - title: S3 PUTオブジェクトサイズが大きすぎるというアラートのトラブルシューティング
+    url: "/troubleshoot/troubleshoot-s3-put-object-size-too-large-alert.html"
+  - title: 紛失および欠落したオブジェクトデータのトラブルシューティング
+    entries:
+    - title: オブジェクトを取得する方法
+      pdf-filename: 紛失および欠落したオブジェクトデータのトラブルシューティング
+      url: "/troubleshoot/troubleshooting-lost-and-missing-object-data.html"
+    - title: 紛失の可能性があるオブジェクトを調査する
+      url: "/troubleshoot/investigating-potentially-lost-objects.html"
+  - title: オブジェクトデータストレージ不足アラートのトラブルシューティング
+    url: "/troubleshoot/troubleshooting-low-object-data-storage-alert.html"
+  - title: 読み取り専用ウォーターマークオーバーライドアラートのトラブルシューティング
+    url: "/troubleshoot/troubleshoot-low-watermark-alert.html"
+- title: メタデータの問題をトラブルシューティングする
+  url: "/troubleshoot/troubleshooting-metadata-issues.html"
+- title: 証明書エラーのトラブルシューティング
+  url: "/troubleshoot/troubleshooting-certificate-errors.html"
+- title: 管理ノードとユーザーインターフェースの問題をトラブルシューティングする
+  url: "/troubleshoot/troubleshooting-admin-node-and-user-interface-issues.html"
+- title: ネットワーク、ハードウェア、プラットフォームの問題をトラブルシューティングする
+  url: "/troubleshoot/troubleshooting-network-hardware-and-platform-issues.html"
+- title: 外部 syslog サーバのトラブルシューティング
+  url: "/troubleshoot/troubleshooting-syslog-server.html"
+- title: ロード バランシングのキャッシングのトラブルシューティング
+  url: "/troubleshoot/troubleshooting-load-balancer-caching.html"

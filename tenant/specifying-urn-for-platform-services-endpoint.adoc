@@ -1,0 +1,181 @@
+---
+permalink: tenant/specifying-urn-for-platform-services-endpoint.html 
+sidebar: sidebar 
+keywords: how to specify platform services urn 
+summary: プラットフォームサービスのエンドポイントを作成する際には、一意のリソース名（URN）を指定する必要があります。プラットフォームサービスの構成XMLを作成する際に、URNを使用してエンドポイントを参照します。各エンドポイントのURNは一意である必要があります。 
+---
+= StorageGRID プラットフォームサービスエンドポイントの URN を指定します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+プラットフォームサービスのエンドポイントを作成する際には、一意のリソース名（URN）を指定する必要があります。プラットフォームサービスの構成XMLを作成する際に、URNを使用してエンドポイントを参照します。各エンドポイントのURNは一意である必要があります。
+
+StorageGRID は、プラットフォームサービスのエンドポイントを作成する際に、その妥当性を検証します。プラットフォームサービスのエンドポイントを作成する前に、エンドポイントで指定されたリソースが存在し、かつアクセス可能であることを確認してください。
+
+
+
+[[urn-elements]]
+== URN要素
+
+プラットフォームサービスエンドポイントのURNは、次のように `arn:aws`または `urn:mysite`のいずれかで始まる必要があります：
+
+* サービスがAmazon Web Services (AWS) でホストされている場合は、 `arn:aws`
+* サービスが Google Cloud Platform (GCP) でホストされている場合は、 `arn:aws`
+* サービスがローカルでホストされている場合は、 `urn:mysite`
+
+
+例えば、StorageGRID でホストされている CloudMirror エンドポイントの URN を指定する場合、URN は次のように始まる場合があります `urn:sgws`。
+
+URNの次の要素は、プラットフォームサービスのタイプを次のように指定します：
+
+[cols="2a,1a"]
+|===
+| サービス | Type 
+
+
+ a| 
+CloudMirror レプリケーション
+ a| 
+`s3`
+
+
+
+ a| 
+通知
+ a| 
+`sns`、 `kafka`、または `webhook`
+
+
+
+ a| 
+検索統合
+ a| 
+`es`
+
+|===
+たとえば、StorageGRID でホストされている CloudMirror エンドポイントの URN の指定を続けるには、 `s3` を追加して  `urn:sgws:s3` を取得します。
+
+ほとんどのエンドポイントでは、URN の最後の要素は、宛先 URI の特定のターゲット リソースを識別します。たとえば、 `sns-topic-name`。
+
+ウェブフックのエンドポイントの場合、ターゲットリソースは宛先URIそのものです。
+
+[cols="1a,2a"]
+|===
+| サービス | 特定のリソース 
+
+
+ a| 
+CloudMirror レプリケーション
+ a| 
+`bucket-name`
+
+
+
+ a| 
+通知
+ a| 
+`sns-topic-name` または `kafka-topic-name`
+
+*注:* Webhookエンドポイントの場合、エンドポイントのURNが一意である限り、URNの最後の要素は任意の文字列にすることができます。
+
+
+
+ a| 
+検索統合
+ a| 
+`domain-name/index-name/type-name`
+
+*注:* Elasticsearch クラスターがインデックスを自動的に作成するように構成されていない場合は、エンドポイントを作成する前にインデックスを手動で作成する必要があります。
+
+|===
+
+
+[[urns-for-services-hosted-on-aws-and-gcp]]
+== AWSおよびGCPでホストされているサービスのURN
+
+AWSおよびGCPエンティティの場合、完全なURNは有効なAWS ARNです。例：
+
+* CloudMirror レプリケーション：
++
+[listing]
+----
+arn:aws:s3:::bucket-name
+----
+* 通知：
++
+[listing]
+----
+arn:aws:sns:region:account-id:topic-name
+----
+* 検索統合：
++
+[listing]
+----
+arn:aws:es:region:account-id:domain/domain-name/index-name/type-name
+----
++
+
+NOTE: AWS検索統合エンドポイントの場合、 `domain-name`にはリテラル文字列 `domain/`を含める必要があります（ここに示すとおり）。
+
+
+
+
+
+[[urns-for-locally-hosted-services]]
+== ローカルホスト型サービスのURN
+
+クラウドサービスではなくローカルホスト型サービスを使用する場合、URN の 3 番目と最後の位置に必須要素が含まれている限り、有効かつ一意の URN を生成する方法であれば、URN を任意の方法で指定できます。オプションで示されている要素は空白のままにしておくことも、リソースを識別し、URN を一意にするために役立つ方法で指定することもできます。例えば：
+
+* CloudMirror レプリケーション：
++
+[listing]
+----
+urn:mysite:s3:optional:optional:bucket-name
+----
++
+CloudMirror StorageGRID でホストされているエンドポイントの場合、次で始まる有効な URN を指定できます `urn:sgws`：
+
++
+[listing]
+----
+urn:sgws:s3:optional:optional:bucket-name
+----
+* 通知：
++
+Amazon Simple Notification Service のエンドポイントを指定します：
+
++
+[listing]
+----
+urn:mysite:sns:optional:optional:sns-topic-name
+----
++
+Kafkaエンドポイントを指定：
+
++
+[listing]
+----
+urn:mysite:kafka:optional:optional:kafka-topic-name
+----
++
+ウェブフックのエンドポイントを指定します：
+
++
+[listing]
+----
+urn:mysite:webhook:optional:optional:webhook-name
+----
+* 検索統合：
++
+[listing]
+----
+urn:mysite:es:optional:optional:domain-name/index-name/type-name
+----
++
+
+NOTE: ローカルでホストされている検索統合エンドポイントの場合、 `domain-name`要素は、エンドポイントのURNが一意である限り、任意の文字列を指定できます。
+
+

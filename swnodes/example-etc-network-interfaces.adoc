@@ -1,0 +1,85 @@
+---
+permalink: swnodes/example-etc-network-interfaces.html 
+sidebar: sidebar 
+keywords: example etc network interfaces 
+summary: /etc/network/interfaces ファイルには、物理インターフェース、ボンディングインターフェース、および VLAN インターフェースを定義する 3 つのセクションが含まれています。3 つのサンプルセクションを 1 つのファイルにまとめることで、4 つの Linux 物理インターフェイスを 1 つの LACP ボンドに集約し、StorageGRID グリッド、管理、およびクライアントネットワークインターフェースとして使用するボンド配下に 3 つの VLAN インターフェイスを確立できます。 
+---
+= Ubuntu および Debian 上の StorageGRID の物理インターフェースを集約する例
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ `/etc/network/interfaces`ファイルには、物理インターフェース、ボンドインターフェース、およびVLANインターフェースを定義する3つのセクションが含まれています。3つのサンプルセクションを1つのファイルにまとめることで、4つのLinux物理インターフェースを1つのLACPボンドに集約し、StorageGRIDグリッド、管理、およびクライアントネットワークインターフェースとして使用するためにボンドに従属する3つのVLANインターフェースを確立できます。
+
+
+
+[[physical-interfaces]]
+== 物理インターフェース
+
+リンクのもう一方の端にあるスイッチも、4つのポートを単一のLACPトランクまたはポートチャネルとして扱い、参照されている少なくとも3つのVLANをタグ付きで通過させる必要があることに注意してください。
+
+[listing]
+----
+# loopback interface
+auto lo
+iface lo inet loopback
+
+# ens160 interface
+auto ens160
+iface ens160 inet manual
+    bond-master bond0
+    bond-primary en160
+
+# ens192 interface
+auto ens192
+iface ens192 inet manual
+    bond-master bond0
+
+# ens224 interface
+auto ens224
+iface ens224 inet manual
+    bond-master bond0
+
+# ens256 interface
+auto ens256
+iface ens256 inet manual
+    bond-master bond0
+----
+
+
+[[bond-interface]]
+== ボンドインターフェイス
+
+[listing]
+----
+# bond0 interface
+auto bond0
+iface bond0 inet manual
+    bond-mode 4
+    bond-miimon 100
+    bond-slaves ens160 ens192 end224 ens256
+----
+
+
+[[vlan-interfaces]]
+== VLANインターフェイス
+
+[listing]
+----
+# 1001 vlan
+auto bond0.1001
+iface bond0.1001 inet manual
+vlan-raw-device bond0
+
+# 1002 vlan
+auto bond0.1002
+iface bond0.1002 inet manual
+vlan-raw-device bond0
+
+# 1003 vlan
+auto bond0.1003
+iface bond0.1003 inet manual
+vlan-raw-device bond0
+----

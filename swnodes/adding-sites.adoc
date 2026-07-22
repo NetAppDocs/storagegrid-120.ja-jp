@@ -1,0 +1,26 @@
+---
+permalink: swnodes/adding-sites.html 
+sidebar: sidebar 
+keywords: how to add sites 
+summary: StorageGRID のインストール時には、少なくとも1つのサイトを作成する必要があります。StorageGRID システムの信頼性とストレージ容量を向上させるために、追加のサイトを作成できます。 
+---
+= StorageGRID でサイトを追加する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID のインストール時には、少なくとも1つのサイトを作成する必要があります。StorageGRID システムの信頼性とストレージ容量を向上させるために、追加のサイトを作成できます。
+
+.手順
+. サイトページで、*サイト名*を入力してください。
+. サイトを追加するには、最後のサイトエントリの横にあるプラス記号をクリックし、新しい *Site Name* テキストボックスに名前を入力します。
++
+グリッドトポロジーに必要な数だけ、追加のサイトを追加してください。最大16サイトまで追加できます。
+
++
+image:3_gmi_installer_sites_page.gif["この図には説明が付随しています。"]
+
+. *Next*をクリックします。
+

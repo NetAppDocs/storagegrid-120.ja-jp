@@ -1,0 +1,40 @@
+---
+permalink: audit/srem-object-store-remove.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, SREM, Object Store Remove 
+summary: このメッセージは、コンテンツが永続ストレージから削除され、通常の API を通じてアクセスできなくなった場合に表示されます。 
+---
+= StorageGRIDにおけるオブジェクトストア削除のSREM監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+このメッセージは、コンテンツが永続ストレージから削除され、通常の API を通じてアクセスできなくなった場合に表示されます。
+
+[cols="1a,1a,4a"]
+|===
+| Code | フィールド | 説明 
+
+
+ a| 
+CBID
+ a| 
+コンテンツブロック識別子
+ a| 
+永続ストレージから削除されたコンテンツブロックの一意の識別子。
+
+
+
+ a| 
+RSLT
+ a| 
+結果コード
+ a| 
+コンテンツ削除操作の結果を示します。唯一定義されている値は次のとおりです。
+
+SUCS：永続ストレージからコンテンツが削除されました
+
+|===
+この監査メッセージは、特定のコンテンツブロックがノードから削除され、直接リクエストできなくなったことを意味します。このメッセージは、システム内における削除済みコンテンツの流れを追跡するために使用できます。

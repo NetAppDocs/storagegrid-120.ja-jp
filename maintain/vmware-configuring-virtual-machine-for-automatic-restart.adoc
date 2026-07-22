@@ -1,0 +1,22 @@
+---
+permalink: maintain/vmware-configuring-virtual-machine-for-automatic-restart.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, vmware, automatic restart, auto restart, configure automatic restart, configure auto restart 
+summary: VMware vSphere Hypervisor が再起動した後に仮想マシンが再起動しない場合は、仮想マシンを自動再起動するように設定する必要がある場合があります。 
+---
+= StorageGRIDでVMware仮想マシンを自動再起動するように構成します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+VMware vSphere Hypervisor が再起動した後に仮想マシンが再起動しない場合は、仮想マシンを自動再起動するように設定する必要がある場合があります。
+
+グリッドノードの復旧中、またはその他のメンテナンス手順の実行中に仮想マシンが再起動しないことに気づいた場合は、この手順を実行してください。
+
+.手順
+. VMware vSphere Client ツリーで、起動していない仮想マシンを選択します。
+. 仮想マシンを右クリックし、*電源オン*を選択します。
+. VMware vSphere ハイパーバイザーを設定して、今後は仮想マシンが自動的に再起動されるようにしてください。
+

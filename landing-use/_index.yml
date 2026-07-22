@@ -1,0 +1,62 @@
+---
+indexpage:
+  title: StorageGRID テナントとクライアントの使用
+  summary: 初期設定が完了したら、StorageGRIDテナントアカウントはバケットを作成し、S3クライアントアプリケーションを使用してオブジェクトの取り込み、取得、削除を行うことができます。
+  keywords: use tenant, manage tenant group, manage tenant user, manage s3 access
+    key, manage s3 bucket, use tenant features, use s3 rest api
+  lead: 初期設定が完了したら、StorageGRIDテナントアカウントはバケットを作成し、S3クライアントアプリケーションを使用してオブジェクトの取り込み、取得、削除を行うことができます。
+  tiles:
+  - title: テナントについて
+    links:
+    - title: テナントとは何ですか？
+      url: "../tenant/index.html"
+    - title: テナントマネージャーにサインインする
+      url: "../tenant/signing-in-to-tenant-manager.html"
+    - title: テナントアカウントを監視する
+      url: "../tenant/understanding-tenant-manager-dashboard.html"
+    - title: テナント管理APIを使用する
+      url: "../tenant/understanding-tenant-management-api.html"
+  - title: テナントグループとユーザーを管理する
+    links:
+    - title: IDフェデレーションを使用する
+      url: "../tenant/using-identity-federation.html"
+    - title: S3グループを作成する
+      url: "../tenant/creating-groups-for-s3-tenant.html"
+    - title: テナント管理権限
+      url: "../tenant/tenant-management-permissions.html"
+    - title: ユーザの管理
+      url: "../tenant/manage-users.html"
+  - title: S3アクセスキーとバケットを管理する
+    links:
+    - title: S3アクセスキーの管理
+      url: "../tenant/managing-s3-access-keys.html"
+    - title: バケットを作成する
+      url: "../tenant/creating-s3-bucket.html"
+    - title: バケットの詳細を表示
+      url: "../tenant/viewing-s3-bucket-details.html"
+    - title: バケットを削除
+      url: "../tenant/deleting-s3-bucket.html"
+  - title: テナント機能を使用する
+    links:
+    - title: アカウントの複製
+      url: "../tenant/grid-federation-account-clone.html"
+    - title: クロスグリッド複製
+      url: "../tenant/grid-federation-manage-cross-grid-replication.html"
+    - title: プラットフォームサービス
+      url: "../tenant/considerations-for-platform-services.html"
+    - title: S3 Object Lock
+      url: "../tenant/using-s3-object-lock.html"
+  - title: S3 REST APIを使用する
+    links:
+    - title: クイックリファレンス：サポートされているS3 APIリクエスト
+      url: "../s3/quick-reference-support-for-aws-apis.html"
+    - title: バケットに対する操作
+      url: "../s3/operations-on-buckets.html"
+    - title: オブジェクトに対する操作
+      url: "../s3/operations-on-objects.html"
+    - title: バケットおよびグループアクセスポリシー
+      url: "../s3/use-access-policies.html"
+  - title: Swift REST APIの使用（サポート終了）
+    links:
+    - title: Swiftを使用する
+      url: "../swift/index.html"

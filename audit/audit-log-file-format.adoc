@@ -1,0 +1,49 @@
+---
+permalink: audit/audit-log-file-format.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, log file formats, log formats, log file format, log format 
+summary: 監査ログファイルはすべての管理ノードに存在し、個々の監査メッセージの集合が含まれています。 
+---
+= StorageGRIDの監査ログファイルの形式について学ぶ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+監査ログファイルはすべての管理ノードに存在し、個々の監査メッセージの集合が含まれています。
+
+各監査メッセージには、以下の内容が含まれています。
+
+* 監査メッセージ（ATIM）をトリガーしたイベントの協定世界時（UTC）をISO 8601形式で記述し、その後にスペースを挿入します：
++
+`_YYYY-MM-DDTHH:MM:SS.UUUUUU_`、ここで `_UUUUUU_`はマイクロ秒です。
+
+* 監査メッセージ自体は角括弧で囲まれ、 `AUDT`で始まります。
+
+
+以下の例は、監査ログファイル内の3つの監査メッセージを示しています（読みやすくするために改行を追加しています）。これらのメッセージは、テナントがS3バケットを作成し、そのバケットに2つのオブジェクトを追加した際に生成されました。
+
+[listing]
+----
+2019-08-07T18:43:30.247711
+[AUDT:[RSLT(FC32):SUCS][CNID(UI64):1565149504991681][TIME(UI64):73520][SAIP(IPAD):"10.224.2.255"][S3AI(CSTR):"17530064241597054718"]
+[SACC(CSTR):"s3tenant"][S3AK(CSTR):"SGKH9100SCkNB8M3MTWNt-PhoTDwB9JOk7PtyLkQmA=="][SUSR(CSTR):"urn:sgws:identity::17530064241597054718:root"]
+[SBAI(CSTR):"17530064241597054718"][SBAC(CSTR):"s3tenant"][S3BK(CSTR):"bucket1"][AVER(UI32):10][ATIM(UI64):1565203410247711]
+[ATYP(FC32):SPUT][ANID(UI32):12454421][AMID(FC32):S3RQ][ATID(UI64):7074142142472611085]]
+
+2019-08-07T18:43:30.783597
+[AUDT:[RSLT(FC32):SUCS][CNID(UI64):1565149504991696][TIME(UI64):120713][SAIP(IPAD):"10.224.2.255"][S3AI(CSTR):"17530064241597054718"]
+[SACC(CSTR):"s3tenant"][S3AK(CSTR):"SGKH9100SCkNB8M3MTWNt-PhoTDwB9JOk7PtyLkQmA=="][SUSR(CSTR):"urn:sgws:identity::17530064241597054718:root"]
+[SBAI(CSTR):"17530064241597054718"][SBAC(CSTR):"s3tenant"][S3BK(CSTR):"bucket1"][S3KY(CSTR):"fh-small-0"]
+[CBID(UI64):0x779557A069B2C037][UUID(CSTR):"94BA6949-38E1-4B0C-BC80-EB44FB4FCC7F"][CSIZ(UI64):1024][AVER(UI32):10]
+[ATIM(UI64):1565203410783597][ATYP(FC32):SPUT][ANID(UI32):12454421][AMID(FC32):S3RQ][ATID(UI64):8439606722108456022]]
+
+2019-08-07T18:43:30.784558
+[AUDT:[RSLT(FC32):SUCS][CNID(UI64):1565149504991693][TIME(UI64):121666][SAIP(IPAD):"10.224.2.255"][S3AI(CSTR):"17530064241597054718"]
+[SACC(CSTR):"s3tenant"][S3AK(CSTR):"SGKH9100SCkNB8M3MTWNt-PhoTDwB9JOk7PtyLkQmA=="][SUSR(CSTR):"urn:sgws:identity::17530064241597054718:root"]
+[SBAI(CSTR):"17530064241597054718"][SBAC(CSTR):"s3tenant"][S3BK(CSTR):"bucket1"][S3KY(CSTR):"fh-small-2000"]
+[CBID(UI64):0x180CBD8E678EED17][UUID(CSTR):"19CE06D0-D2CF-4B03-9C38-E578D66F7ADD"][CSIZ(UI64):1024][AVER(UI32):10]
+[ATIM(UI64):1565203410784558][ATYP(FC32):SPUT][ANID(UI32):12454421][AMID(FC32):S3RQ][ATID(UI64):13489590586043706682]]
+----
+監査ログファイル内の監査メッセージは、デフォルトの形式では読みにくく、解釈も容易ではありません。link:using-audit-explain-tool.html["audit-explain ツール"]を使用して、監査ログ内の監査メッセージの簡略化されたサマリーを取得できます。link:using-audit-sum-tool.html["audit-sumツール"]を使用して、ログに記録された書き込み、読み取り、および削除操作の回数と、これらの操作にかかった時間をまとめることができます。

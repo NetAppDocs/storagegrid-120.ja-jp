@@ -1,0 +1,31 @@
+---
+permalink: s3/delete-bucket-metadata-notification-configuration-request.html 
+sidebar: sidebar 
+keywords: S3 REST API, S3 operations, DELETE Bucket metadata notification configuration request 
+summary: DELETEバケットメタデータ通知構成リクエストを使用すると、構成XMLを削除することで、個々のバケットの検索統合サービスを無効にできます。 
+---
+= StorageGRIDのDELETE Bucketメタデータ通知設定リクエストで検索統合サービスを無効にします
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+DELETEバケットメタデータ通知構成リクエストを使用すると、構成XMLを削除することで、個々のバケットの検索統合サービスを無効にできます。
+
+この操作を完了するには、バケットに対する s3:DeleteBucketMetadataNotification 権限、またはアカウントのルート権限が必要です。
+
+
+
+[[request-example]]
+== リクエスト例
+
+この例では、バケットの検索統合サービスを無効にする方法を示します。
+
+[listing, subs="specialcharacters,quotes"]
+----
+DELETE /test1?x-ntap-sg-metadata-notification HTTP/1.1
+Date: _date_
+Authorization: _authorization string_
+Host: _host_
+----

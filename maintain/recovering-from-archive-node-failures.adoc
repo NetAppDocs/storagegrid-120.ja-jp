@@ -1,0 +1,16 @@
+---
+permalink: maintain/recovering-from-archive-node-failures.html 
+sidebar: sidebar 
+keywords: recover, archive node failure, workflow 
+summary: アーカイブノードのサポートは削除されました。 
+---
+= StorageGRIDアーカイブノードの障害から回復する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+アーカイブノードのサポートは削除されました。
+
+アーカイブノードの復旧に関する情報については、 https://docs.netapp.com/us-en/storagegrid-118/maintain/recovering-from-archive-node-failures.html["アーカイブノードの障害から復旧する（StorageGRID 11.8 ドキュメントサイト）"^]を参照してください。

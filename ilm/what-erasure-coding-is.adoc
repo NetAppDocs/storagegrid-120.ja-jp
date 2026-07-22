@@ -1,0 +1,38 @@
+---
+permalink: ilm/what-erasure-coding-is.html 
+sidebar: sidebar 
+keywords: what is erasure coding, what is ec 
+summary: イレイジャー コーディングは、StorageGRID がオブジェクト データを格納するために使用する 2 つの方法のうちの 1 つです。オブジェクトがイレイジャー コーディングを使用する ILM ルールに一致する場合、それらのオブジェクトはデータ フラグメントに分割され、追加のパリティ フラグメントが計算され、各フラグメントは異なるストレージ ノードに保存されます。 
+---
+= StorageGRID のイレイジャー コーディングについて
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+イレイジャー コーディングは、StorageGRID がオブジェクト データを保存するために使用する 2 つの方法のうちの 1 つです（レプリケーションがもう 1 つの方法です）。オブジェクトがイレイジャー コーディングを使用する ILM ルールに一致する場合、それらのオブジェクトはデータ フラグメントに分割され、追加のパリティ フラグメントが計算され、各フラグメントは異なるストレージ ノードに保存されます。
+
+オブジェクトにアクセスすると、保存されている断片を使用してオブジェクトが再構築されます。データ断片またはパリティ断片が破損または消失した場合、イレイジャー コーディング アルゴリズムは、残りのデータ断片およびパリティ断片のサブセットを使用して、その断片を復元することができます。
+
+ILM ルールを作成する際、StorageGRID はそれらのルールをサポートするイレイジャー コーディング プロファイルを作成します。イレイジャー コーディング プロファイルの一覧を表示したり、link:manage-erasure-coding-profiles.html#rename-an-erasure-coding-profile["イレイジャー コーディング プロファイルの名前を変更する"]、または link:manage-erasure-coding-profiles.html#deactivate-an-erasure-coding-profile["現在どの ILM ルールでも使用されていないイレイジャー コーディング プロファイルを非アクティブ化する"] することができます。
+
+以下の例は、オブジェクトのデータに対してイレイジャー コーディング アルゴリズムを使用する方法を示しています。この例では、ILM ルールは 4+2 のイレイジャー コーディング方式を使用しています。各オブジェクトは 4 つの等しいデータ フラグメントに分割され、オブジェクト データから 2 つのパリティ フラグメントが計算されます。6 つのフラグメントはそれぞれ、3 つのデータセンター サイトにまたがる異なるノードに保存されており、ノード障害やサイト損失に対するデータ保護を提供します。
+
+image:ec_three_sites_4_plus_2.png["イレイジャー コーディング 3サイト 4+2"]
+
+4+2 イレイジャー コーディング方式は、さまざまな方法で構成できます。たとえば、6つの Storage Node を含む単一サイトのストレージ プールを構成できます。link:using-multiple-storage-pools-for-cross-site-replication.html["サイト損失保護"]の場合、3つのサイトに各3つの Storage Node を含むストレージ プールを使用できます。6つのフラグメント（データまたはパリティ）のうち4つ以上が残っていれば、オブジェクトを取得できます。オブジェクト データを失うことなく、最大2つのフラグメントが失われても問題ありません。サイト全体が失われた場合でも、他のすべてのフラグメントにアクセス可能な状態であれば、オブジェクトを取得または修復できます。
+
+image:ec_recoverable_4_plus_2.png["イレイジャー コーディング 回復可能 4 Plus 2"]
+
+ストレージノードが2つ以上失われた場合、オブジェクトは復元できません。
+
+image:ec_unrecoverable_4_plus_2.png["イレイジャー コーディング 回復不能 4 Plus 2"]
+
+.関連情報
+* link:what-replication-is.html["レプリケーションとは"]
+* link:what-storage-pool-is.html["ストレージプールとは"]
+* link:what-erasure-coding-schemes-are.html["イレイジャー コーディング方式とは何ですか？"]
+* link:manage-erasure-coding-profiles.html#rename-an-erasure-coding-profile["消去符号化プロファイルの名前を変更する"]
+* link:manage-erasure-coding-profiles.html#deactivate-an-erasure-coding-profile["消去符号化プロファイルを無効にする"]
+

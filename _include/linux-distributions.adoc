@@ -1,0 +1,6 @@
+= 
+:allow-uri-read: 
+
+
+
+NOTE: 「Linux」とは、RHEL、Ubuntu、またはDebianのいずれかの環境を指します。サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool（IMT）"^]を参照してください。

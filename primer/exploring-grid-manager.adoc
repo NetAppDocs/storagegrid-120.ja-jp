@@ -1,0 +1,274 @@
+---
+permalink: primer/exploring-grid-manager.html 
+sidebar: sidebar 
+keywords: StorageGRID, what is the grid manager, grid manager dashboard 
+summary: Grid Manager は、ブラウザベースのグラフィカル インターフェイスで、StorageGRID システムの設定、管理、および監視を行うことができます。 
+---
+= StorageGRIDグリッドマネージャの詳細
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Grid Manager は、ブラウザベースのグラフィカル インターフェイスで、StorageGRID システムの設定、管理、および監視を行うことができます。
+
+
+NOTE: グリッドマネージャーはリリースごとに更新されるため、このページに掲載されているサンプルスクリーンショットと一致しない場合があります。
+
+グリッドマネージャーにサインインすると、管理ノードに接続されます。各 StorageGRID システムには、1つのプライマリ管理ノードと任意の数の非プライマリ管理ノードが含まれます。どの管理ノードにも接続でき、各管理ノードには StorageGRID システムの同様のビューが表示されます。
+
+グリッドマネージャーには、link:../admin/web-browser-requirements.html["対応ウェブブラウザ"]を使用してアクセスできます。
+
+
+
+[[grid-manager-dashboard]]
+== グリッドマネージャーダッシュボード
+
+グリッドマネージャーに初めてサインインすると、ダッシュボードを使用してlink:../monitor/viewing-dashboard.html["システムアクティビティを監視する"]を一目で確認できます。
+
+ダッシュボードには、システムの健全性とパフォーマンス、ストレージの使用状況、ILMプロセス、S3の操作、およびグリッド内のノードに関する情報が含まれています。システムを効果的に監視するために必要な情報が記載されたカードのコレクションから選択することで、link:../monitor/viewing-dashboard.html["ダッシュボードを設定する"]できます。
+
+image:grid_manager_dashboard_and_menu.png["グリッドマネージャーのダッシュボード"]
+
+各カードに表示されている情報の説明については、そのカードのヘルプアイコンimage:icon_nms_question.png["疑問符アイコン"]を選択してください。
+
+
+
+[[search-field]]
+== 検索フィールド
+
+ヘッダーバーの「検索」フィールドを使用すると、Grid Manager内の特定のページにすばやく移動できます。例えば、「*km*」と入力すると、Key management server（KMS）のページにアクセスできます。
+
+グリッドマネージャのサイドバーや、構成、メンテナンス、サポートの各メニューにある項目を検索するには、「検索」機能を使用できます。グリッドノードやテナントアカウントなどの項目は、名前で検索することもできます。
+
+
+
+[[help-menu]]
+== ヘルプメニュー
+
+ヘルプメニューimage:icon-help-menu-bar.png["メニューバーのヘルプアイコン"]からアクセスできる項目：
+
+* link:../fabricpool/use-fabricpool-setup-wizard.html["FabricPool"]とlink:../admin/use-s3-setup-wizard.html["S3セットアップ"]ウィザード
+* 現在のリリースの StorageGRID ドキュメントサイト
+* link:../admin/using-grid-management-api.html["APIのドキュメント"]
+* 現在インストールされているStorageGRIDのバージョンに関する情報
+
+
+
+
+[[alerts-menu]]
+== アラートメニュー
+
+アラートメニューは、StorageGRID の運用中に発生する可能性のある問題を検出、評価、および解決するための使いやすいインターフェイスを提供します。
+
+アラートメニューから、link:../monitor/managing-alerts.html["アラートを管理する"]に対して次の操作を実行できます：
+
+* 最新のアラートを確認する
+* 解決済みのアラートを確認する
+* アラート通知を抑制するサイレンスの設定
+* アラートをトリガーする条件に対するアラートルールを定義します。
+* アラート通知用にメールサーバーを設定する
+
+
+
+
+[[nodes-page]]
+== [Nodes]ページ
+
+link:../monitor/viewing-nodes-page.html["[Nodes]ページ"]は、グリッド全体、グリッド内の各サイト、およびサイト内の各ノードに関する情報を表示します。特定のサイトまたはノードの情報を表示するには、そのサイトまたはノードを選択してください。
+
+
+
+[[tenants-page]]
+== テナントページ
+
+link:../admin/managing-tenants.html["テナントページ"]を使用すると、StorageGRIDシステムのlink:../tenant/index.html["ストレージテナントアカウントの作成と監視"]を行うことができます。オブジェクトの保存と取得を許可するユーザー、および利用可能な機能を指定するには、少なくとも1つのテナントアカウントを作成する必要があります。
+
+テナントページには、各テナントの使用状況の詳細も表示され、使用されているストレージ容量やオブジェクトの数などが含まれます。テナント作成時にクォータを設定した場合、そのクォータのうちどれだけが使用されているかを確認できます。
+
+
+
+[[ilm-menu]]
+== ILMメニュー
+
+link:using-information-lifecycle-management.html["ILMメニュー"]を使用すると、データの耐久性と可用性を管理するlink:../ilm/index.html["情報ライフサイクル管理（ILM）のルールとポリシーを設定する"]を設定できます。オブジェクト識別子を入力すると、そのオブジェクトのメタデータを表示することもできます。
+
+ILMメニューから、ILMの表示と管理を行うことができます。
+
+* ルール
+* ポリシー
+* ポリシータグ
+* ストレージプール
+* ストレージグレード
+* Regions
+* オブジェクトメタデータ検索
+
+
+
+
+[[configuration-menu]]
+== 設定メニュー
+
+設定メニューでは、ネットワーク設定、セキュリティ設定、システム設定、監視オプション、アクセス制御オプションを指定できます。
+
+
+
+[[network-tasks]]
+=== ネットワークタスク
+
+ネットワークタスクには以下が含まれます：
+
+* link:../admin/managing-high-availability-groups.html["高可用性グループを管理する"]
+* link:../admin/managing-load-balancing.html["ロードバランサーのエンドポイントを管理する"]
+* link:../admin/configuring-s3-api-endpoint-domain-names.html["S3エンドポイントのドメイン名を設定する"]
+* link:../admin/managing-traffic-classification-policies.html["トラフィック分類ポリシーを管理する"]
+* link:../admin/configure-vlan-interfaces.html["VLANインターフェースを設定する"]
+* link:../admin/enable-cross-origin-resource-sharing-for-management-interface.html["管理インターフェイスの StorageGRID CORS を有効にする"]
+
+
+
+
+[[security-tasks]]
+=== セキュリティタスク
+
+セキュリティタスクには以下が含まれます：
+
+* link:../admin/using-storagegrid-security-certificates.html["セキュリティ証明書を管理する"]
+* link:../admin/manage-firewall-controls.html["内部ファイアウォール制御を管理する"]
+* link:../admin/kms-configuring.html["キー管理サーバの設定"]
+* セキュリティ設定（link:../admin/manage-tls-ssh-policy.html["TLSおよびSSHポリシー"]、link:../admin/changing-network-options-object-encryption.html["ネットワークおよびオブジェクトのセキュリティオプション"]、link:../admin/changing-browser-session-timeout-interface.html["インターフェースセキュリティ設定"]、およびlink:../admin/manage-external-ssh-access.html["SSHアクセス オプション"]を含む）を構成します。
+* link:../admin/configuring-storage-proxy-settings.html["ストレージプロキシ"]またはlink:../admin/configuring-admin-proxy-settings.html["管理者プロキシ"]の設定を構成する
+
+
+
+
+[[system-tasks]]
+=== システムタスク
+
+システムタスクには以下が含まれます：
+
+* link:../admin/grid-federation-overview.html["グリッドフェデレーション"]を使用して、テナントアカウント情報を複製し、2つのStorageGRIDシステム間でオブジェクトデータをレプリケートします
+* 必要に応じて、link:../admin/configuring-stored-object-compression.html["保存されたオブジェクトを圧縮する"]オプションを有効にします
+* オプションで、link:../s3/consistency.html["デフォルトのバケット整合性設定"]
+* link:../ilm/managing-objects-with-s3-object-lock.html["S3オブジェクトロックの管理"]
+* ストレージ設定（link:../admin/what-storage-volume-watermarks-are.html["ストレージボリュームのウォーターマーク"]など）を理解する
+* link:../ilm/manage-erasure-coding-profiles.html["消去符号化プロファイルを管理する"]
+
+
+
+
+[[monitoring-tasks]]
+=== 監視タスク
+
+監視タスクには以下が含まれます：
+
+* link:../monitor/configure-log-management.html["ログ管理の設定"]
+* link:../monitor/using-snmp-monitoring.html["SNMP監視を使用する"]
+
+
+
+
+[[access-control-tasks]]
+=== アクセス制御タスク
+
+アクセス制御タスクには以下が含まれます：
+
+* link:../admin/managing-admin-groups.html["管理者グループの管理"]
+* link:../admin/managing-users.html["管理者ユーザーの管理"]
+* 変更するlink:../admin/changing-provisioning-passphrase.html["プロビジョニングパスフレーズ"]またはlink:../admin/change-node-console-password.html["ノードコンソールのパスワード"]
+* link:../admin/using-identity-federation.html["IDフェデレーションを使用する"]
+* link:../admin/how-sso-works.html["SSOの設定"]
+
+
+
+
+[[maintenance-menu]]
+== メンテナンスメニュー
+
+メンテナンスメニューでは、メンテナンス作業、システムメンテナンス、ネットワークメンテナンスを実行できます。
+
+
+
+[[tasks]]
+=== タスク
+
+メンテナンス作業には以下が含まれます：
+
+* link:../maintain/decommission-procedure.html["廃止措置作業"]未使用のグリッドノードとサイトを削除する
+* link:../expand/index.html["拡張操作"]新しいグリッドノードとサイトを追加する
+* link:../maintain/warnings-and-considerations-for-grid-node-recovery.html["グリッドノード復旧手順"]故障したノードを交換し、データを復元する
+* link:../maintain/rename-grid-site-node-overview.html["プロシージャ名の変更"]グリッド、サイト、ノードの表示名を変更する
+* link:../troubleshoot/verifying-object-integrity.html["オブジェクトの存在チェック操作"]オブジェクトデータの存在を確認する（ただし、その正確性を確認するわけではありません）
+* link:../maintain/rolling-reboot-procedure.html["ローリングリブート"]を実行して複数のグリッドノードを再起動する
+* link:../maintain/restoring-volume.html["ボリューム復元操作"]
+
+
+
+
+[[system]]
+=== システム
+
+システムメンテナンス作業には、以下のものが含まれます：
+
+* link:../admin/viewing-storagegrid-license-information.html["StorageGRID ライセンス情報の表示"] または link:../admin/updating-storagegrid-license-information.html["ライセンス情報を更新する"]
+* link:../maintain/downloading-recovery-package.html["復旧パッケージ"]の生成とダウンロード
+* StorageGRID ソフトウェアのアップデートの実行（ソフトウェアのアップグレード、ホットフィックス、および選択したアプライアンスの SANtricity OS ソフトウェアのアップデートを含む）
++
+** link:../upgrade/index.html["アップグレード手順"]
+** link:../maintain/storagegrid-hotfix-procedure.html["ホットフィックス手順"]
+** https://docs.netapp.com/us-en/storagegrid-appliances/sg6000/upgrading-santricity-os-on-storage-controllers-using-grid-manager-sg6000.html["Grid Manager を使用した SG6000 ストレージ コントローラ上の SANtricity OS のアップグレード"^]
+** https://docs.netapp.com/us-en/storagegrid-appliances/sg5700/upgrading-santricity-os-on-storage-controllers-using-grid-manager-sg5700.html["Grid Manager を使用した SG5700 ストレージ コントローラ上の SANtricity OS のアップグレード"^]
+
+
+
+
+
+
+[[network]]
+=== Network
+
+ネットワーク保守作業には、以下のようなものがあります：
+
+* link:../maintain/configuring-dns-servers.html["DNSサーバーの設定"]
+* link:../maintain/updating-subnets-for-grid-network.html["グリッドネットワークサブネットを更新する"]
+* link:../maintain/configuring-ntp-servers.html["NTPサーバの管理"]
+
+
+
+
+[[support-menu]]
+== サポートメニュー
+
+サポートメニューには、テクニカルサポートがお客様のシステムを分析およびトラブルシューティングするのに役立つオプションが用意されています。
+
+
+
+[[tools]]
+=== Tools
+
+サポートメニューの「ツール」セクションから、以下の操作が可能です：
+
+* link:../admin/configure-autosupport-grid-manager.html["AutoSupportを設定する"]
+* link:../monitor/running-diagnostics.html["診断を実行する"]グリッドの現状について
+* link:../monitor/collecting-log-files-and-system-data.html["ログファイルとシステムデータを収集する"]
+* link:../monitor/reviewing-support-metrics.html["サポート指標を確認する"]
++
+
+NOTE: *Metrics* オプションから利用できるツールは、テクニカルサポート担当者による使用を想定しています。これらのツールに含まれる一部の機能やメニュー項目は、意図的に動作しないように設定されています。
+
+
+
+
+
+[[other]]
+=== その他
+
+サポートメニューの「その他」セクションから、以下の操作が可能です：
+
+* 設定するlink:../monitor/manage-io-prioritization.html["入出力の優先順位付け"]
+* 設定するlink:../admin/configure-autosupport-grid-manager.html["AutoSupport メール設定（従来型）"]
+* 管理link:../admin/manage-link-costs.html["リンクコスト"]
+* ノードサービスIDを表示する
+* 管理link:../admin/what-storage-volume-watermarks-are.html["ストレージ ウォーターマーク"]
+

@@ -1,0 +1,246 @@
+---
+permalink: monitor/logs-files-reference.html 
+sidebar: sidebar 
+keywords: log, logs, log files 
+summary: StorageGRID は、イベント、診断メッセージ、およびエラー状態を記録するために使用されるログを提供します。トラブルシューティングを支援するため、ログファイルを収集してテクニカルサポートに転送するよう求められる場合があります。 
+---
+= StorageGRID ログファイル
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID は、イベント、診断メッセージ、およびエラー状態を記録するために使用されるログを提供します。トラブルシューティングを支援するため、ログファイルを収集してテクニカルサポートに転送するよう求められる場合があります。
+
+ログは以下のように分類されます：
+
+* link:storagegrid-software-logs.html["StorageGRID ソフトウェアログ"]
+* link:deployment-and-maintenance-logs.html["展開および保守ログ"]
+* link:about-bycast-log.html["bycast.logについて"]
+
+
+
+NOTE: 各ログタイプに関する詳細は参考情報としてのみ提供されています。これらのログは、テクニカルサポートによる高度なトラブルシューティングを目的としています。監査ログやアプリケーションログファイルを用いて問題履歴を再構築する高度な手法は、本手順書の範囲外です。
+
+
+
+[[access-the-logs]]
+== ログにアクセスする
+
+ログにアクセスするには、link:collecting-log-files-and-system-data.html["ログファイルとシステムデータを収集する"] 1つまたは複数のノードから、単一のログファイルアーカイブとして出力します。または、各グリッドノードの個別のログファイルには、次のようにアクセスできます。
+
+.手順
+. 次のコマンドを入力します： `ssh admin@grid_node_IP`
+.  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+. 以下のコマンドを入力して root に切り替えます： `su -`
+.  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+
+
+
+
+[[export-logs-to-the-syslog-server]]
+== ログを syslog サーバにエクスポートする
+
+ログを syslog サーバーにエクスポートすることで、以下の機能が提供されます：
+
+* S3リクエストに加え、Grid ManagerおよびTenant Managerのすべてのリクエストのリストを受け取ります。
+* 監査ログ記録方法によるパフォーマンスへの影響なしに、エラーを返す S3 リクエストをより詳細に把握できます。
+* 解析しやすいHTTPレイヤーのリクエストとエラーコードへのアクセス。
+* ロードバランサーのトラフィック分類器によってブロックされたリクエストへの可視性が向上しました。
+
+
+ログをエクスポートするには、link:../monitor/configure-log-management.html["ログ管理と外部 syslog サーバの設定"]を参照してください。
+
+
+
+[[log-file-categories]]
+== ログファイルのカテゴリ
+
+StorageGRID ログファイルアーカイブには、各カテゴリについて説明されているログと、メトリクスおよびデバッグコマンドの出力を含む追加ファイルが含まれています。
+
+[cols="1a,3a"]
+|===
+| Archive location | 説明 
+
+
+| audit（監査）  a| 
+通常のシステム運用中に生成される監査メッセージ。
+
+
+
+| base-os-logs  a| 
+基本オペレーティングシステム情報（StorageGRID イメージバージョンを含む）。
+
+
+
+| バンドル  a| 
+グローバル構成情報（バンドル）。
+
+
+
+| cache-svc  a| 
+キャッシュサービスログ（ゲートウェイノードのみ）。
+
+
+
+| cassandra  a| 
+Cassandraデータベース情報とReaper修復ログ。
+
+
+
+| ec  a| 
+VCSの現在のノードに関する情報と、プロファイルIDごとのECグループ情報。
+
+
+
+| グリッド  a| 
+デバッグを含む一般的なグリッドログ（(`bycast.log`）および `servermanager`ログ。
+
+
+
+| grid.json  a| 
+グリッド構成ファイルは、すべてのノードで共有されます。さらに、 `node.json`は現在のノードに固有のものです。
+
+
+
+| hagroups  a| 
+高可用性グループのメトリクスとログ。
+
+
+
+| インストール  a| 
+`Gdu-server`およびインストールログ。
+
+
+
+| Lambdaアービトレーター  a| 
+S3 Select プロキシリクエストに関連するログ。
+
+
+
+| leakd  a| 
+leakd サービスからのログ。
+
+
+
+| lumberjack.log  a| 
+ログ収集に関連するデバッグメッセージ。
+
+
+
+| Metrics  a| 
+Grafana、Jaeger、node exporter、およびPrometheusのサービスログ。
+
+
+
+| miscd  a| 
+その他のアクセスログとエラーログ。
+
+
+
+| mysql  a| 
+mariaDBデータベースの設定および関連ログ。
+
+
+
+| net  a| 
+ネットワーク関連のスクリプトおよびDynipサービスによって生成されたログ。
+
+
+
+| nginx  a| 
+ロードバランサーおよびグリッドフェデレーションの設定ファイルとログ。グリッドマネージャーおよびテナントマネージャーのトラフィックログも含まれます。
+
+
+
+| nginx-gw  a| 
+* `access.log`：Grid Manager と Tenant Manager のリクエストログメッセージ。
++
+** これらのメッセージは、syslog を使用してエクスポートする際に `mgmt:`というプレフィックスが付きます。
+** これらのログメッセージの形式は次のとおりです。 `[$time_iso8601] $remote_addr $status $bytes_sent $request_length $request_time "$endpointId" "$request" "$http_host" "$http_user_agent" "$http_referer"`
+
+
+* `cgr-access.log.gz`：受信するクロスグリッドレプリケーション要求。
++
+** これらのメッセージは、syslog を使用してエクスポートする際に `cgr:`というプレフィックスが付きます。
+** これらのログメッセージの形式は次のとおりです。 `[$time_iso8601] $remote_addr $status $bytes_sent $request_length $request_time "$endpointId" "$upstream_addr" "$request" "$http_host"`
+
+
+* `endpoint-access.log.gz`：S3 からロードバランサーのエンドポイントへのリクエスト。
++
+** これらのメッセージは、syslog を使用してエクスポートする際に `endpoint:`というプレフィックスが付きます。
+** これらのログメッセージの形式は次のとおりです。 `[$time_iso8601] $remote_addr $status $bytes_sent $request_length $request_time "$endpointId" "$upstream_addr" "$request" "$http_host"`
+
+
+* `nginx-gw-dns-check.log`：新しい DNS チェックアラートに関連しています。
+
+
+
+
+| NTP  a| 
+NTPの設定ファイルとログ。
+
+
+
+ a| 
+孤立したオブジェクト
+ a| 
+孤立したオブジェクトに関するログ。
+
+
+
+| オペレーティング システム  a| 
+ノードおよびグリッドの状態ファイル（サービスを含む） `pid`。
+
+
+
+| その他  a| 
+ `/var/local/log`配下のログファイルのうち、他のフォルダに収集されていないもの。
+
+
+
+| perf  a| 
+CPU、ネットワーク、ディスクI/Oに関するパフォーマンス情報。
+
+
+
+| prometheus-data  a| 
+ログ収集に Prometheus データが含まれている場合、現在の Prometheus メトリクス。
+
+
+
+| provisioning（プロビジョニング）  a| 
+グリッドプロビジョニングプロセスに関連するログ。
+
+
+
+| raft  a| 
+プラットフォームサービスで使用されるRaftクラスタのログ。
+
+
+
+| ssh  a| 
+SSHの設定およびサービスに関するログ。
+
+
+
+| snmp  a| 
+SNMP通知の送信に使用されるSNMPエージェントの設定。
+
+
+
+| ソケットデータ  a| 
+ネットワークデバッグ用のソケットデータ。
+
+
+
+| system-commands.txt  a| 
+StorageGRID コンテナコマンドの出力。ネットワーク情報やディスク使用量などのシステム情報が含まれています。
+
+
+
+| synchronize-recovery-package  a| 
+ADCサービスをホストするすべての管理ノードおよびストレージノードにおいて、最新のリカバリパッケージの一貫性を維持することに関連します。
+
+|===

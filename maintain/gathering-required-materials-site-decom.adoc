@@ -1,0 +1,51 @@
+---
+permalink: maintain/gathering-required-materials-site-decom.html 
+sidebar: sidebar 
+keywords: storagegrid, decommission 
+summary: サイトを廃止する前に、以下の資料を入手する必要があります。 
+---
+= StorageGRIDサイトの運用停止に必要な資料を収集
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+サイトを廃止する前に、以下の資料を入手する必要があります。
+
+[cols="1a,2a"]
+|===
+| 項目 | Notes 
+
+
+ a| 
+復旧パッケージ `.zip`ファイル
+ a| 
+最新のリカバリパッケージをダウンロードする必要があります `.zip`ファイル(`sgws-recovery-package-id-revision.zip`）。障害が発生した場合は、リカバリパッケージファイルを使用してシステムを復元できます。
+
+link:downloading-recovery-package.html["リカバリパッケージをダウンロードする"]
+
+
+
+ a| 
+`Passwords.txt`ファイル
+ a| 
+このファイルには、コマンドラインからグリッドノードにアクセスするために必要なパスワードが含まれており、リカバリパッケージに同梱されています。
+
+
+
+ a| 
+プロビジョニングパスフレーズ
+ a| 
+パスフレーズは、StorageGRID システムが最初にインストールされるときに作成され、記録されます。プロビジョニングパスフレーズは `Passwords.txt`ファイルには含まれていません。
+
+
+
+ a| 
+廃止前のStorageGRIDシステムトポロジーの概要
+ a| 
+入手可能であれば、システムの現在のトポロジーを説明する文書を入手してください。
+
+|===
+.関連情報
+link:../admin/web-browser-requirements.html["ウェブブラウザの要件"]

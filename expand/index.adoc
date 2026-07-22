@@ -1,0 +1,78 @@
+---
+permalink: expand/index.html 
+sidebar: sidebar 
+keywords: expand grid, StorageGRID 
+summary: システムの動作を中断することなく、StorageGRID システムの容量や機能を拡張できます。 
+---
+= StorageGRID システムの拡張について
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+業務を中断することなく容量や機能を拡張する StorageGRID システムの拡張について説明します。既存のストレージノードにストレージボリュームを追加したり、既存のサイトに新しいグリッドノードを追加したり、新しいサイトを追加したりできます。
+
+グリッドノードを拡張する前に、アクティブなデータ修復ジョブがないことを確認する必要があります。修復が失敗した場合は、修復を再開して完了させてから、廃止または拡張の手順を実行してください。link:../maintain/checking-data-repair-jobs.html["データ修復作業を確認する"]を参照してください。
+
+StorageGRID の拡張機能により、以下を追加できます：
+
+* ストレージボリュームからストレージノードへ
+* 既存のサイトに新しいグリッドノードを追加する
+* まったく新しいサイト
+
+
+拡張を行う理由によって、追加する必要のある各タイプの新しいノードの数と、それらの新しいノードの配置場所が決まります。例えば、ストレージ容量の増強、メタデータ容量の追加、冗長性の追加、あるいは新機能の追加といった拡張を行う場合、ノードの要件はそれぞれ異なります。
+
+実施する拡張の種類に応じて、以下の手順に従ってください。
+
+[role="tabbed-block"]
+====
+.グリッドノードを追加する
+--
+. 以下の手順に従ってください link:adding-grid-nodes-to-existing-site-or-adding-new-site.html["既存のサイトにグリッドノードを追加する"]。
+. link:updating-subnets-for-grid-network.html["サブネットを更新する"]。
+. グリッドノードの配置：
++
+** link:deploying-new-grid-nodes.html#appliances-deploying-storage-gateway-or-non-primary-admin-nodes["アプライアンス"]
+** link:deploying-new-grid-nodes.html#vmware-deploy-grid-nodes["VMware"]
+** link:deploying-new-grid-nodes.html#linux-deploy-grid-nodes["Linux"]
+
+
+
+
+
+NOTE: 「Linux」とは、RHEL、Ubuntu、またはDebianのいずれかの環境を指します。サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool（IMT）"^]を参照してください。
+
+. link:performing-expansion.html["展開を実行する"]。
+. link:configuring-expanded-storagegrid-system.html["拡張システムを構成する"]。
+
+
+--
+.ストレージボリュームを追加する
+--
+以下の手順に従ってください：link:adding-storage-volumes-to-storage-nodes.html["ストレージノードへのストレージボリュームの追加"]
+
+--
+.新しいサイトを追加する
+--
+. 以下の手順に従ってください：link:adding-grid-nodes-to-existing-site-or-adding-new-site.html["新しいサイトを追加する"]
+. link:updating-subnets-for-grid-network.html["サブネットを更新する"]。
+. グリッドノードの配置：
++
+** link:deploying-new-grid-nodes.html#appliances-deploying-storage-gateway-or-non-primary-admin-nodes["アプライアンス"]
+** link:deploying-new-grid-nodes.html#vmware-deploy-grid-nodes["VMware"]
+** link:deploying-new-grid-nodes.html#linux-deploy-grid-nodes["Linux"]
+
+
+
+
+
+NOTE: 「Linux」とは、RHEL、Ubuntu、またはDebianのいずれかの環境を指します。サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool（IMT）"^]を参照してください。
+
+. link:performing-expansion.html["展開を実行する"]。
+. link:configuring-expanded-storagegrid-system.html["拡張システムを構成する"]。
+
+
+--
+====

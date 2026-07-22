@@ -1,0 +1,509 @@
+---
+permalink: admin/using-storagegrid-security-certificates.html 
+sidebar: sidebar 
+keywords: security certificates, grid CA certificate, types of certificates 
+summary: セキュリティ証明書は、StorageGRIDコンポーネント間、およびStorageGRIDコンポーネントと外部システム間の安全で信頼できる接続を確立するために使用される小さなデータファイルです。 
+---
+= StorageGRIDでセキュリティ証明書を管理する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+セキュリティ証明書は、StorageGRIDコンポーネント間、およびStorageGRIDコンポーネントと外部システム間の安全で信頼できる接続を確立するために使用される小さなデータファイルです。
+
+StorageGRIDは2種類のセキュリティ証明書を使用します。
+
+* HTTPS接続を使用する場合は、*サーバー証明書*が必要です。サーバー証明書は、クライアントとサーバー間の安全な接続を確立するために使用され、クライアントに対してサーバーの身元を認証し、データの安全な通信経路を提供します。サーバーとクライアントはそれぞれ証明書のコピーを保持しています。
+* *クライアント証明書*は、クライアントまたはユーザーの身元をサーバーに対して認証し、パスワードのみの場合よりも安全な認証を提供します。クライアント証明書はデータを暗号化しません。
+
+
+クライアントがHTTPSを使用してサーバーに接続すると、サーバーは公開鍵を含むサーバー証明書で応答します。クライアントは、サーバーの署名と、自身が所有する証明書のコピーに記載されている署名を比較します。署名が一致した場合、クライアントは同じ公開鍵を使用してサーバーとのセッションを開始します。
+
+StorageGRID は、一部の接続（ロード バランシング エンドポイントなど）のサーバーとして機能し、他の接続（CloudMirror レプリケーション サービスなど）のクライアントとして機能します。
+
+[[gridca_details]]
+*デフォルトのGrid CA証明書*
+
+StorageGRIDには、システムのインストール時に内部グリッドCA証明書を生成する組み込みの認証局（CA）が備わっています。Grid CA証明書は、デフォルトでStorageGRIDの内部トラフィックを保護するために使用されます。外部認証局（CA）は、組織の情報セキュリティポリシーに完全に準拠したカスタム証明書を発行できます。
+
+非本番環境では、Grid CA証明書を使用してください。本番環境では、外部認証局によって署名されたカスタム証明書を使用してください。証明書のないセキュリティ保護されていない接続はサポートされていますが、推奨されません。
+
+* カスタムCA証明書は内部証明書を削除するものではありませんが、サーバー接続の検証にはカスタム証明書を指定する必要があります。
+* すべてのカスタム証明書は、link:../harden/hardening-guideline-for-server-certificates.html["サーバー証明書のシステム強化ガイドライン"]を満たす必要があります。
+* StorageGRIDは、CAからの証明書を単一のファイルにバンドルする機能（CA証明書バンドルと呼ばれる）をサポートしています。
+
+
+
+NOTE: StorageGRIDには、すべてのグリッドで共通のオペレーティングシステムCA証明書も含まれています。本番環境では、オペレーティングシステムのCA証明書の代わりに、外部の認証局によって署名されたカスタム証明書を指定してください。
+
+サーバー証明書とクライアント証明書の種類のバリエーションは、いくつかの方法で実装されています。システムを設定する前に、特定の StorageGRID 構成に必要な証明書をすべて準備しておく必要があります。
+
+
+
+[[access-security-certificates]]
+== アクセスセキュリティ証明書
+
+すべての StorageGRID 証明書に関する情報に1か所からアクセスでき、各証明書の設定ワークフローへのリンクも提供されます。
+
+.手順
+. Grid Manager から、*Configuration* > *Security* > *Certificates* を選択します。
++
+image:security_certificates.png["証明書ページ"]
+
+. 証明書ページでタブを選択すると、各証明書カテゴリに関する情報が表示され、証明書の設定にアクセスできます。タブにアクセスするには、link:admin-group-permissions.html["適切な許可"]が必要です。
++
+** *グローバル*：StorageGRID へのウェブブラウザおよび外部 API クライアントからのアクセスを保護します。
+** *Grid CA*：内部のStorageGRIDトラフィックを保護します。
+** *クライアント*：外部クライアントと StorageGRID Prometheus データベース間の接続を保護します。
+** *ロード バランシング エンドポイント*：S3クライアントとStorageGRID ロード バランシング間の接続を保護します。
+** *テナント*：IDフェデレーションサーバーへの接続、またはプラットフォームサービスエンドポイントからS3ストレージリソースへの接続を保護します。
+** *その他*：特定の証明書が必要なStorageGRID接続を保護します。
++
+各タブの説明と、証明書の詳細情報へのリンクを以下に示します。
+
++
+[role="tabbed-block"]
+====
+.グローバル
+--
+グローバル証明書は、ウェブブラウザおよび外部S3 APIクライアントからのStorageGRIDへのアクセスを保護します。2つのグローバル証明書は、インストール時にStorageGRID認証局によって最初に生成されます。本番環境のベストプラクティスは、外部の認証局によって署名されたカスタム証明書を使用することです。
+
+*** <<管理インターフェイス証明書>>：クライアントのウェブブラウザ接続をStorageGRIDの管理インターフェイスに対してセキュリティで保護します。
+*** <<S3 API証明書>>：S3クライアントアプリケーションがオブジェクトデータのアップロードとダウンロードに使用する、ストレージノード、管理ノード、およびゲートウェイノードへのクライアントAPI接続を保護します。
+
+
+インストールされているグローバル証明書に関する情報は以下のとおりです。
+
+*** *名前*：証明書名と、証明書の管理ページへのリンク。
+*** *概要*
+*** *タイプ*：カスタムまたはデフォルト。+ グリッドのセキュリティを向上させるには、常にカスタム証明書を使用することをお勧めします。
+*** *有効期限*：デフォルトの証明書を使用している場合、有効期限は表示されません。
+
+
+次の操作を実行できます。
+
+*** グリッドセキュリティを向上させるため、デフォルトの証明書を外部認証局によって署名されたカスタム証明書に置き換えてください：
++
+**** link:configuring-custom-server-certificate-for-grid-manager-tenant-manager.html["デフォルトの StorageGRID が生成した管理インターフェイス証明書を置き換える"]グリッドマネージャーおよびテナントマネージャーへの接続に使用されます。
+**** link:configuring-custom-server-certificate-for-storage-node.html["S3 API証明書を置き換える"]ストレージノードおよびロードバランサーエンドポイント（オプション）への接続に使用されます。
+
+
+*** link:configuring-custom-server-certificate-for-grid-manager-tenant-manager.html#restore-the-default-management-interface-certificate["デフォルトの管理インターフェイス証明書を復元する"]。
+*** link:configuring-custom-server-certificate-for-storage-node.html#restore-the-default-s3-api-certificate["デフォルトの S3 API 証明書を復元する"]。
+*** link:configuring-custom-server-certificate-for-grid-manager-tenant-manager.html#use-a-script-to-generate-a-new-self-signed-management-interface-certificate["スクリプトを使用して新しい自己署名管理インターフェイス証明書を生成する"]。
+*** link:configuring-custom-server-certificate-for-grid-manager-tenant-manager.html#download-or-copy-the-management-interface-certificate["管理インターフェイス証明書"]またはlink:configuring-custom-server-certificate-for-storage-node.html#download-or-copy-the-s3-api-certificate["S3 API証明書"]をコピーまたはダウンロードします。
+
+
+--
+.グリッドCA
+--
+StorageGRIDのインストール時にStorageGRID認証局によって生成された<<gridca_details,グリッドCA証明書>>は、すべてのStorageGRID内部トラフィックを保護します。
+
+証明書情報には、証明書の有効期限と証明書の内容が含まれます。
+
+link:copying-storagegrid-system-ca-certificate.html["Grid CA証明書をコピーまたはダウンロード"]ことはできますが、変更することはできません。
+
+--
+.クライアント
+--
+<<adminclientcert_details,クライアント証明書>>外部認証局によって生成されたこれらの証明書は、外部監視ツールとStorageGRID Prometheusデータベース間の接続を保護します。
+
+証明書テーブルには、設定済みのクライアント証明書ごとに1行があり、証明書の有効期限とともに、その証明書がPrometheusデータベースへのアクセスに使用できるかどうかを示します。
+
+次の操作を実行できます。
+
+*** link:configuring-administrator-client-certificates.html#add-client-certificates["クライアント証明書をアップロードするか、新しい証明書を生成してください。"]
+*** 証明書名を選択すると、証明書の詳細が表示されます。そこでは、以下の操作が可能です。
++
+**** link:configuring-administrator-client-certificates.html#edit-client-certificates["クライアント証明書の名前を変更します。"]
+**** link:configuring-administrator-client-certificates.html#edit-client-certificates["Prometheusのアクセス権限を設定します。"]
+**** link:configuring-administrator-client-certificates.html#edit-client-certificates["クライアント証明書をアップロードして置き換えてください。"]
+**** link:configuring-administrator-client-certificates.html#download-or-copy-client-certificates["クライアント証明書をコピーまたはダウンロードしてください。"]
+**** link:configuring-administrator-client-certificates.html#remove-client-certificates["クライアント証明書を削除します。"]
+
+
+*** *アクション*を選択すると、すばやくクライアント証明書をlink:configuring-administrator-client-certificates.html#edit-client-certificates["編集"]、link:configuring-administrator-client-certificates.html#attach-new-client-certificate["添付"]、またはlink:configuring-administrator-client-certificates.html#remove-client-certificates["削除"]できます。*アクション* > *削除*を使用すると、最大10個のクライアント証明書を選択して一度に削除できます。
+
+
+--
+.ロード バランサ エンドポイント
+--
+<<ロードバランサーエンドポイント証明書,ロードバランサーエンドポイント証明書>> S3クライアントとStorageGRIDのゲートウェイノードおよび管理ノード上のロードバランサーサービス間の接続を保護します。
+
+ロードバランサーエンドポイントテーブルには、設定済みのロードバランサーエンドポイントごとに1行があり、そのエンドポイントでグローバルS3 API証明書が使用されているか、カスタムロードバランサーエンドポイント証明書が使用されているかを示します。各証明書の有効期限も表示されます。
+
+
+NOTE: エンドポイント証明書の変更がすべてのノードに適用されるまでには、最大15分かかる場合があります。
+
+次の操作を実行できます。
+
+*** link:configuring-load-balancer-endpoints.html["ロードバランサーのエンドポイントを表示する"]（証明書の詳細を含む）。
+*** link:../fabricpool/creating-load-balancer-endpoint-for-fabricpool.html["FabricPool のロードバランサーエンドポイント証明書を指定します。"]
+*** link:configuring-load-balancer-endpoints.html["グローバルS3 API証明書を使用する"]新しいロードバランサーエンドポイント証明書を生成する代わりに使用します。
+
+
+--
+.テナント
+--
+テナントは<<IDフェデレーション証明書,IDフェデレーションサーバー証明書>>または<<プラットフォームサービスエンドポイント証明書,プラットフォームサービスエンドポイント証明書>>を使用して、StorageGRIDとの接続を保護できます。
+
+テナントテーブルにはテナントごとに1行があり、各テナントが自身のIDソースまたはプラットフォームサービスを使用する権限を持っているかどうかを示します。
+
+次の操作を実行できます。
+
+*** link:../tenant/signing-in-to-tenant-manager.html["テナント名を選択してTenant Managerにサインインします。"]
+*** link:../tenant/using-identity-federation.html["テナント名を選択して、テナントIDフェデレーションの詳細を表示します。"]
+*** link:../tenant/editing-platform-services-endpoint.html["テナント名を選択して、テナントプラットフォームサービスの詳細を表示します。"]
+*** link:../tenant/creating-platform-services-endpoint.html["エンドポイント作成時にプラットフォームサービスエンドポイント証明書を指定します。"]
+
+
+--
+.その他
+--
+StorageGRID は、特定の目的のために他のセキュリティ証明書を使用します。これらの証明書は、機能名で一覧表示されています。その他のセキュリティ証明書には以下が含まれます。
+
+*** <<クラウドストレージプールエンドポイント証明書,クラウドストレージプール証明書>>
+*** <<メールアラート通知証明書,メールアラート通知証明書>>
+*** <<外部のsyslogサーバー証明書,外部のsyslogサーバー証明書>>
+*** <<grid-federation-certificate,グリッドフェデレーション接続証明書>>
+*** <<IDフェデレーション証明書,IDフェデレーション証明書>>
+*** <<キー管理サーバー（KMS）証明書,キー管理サーバー（KMS）証明書>>
+*** <<シングル サインオン（SSO）証明書,シングルサインオン証明書>>
+
+
+この情報には、関数が使用する証明書の種類、および該当する場合はサーバー証明書とクライアント証明書の有効期限が示されています。関数名を選択すると、ブラウザのタブが開き、そこで証明書の詳細を表示および編集できます。
+
+
+NOTE: 他の証明書の情報を表示およびアクセスできるのは、link:admin-group-permissions.html["適切な許可"]がある場合のみです。
+
+次の操作を実行できます。
+
+*** link:../ilm/creating-cloud-storage-pool.html["S3、C2S S3、またはAzure用のクラウドストレージプール証明書を指定する"]
+*** link:../monitor/email-alert-notifications.html["アラートメール通知用の証明書を指定する"]
+*** link:../monitor/configure-log-management.html#use-external-syslog-server["外部syslogサーバの証明書を使用する"]
+*** link:grid-federation-manage-connection.html#rotate-connection-certificates["グリッドフェデレーション接続証明書をローテーションする"]
+*** link:using-identity-federation.html["IDフェデレーション証明書の表示と編集"]
+*** link:kms-adding.html["キー管理サーバー（KMS）サーバーおよびクライアント証明書をアップロードする"]
+*** link:creating-relying-party-trusts-in-ad-fs.html#create-a-relying-party-trust-manually["証明書利用者信頼のSSO証明書を手動で指定する"]
+
+
+--
+====
+
+
+
+
+
+
+[[security-certificate-details]]
+== セキュリティ証明書の詳細
+
+各セキュリティ証明書の種類について、実装手順へのリンクとともに以下に説明します。
+
+
+
+[[management-interface-certificate]]
+[[adminclientcert_details]]
+=== 管理インターフェイス証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバ
+ a| 
+クライアントのウェブブラウザとStorageGRID 管理インターフェイス間の接続を認証し、ユーザーがセキュリティ警告なしにGrid ManagerとTenant Managerにアクセスできるようにします。
+
+この証明書は、グリッド管理APIおよびテナント管理APIへの接続も認証します。
+
+インストール時に作成されるデフォルトの証明書を使用することも、カスタム証明書をアップロードすることもできます。
+ a| 
+*Configuration* > *Security* > *Certificates* を選択し、*Global* タブを選択してから、*Management interface certificate* を選択します。
+ a| 
+link:configuring-custom-server-certificate-for-grid-manager-tenant-manager.html["管理インターフェイス証明書の設定"]
+
+|===
+
+
+[[s3-api-certificate]]
+=== S3 API証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバ
+ a| 
+ストレージノードおよびロードバランサーエンドポイントへの安全なS3クライアント接続を認証します（オプション）。
+ a| 
+「設定」＞「セキュリティ」＞「証明書」を選択し、「グローバル」タブを選択してから、「S3 API 証明書」を選択します。
+ a| 
+link:configuring-custom-server-certificate-for-storage-node.html["S3 API証明書の設定"]
+
+|===
+
+
+[[grid-ca-certificate]]
+=== グリッドCA証明書
+
+<<gridca_details,デフォルトのGrid CA証明書の説明>>を参照してください。
+
+
+
+[[administrator-client-certificate]]
+=== 管理者クライアント証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+クライアント
+ a| 
+各クライアントにインストールされ、StorageGRID が外部クライアントのアクセスを認証できるようにします。
+
+* 承認された外部クライアントが StorageGRID の Prometheus データベースにアクセスできるようにします。
+* 外部ツールを使用して StorageGRID を安全に監視できます。
+
+ a| 
+「構成」＞「セキュリティ」＞「証明書」の順に進み、「クライアント」タブを選択します。
+ a| 
+link:configuring-administrator-client-certificates.html["クライアント証明書の設定"]
+
+|===
+
+
+[[load-balancer-endpoint-certificate]]
+=== ロードバランサーエンドポイント証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバ
+ a| 
+S3クライアントとStorageGRIDのゲートウェイノードおよび管理ノード上のロードバランサーサービス間の接続を認証します。ロードバランサーエンドポイントを設定する際に、ロードバランサー証明書をアップロードまたは生成できます。クライアントアプリケーションは、StorageGRIDに接続してオブジェクトデータを保存および取得する際に、ロードバランサー証明書を使用します。
+
+グローバルの<<S3 API証明書>>証明書のカスタムバージョンを使用して、ロードバランサーサービスへの接続を認証することもできます。ロードバランサー接続の認証にグローバル証明書を使用する場合、各ロードバランサーエンドポイントに個別の証明書をアップロードまたは生成する必要はありません。
+
+*注:* ロードバランサー認証に使用される証明書は、通常の StorageGRID 運用時に最もよく使用される証明書です。
+ a| 
+*設定* > *ネットワーク* > *ロードバランサーエンドポイント*
+ a| 
+* link:configuring-load-balancer-endpoints.html["ロードバランサーのエンドポイントを設定する"]
+* link:../fabricpool/creating-load-balancer-endpoint-for-fabricpool.html["FabricPool のロードバランサーエンドポイントを作成する"]
+
+
+|===
+
+
+[[cloud-storage-pool-endpoint-certificate]]
+=== クラウドストレージプールエンドポイント証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバ
+ a| 
+StorageGRID クラウドストレージプールから S3 Glacier や Microsoft Azure Blob ストレージなどの外部ストレージ場所への接続を認証します。クラウド プロバイダの種類ごとに異なる証明書が必要です。
+ a| 
+*ILM* > *ストレージプール*
+ a| 
+link:../ilm/creating-cloud-storage-pool.html["クラウドストレージプールを作成する"]
+
+|===
+
+
+[[email-alert-notification-certificate]]
+=== メールアラート通知証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバーとクライアント
+ a| 
+アラート通知に使用される SMTP メールサーバーと StorageGRID 間の接続を認証します。
+
+* SMTPサーバーとの通信にトランスポート層セキュリティ（TLS）が必要な場合は、メールサーバーのCA証明書を指定する必要があります。
+* SMTPメールサーバーが認証にクライアント証明書を必要とする場合にのみ、クライアント証明書を指定してください。
+
+ a| 
+*アラート* > *メール設定*
+ a| 
+link:../monitor/email-alert-notifications.html["アラートのメール通知を設定する"]
+
+|===
+
+
+[[external-syslog-server-certificate]]
+=== 外部のsyslogサーバー証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバ
+ a| 
+StorageGRID でイベントをログに記録する外部 syslog サーバーとの TLS または RELP/TLS 接続を認証します。
+
+*注:* 外部 syslog サーバーへの TCP、RELP/TCP、および UDP 接続には、外部 syslog サーバー証明書は不要です。
+ a| 
+*設定* > *監視* > *監査とsyslogサーバ*
+ a| 
+link:../monitor/configure-log-management.html#use-external-syslog-server["外部syslogサーバを使用する"]
+
+|===
+
+
+[[grid-federation-certificategrid-federation-connection-certificate]]
+=== [[grid-federation-certificate]]グリッドフェデレーション接続証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバーとクライアント
+ a| 
+現在の StorageGRID システムとグリッドフェデレーション接続内の別のグリッドとの間で送信される情報を認証および暗号化します。
+ a| 
+*設定* > *システム* > *グリッド連携*
+ a| 
+* link:grid-federation-create-connection.html["グリッドフェデレーション接続を作成する"]
+* link:grid-federation-manage-connection.html#rotate_grid_fed_certificates["接続証明書をローテーションする"]
+
+
+|===
+
+
+[[identity-federation-certificate]]
+=== IDフェデレーション証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバ
+ a| 
+StorageGRID と、Active Directory、OpenLDAP、Oracle Directory Server などの外部 ID プロバイダー間の接続を認証します。管理者グループとユーザーを外部システムで管理できるようにする ID フェデレーションに使用されます。
+ a| 
+*設定* > *アクセス制御* > *IDフェデレーション*
+ a| 
+link:using-identity-federation.html["IDフェデレーションを使用する"]
+
+|===
+
+
+[[key-management-server-kms-certificate]]
+=== キー管理サーバー（KMS）証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバーとクライアント
+ a| 
+StorageGRID とアプライアンスノードに暗号化キーを提供する外部キー管理サーバー（KMS）との間の接続を認証します。
+ a| 
+*設定* > *セキュリティ* > *キー管理サーバー*
+ a| 
+link:kms-adding.html["キー管理サーバー（KMS）を追加する"]
+
+|===
+
+
+[[platform-services-endpoint-certificate]]
+=== プラットフォームサービスエンドポイント証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバ
+ a| 
+StorageGRID プラットフォームサービスから S3 ストレージリソースへの接続を認証します。
+ a| 
+*テナント マネージャー* > *ストレージ（S3）* > *プラットフォーム サービス エンドポイント*
+ a| 
+link:../tenant/creating-platform-services-endpoint.html["プラットフォームサービスエンドポイントを作成する"]
+
+link:../tenant/editing-platform-services-endpoint.html["プラットフォームサービスエンドポイントを編集"]
+
+|===
+
+
+[[single-sign-on-sso-certificate]]
+=== シングル サインオン（SSO）証明書
+
+[cols="1a,1a,1a,1a"]
+|===
+| 証明書の種類 | 説明 | ナビゲーション位置 | 詳細 
+
+
+ a| 
+サーバ
+ a| 
+Active Directory Federation Services (AD FS) などの ID フェデレーション サービスと、シングル サインオン（SSO）リクエストに使用される StorageGRID との間の接続を認証します。
+ a| 
+*設定* > *アクセス制御* > *シングル サインオン*
+ a| 
+link:how-sso-works.html["シングル サインオンを設定する"]
+
+|===
+
+
+[[certificate-examples]]
+== 証明書の例
+
+
+
+[[example-1-load-balancer-service]]
+=== 例1：ロードバランサーサービス
+
+この例では、StorageGRID はサーバーとして機能します。
+
+. StorageGRID でロードバランサーエンドポイントを設定し、サーバー証明書をアップロードまたは生成します。
+. ロードバランサーのエンドポイントへのS3クライアント接続を設定し、同じ証明書をクライアントにアップロードします。
+. クライアントがデータを保存または取得する場合、HTTPS を使用してロード バランサーのエンドポイントに接続します。
+. StorageGRID は、公開鍵を含むサーバー証明書と、秘密鍵に基づく署名で応答します。
+. クライアントは、サーバーの署名と、自身が所有する証明書のコピーに記載されている署名を比較します。署名が一致した場合、クライアントは同じ公開鍵を使用してセッションを開始します。
+. クライアントはオブジェクトデータを StorageGRID に送信します。
+
+
+
+
+[[example-2-external-key-management-server-kms]]
+=== 例2：外部キー管理サーバー（KMS）
+
+この例では、StorageGRID はクライアントとして機能します。
+
+. 外部キー管理サーバーソフトウェアを使用して、StorageGRID を KMS クライアントとして設定し、CA 署名付きサーバー証明書、公開クライアント証明書、およびクライアント証明書の秘密鍵を取得します。
+. Grid Managerを使用して、KMSサーバーを設定し、サーバー証明書、クライアント証明書、およびクライアント秘密鍵をアップロードします。
+. StorageGRID ノードが暗号化キーを必要とする場合、証明書からのデータと秘密鍵に基づく署名を含むリクエストを KMS サーバーに送信します。
+. KMSサーバーは証明書の署名を検証し、StorageGRID を信頼できると判断します。
+. KMSサーバーは、検証済みの接続を使用して応答します。
+

@@ -1,0 +1,29 @@
+---
+section: upgrade
+title: StorageGRID ソフトウェアのアップグレード
+entries:
+- title: アップグレードする前に
+  pdf-filename: StorageGRID ソフトウェアのアップグレード
+  url: "/upgrade/index.html"
+- title: アップグレードの計画と準備
+  entries:
+  - title: アップグレード完了までの所要時間の目安
+    url: "/upgrade/estimating-time-to-complete-upgrade.html"
+  - title: アップグレード中にシステムがどのように影響を受けるか
+    url: "/upgrade/how-your-system-is-affected-during-upgrade.html"
+  - title: インストール済みの StorageGRID バージョンを確認します
+    url: "/upgrade/verifying-installed-version-of-storagegrid.html"
+  - title: 必要な材料を入手する
+    url: "/upgrade/obtaining-required-materials-for-software-upgrade.html"
+  - title: システムをチェック
+    url: "/upgrade/checking-systems-condition-before-upgrading-software.html"
+- title: ソフトウェアのアップグレード
+  entries:
+  - title: アップグレードのクイックスタート
+    url: "/upgrade/upgrade-workflow.html"
+  - title: Linux：RPMまたはDEBパッケージをダウンロードしてインストールする
+    url: "/upgrade/linux-installing-rpm-or-deb-package-on-all-hosts.html"
+  - title: アップグレードを実行する
+    url: "/upgrade/performing-upgrade.html"
+- title: アップグレードに関する問題のトラブルシューティング
+  url: "/upgrade/troubleshooting-upgrade-issues.html"

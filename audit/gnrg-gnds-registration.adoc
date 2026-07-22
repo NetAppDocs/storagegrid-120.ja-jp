@@ -1,0 +1,79 @@
+---
+permalink: audit/gnrg-gnds-registration.html 
+sidebar: sidebar 
+keywords: storagegrid, audi, message, GNRG, GNDS Registration 
+summary: CMN サービスは、サービスが StorageGRID システムに自身に関する情報を更新または登録したときに、この監査メッセージを生成します。 
+---
+= StorageGRIDにおけるGNDS登録のGNRG監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+CMN サービスは、サービスが StorageGRID システムに自身に関する情報を更新または登録したときに、この監査メッセージを生成します。
+
+[cols="1a,1a,4a"]
+|===
+| Code | フィールド | 説明 
+
+
+ a| 
+RSLT
+ a| 
+結果
+ a| 
+更新リクエストの結果：
+
+* SUCS：成功
+* SUNV：サービス利用不可
+* GERR: その他の失敗
+
+
+
+
+ a| 
+GNID
+ a| 
+ノードID
+ a| 
+更新要求を開始したサービスのノードID。
+
+
+
+ a| 
+GNTP
+ a| 
+Device Type
+ a| 
+グリッドノードのデバイスタイプ（例：LDR サービスの場合は BLDR）。
+
+
+
+ a| 
+GNDV
+ a| 
+デバイスモデルバージョン
+ a| 
+DMDLバンドル内でグリッドノードのデバイスモデルバージョンを識別する文字列。
+
+
+
+ a| 
+GNGP
+ a| 
+グループ
+ a| 
+グリッドノードが属するグループ（リンクコストとサービスクエリランキングのコンテキストにおいて）。
+
+
+
+ a| 
+GNIA
+ a| 
+IP アドレス
+ a| 
+グリッドノードのIPアドレス。
+
+|===
+このメッセージは、グリッドノードがグリッドノードバンドル内のエントリを更新するたびに生成されます。

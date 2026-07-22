@@ -1,0 +1,96 @@
+---
+permalink: audit/lkdm-leaked-object-cleanup.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, LKDM, Leaked Object Cleanup 
+summary: LKDM監査メッセージは、リークしたチャンクがクリーンアップまたは削除されたときに生成されます。 
+---
+= StorageGRIDでリークされたオブジェクトのクリーンアップに関するLKDM監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+このメッセージは、リークしたデータチャンクがクリーンアップまたは削除されたときに生成されます。チャンクは、複製されたオブジェクトまたはイレイジャー コーディングされたオブジェクトの一部になり得ます。
+
+[cols="1a,1a,4a"]
+|===
+| Code | フィールド | 説明 
+
+
+ a| 
+CLOC
+ a| 
+チャンクの位置
+ a| 
+削除されたリークチャンクのファイルパス。
+
+
+
+ a| 
+CTYP
+ a| 
+チャンクタイプ
+ a| 
+チャンクの種類：
+
+`ec: Erasure-coded object chunk`
+
+`repl: Replicated object chunk`
+
+
+
+ a| 
+LTYP
+ a| 
+漏洩タイプ
+ a| 
+検出可能な漏洩の種類は以下の5つです：
+
+`object_leaked: Object doesn’t exist in the grid`
+
+`location_leaked: Object exists in the grid, but found location doesn’t belong to object`
+
+`mup_seg_leaked: Multipart upload was stopped or not completed, and the segment/part was left out`
+
+`segment_leaked: Parent UUID/CBID (associated container object) is valid but doesn't contain this segment`
+
+`no_parent: Container object is deleted, but object segment was left out and not deleted`
+
+
+
+ a| 
+CTIM
+ a| 
+チャンク作成時間
+ a| 
+リークされたデータチャンクが作成された時刻。
+
+
+
+ a| 
+UUID
+ a| 
+汎用一意識別子
+ a| 
+チャンクが属するオブジェクトの識別子。
+
+
+
+ a| 
+CBID
+ a| 
+コンテンツブロック識別子
+ a| 
+リークされたチャンクが属するオブジェクトのCBID。
+
+
+
+ a| 
+CSIZ
+ a| 
+コンテンツサイズ
+ a| 
+チャンクのサイズ（バイト単位）。
+
+|===

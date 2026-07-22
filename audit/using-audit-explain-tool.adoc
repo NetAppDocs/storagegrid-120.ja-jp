@@ -1,0 +1,98 @@
+---
+permalink: audit/using-audit-explain-tool.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, tool, audit-explain, audit explain, translate audit messages, translate messages, translate audit message, translate message 
+summary: 監査ログ内の監査メッセージを読みやすい形式に変換するには、audit-explain ツールを使用できます。 
+---
+= audit-explainツールを使用してStorageGRID監査メッセージを翻訳する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ `audit-explain`ツールを使用して、監査ログ内の監査メッセージを読みやすい形式に変換できます。
+
+.開始する前に
+* link:../admin/admin-group-permissions.html["特定のアクセス権限"]があります。
+*  `Passwords.txt`ファイルが必要です。
+* プライマリ管理ノードのIPアドレスを知っている必要があります。
+
+
+.タスク概要
+ `audit-explain`ツールは、プライマリ管理ノードで使用でき、監査ログ内の監査メッセージの簡略化された要約を提供します。
+
+
+NOTE: この `audit-explain`ツールは、主にテクニカルサポート担当者がトラブルシューティング作業を行う際に使用することを目的としています。処理 `audit-explain`クエリは大量のCPUパワーを消費する可能性があり、StorageGRIDの運用に影響を与える場合があります。
+
+この例は、 `audit-explain`ツールの一般的な出力を示しています。これら4つのlink:sput-s3-put.html["SPUT"]監査メッセージは、アカウントID 92484777680322627870 のS3テナントがS3 PUTリクエストを使用して「bucket1」という名前のバケットを作成し、そのバケットに3つのオブジェクトを追加したときに生成されました。
+
+[listing]
+----
+SPUT S3 PUT bucket bucket1 account:92484777680322627870 usec:124673
+SPUT S3 PUT object bucket1/part1.txt tenant:92484777680322627870  cbid:9DCB157394F99FE5 usec:101485
+SPUT S3 PUT object bucket1/part2.txt tenant:92484777680322627870  cbid:3CFBB07AB3D32CA9 usec:102804
+SPUT S3 PUT object bucket1/part3.txt tenant:92484777680322627870  cbid:5373D73831ECC743 usec:93874
+----
+ `audit-explain`ツールでは、次の操作を実行できます：
+
+* プレーンまたは圧縮された監査ログを処理します。例：
++
+`audit-explain audit.log`
+
++
+`audit-explain 2019-08-12.txt.gz`
+
+* 複数のファイルを同時に処理します。例：
++
+`audit-explain audit.log 2019-08-12.txt.gz 2019-08-13.txt.gz`
+
++
+`audit-explain /var/local/audit/export/*`
+
+* パイプからの入力を受け付け、 `grep`コマンドやその他の手段を使用して入力をフィルタリングおよび前処理することができます。例：
++
+`grep SPUT audit.log | audit-explain`
+
++
+`grep bucket-name audit.log | audit-explain`
+
+
+
+監査ログは非常に大きく、解析に時間がかかる場合があります。ファイル全体ではなく、確認したい部分をフィルタリングして `audit-explain`を実行することで、時間を節約できます。
+
+[NOTE]
+====
+ `audit-explain`ツールは、圧縮ファイルをパイプ入力として受け付けません。圧縮ファイルを処理するには、ファイル名をコマンドライン引数として指定するか、 `zcat`ツールを使用してファイルを最初に解凍してください。例：
+
+`zcat audit.log.gz | audit-explain`
+
+====
+ `help (-h)`オプションを使用して、利用可能なオプションを確認します。例：
+
+`$ audit-explain -h`
+
+.手順
+. プライマリ管理ノードにログインします。
++
+.. 次のコマンドを入力します： `ssh admin@_primary_Admin_Node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+
+
+. 次のコマンドを入力してください。ここで、 `/var/local/audit/export/audit.log`は分析するファイルの名前と場所を表します：
++
+`$ audit-explain /var/local/audit/export/audit.log`
+
++
+ `audit-explain`ツールは、指定されたファイル内のすべてのメッセージを人間が読みやすい形式で出力します。
+
++
+
+NOTE: 行の長さを短縮し、読みやすさを向上させるため、デフォルトではタイムスタンプは表示されません。タイムスタンプを表示したい場合は、タイムスタンプ (`-t`） オプションを使用してください。
+
+

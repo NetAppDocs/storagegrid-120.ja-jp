@@ -1,0 +1,50 @@
+---
+permalink: s3/get-bucket-last-access-time-request.html 
+sidebar: sidebar 
+keywords: S3 REST API, S3 operations, GET last access time request 
+summary: GET Bucket last access time リクエストを使用すると、個々のバケットに対して最終アクセス時刻の更新が有効になっているか無効になっているかを判断できます。 
+---
+= GET Bucket last access timeリクエストを使用してStorageGRIDでバケットの最終アクセス時間ステータスを取得する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+GET Bucket last access time リクエストを使用すると、個々のバケットに対して最終アクセス時刻の更新が有効になっているか無効になっているかを判断できます。
+
+この操作を完了するには、s3:GetBucketLastAccessTime 権限が必要です。またはアカウントのrootである必要があります。
+
+
+
+[[request-example]]
+== リクエスト例
+
+[listing, subs="specialcharacters,quotes"]
+----
+GET /bucket?x-ntap-sg-lastaccesstime HTTP/1.1
+Date: _date_
+Authorization: _authorization string_
+Host: _host_
+----
+
+
+[[response-example]]
+== 回答例
+
+この例は、バケットに対して最終アクセス時刻の更新が有効になっていることを示しています。
+
+[listing]
+----
+HTTP/1.1 200 OK
+Date: Sat, 29 Nov 2015 01:02:18 GMT
+Connection: CLOSE
+Server: StorageGRID/10.3.0
+x-amz-request-id: 12345
+Content-Length: 127
+Content-Type: application/xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<LastAccessTime xmlns="http://s3.storagegrid.com/doc/2015-02-01/">enabled
+</LastAccessTime>
+----

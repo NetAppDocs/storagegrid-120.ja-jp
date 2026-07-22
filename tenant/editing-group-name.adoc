@@ -1,0 +1,39 @@
+---
+permalink: tenant/editing-group-name.html 
+sidebar: sidebar 
+keywords: how to edit tenant group name 
+summary: グループの表示名を編集できます。グループの固有名は編集できません。 
+---
+= StorageGRID でテナントグループ名を編集する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+グループの表示名を編集できます。グループの固有名は編集できません。
+
+.開始する前に
+* テナントマネージャーに link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用してサインインしています。
+* あなたは、ルートアクセス権限を持つユーザーグループに属しています。link:tenant-management-permissions.html["テナント管理権限"]を参照してください。
+
+
+.手順
+. *アクセス管理* ＞ *グループ* を選択します。
+. 表示名を編集したいグループのチェックボックスを選択してください。
+. *Actions* > *Edit group name* を選択します。
++
+グループ名の編集ダイアログボックスが表示されます。
+
++
+image:edit_group_name.png["グループ名を編集"]
+
+. ローカルグループを編集する場合は、必要に応じて表示名を更新してください。
++
+グループの固有名は変更できません。フェデレーテッドグループの表示名は編集できません。
+
+. *変更を保存* を選択します。
++
+ページの右上隅に確認メッセージが表示されます。
+
+

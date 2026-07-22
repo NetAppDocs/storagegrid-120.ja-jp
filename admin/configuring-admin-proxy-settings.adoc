@@ -1,0 +1,61 @@
+---
+permalink: admin/configuring-admin-proxy-settings.html 
+sidebar: sidebar 
+keywords: admin proxy, autosupport, non-transparent proxy 
+summary: HTTPまたはHTTPSを使用してAutoSupportパッケージを送信する場合は、管理ノードとテクニカルサポート（AutoSupport）の間に非透過型プロキシ サーバを設定できます。 
+---
+= StorageGRIDで管理プロキシ設定を構成する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+HTTPまたはHTTPSを使用してAutoSupportパッケージを送信する場合は、管理ノードとテクニカルサポート（AutoSupport）の間に非透過型プロキシ サーバを設定できます。
+
+AutoSupport の詳細については、link:configure-autosupport-grid-manager.html["AutoSupportを設定する"] を参照してください。
+
+.開始する前に
+* link:admin-group-permissions.html["特定のアクセス権限"]があります。
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+
+
+.タスク概要
+単一の管理プロキシ サーバの設定を構成できます。
+
+.手順
+. *Configuration* ＞ *Security* ＞ *Proxy settings* を選択します。
++
+プロキシ設定ページが表示されます。デフォルトでは、タブメニューで「ストレージ」が選択されています。
+
+. 「Admin」タブを選択します。
+. 「管理者プロキシを有効にする」チェックボックスを選択します。
+. プロキシ サーバのホスト名またはIPアドレスを入力してください。
+. プロキシ サーバへの接続に使用するポートを入力してください。
+. 必要に応じて、プロキシ サーバのユーザー名とパスワードを入力してください。
++
+プロキシ サーバにユーザー名やパスワードが不要な場合は、これらのフィールドを空白のままにしてください。
+
+. 次のいずれかを選択します。
++
+** 管理プロキシへの接続を保護するには、「プロキシ証明書の検証」を選択します。CAバンドルをアップロードして、管理プロキシ サーバが提示するSSL証明書の真正性を検証します。
++
+
+CAUTION: AutoSupport on Demand、EシリーズのStorageGRID経由のAutoSupport、およびStorageGRIDアップグレードページでの更新パスの決定は、プロキシ証明書が検証されている場合は機能しません。
+
++
+CAバンドルをアップロードすると、そのメタデータが表示されます。
+
+** 管理プロキシ サーバとの通信時に証明書を検証しない場合は、*「プロキシ証明書を検証しない」*を選択してください。
+
+
+. * 保存 * を選択します。
++
+管理プロキシが保存されると、管理ノードとテクニカルサポート間のプロキシ サーバが設定されます。
+
++
+
+NOTE: プロキシの変更が反映されるまで最大10分かかる場合があります。
+
+. 管理プロキシを無効にする必要がある場合は、*管理プロキシを有効にする*チェックボックスをオフにしてから、*保存*を選択します。
+

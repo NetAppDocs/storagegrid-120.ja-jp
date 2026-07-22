@@ -1,0 +1,87 @@
+---
+permalink: tenant/manage-bucket-consistency.html 
+sidebar: sidebar 
+keywords: how to manage bucket consistency, how to change bucket consistency, read after new write, read-after-new-write, strong site, strong-site, strong global, strong-global 
+summary: 整合性値を使用すると、バケット設定変更の可用性を指定したり、バケット内のオブジェクトの可用性と、異なるストレージノードやサイト間でのオブジェクトの整合性とのバランスを取ったりすることができます。クライアントアプリケーションが運用上のニーズを満たすことができるように、整合性値をデフォルト値とは異なる値に変更できます。 
+---
+= StorageGRIDバケットの整合性を管理
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+整合性値を使用すると、バケット設定変更の可用性を指定したり、バケット内のオブジェクトの可用性と、異なるストレージノードやサイト間でのオブジェクトの整合性とのバランスを取ったりすることができます。クライアントアプリケーションが運用上のニーズを満たすことができるように、整合性値をデフォルト値とは異なる値に変更できます。
+
+.開始する前に
+* テナントマネージャーに link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用してサインインしています。
+* あなたは、link:tenant-management-permissions.html["すべてのバケットを管理する、またはルートアクセス権限"]を持つユーザーグループに属しています。これらの権限は、グループポリシーまたはバケットポリシーの権限設定を上書きします。
+
+
+
+
+[[bucket-consistency-guidelines]]
+== バケットの整合性に関するガイドライン
+
+バケットの整合性は、そのS3バケット内のオブジェクトに影響を与えるクライアントアプリケーションの整合性を判断するために使用されます。一般的に、バケットには *Read-after-new-write* 整合性を使用することをお勧めします。
+
+
+
+[[change-bucket-consistencychange-bucket-consistency]]
+== [[change-bucket-consistency]]バケットの整合性の変更
+
+*Read-after-new-write* の一貫性がクライアントアプリケーションの要件を満たさない場合は、バケットの一貫性を設定するか、 `Consistency-Control`ヘッダーを使用することで一貫性を変更できます。 `Consistency-Control`ヘッダーはバケットの一貫性を上書きします。
+
+
+NOTE: バケットの整合性を変更した場合、変更後に取り込まれたオブジェクトのみが、改訂された設定を満たすことが保証されます。
+
+.手順
+. ダッシュボードから「バケットの表示」を選択するか、*STORAGE (S3)* > *Buckets* を選択してください。
+. 表からバケット名を選択してください。
++
+バケットの詳細ページが表示されます。
+
+. 「バケットオプション」タブから、**アコーディオンを選択します。
+. このバケット内のオブジェクトに対して実行される操作の一貫性を選択してください。
++
+** *すべて*: 最高レベルの一貫性を提供します。すべてのノードがデータを即座に受信するか、リクエストは失敗します。
+** *Strong-global*：すべてのサイトにおけるすべてのクライアントリクエストに対して、書き込み後の読み取りの一貫性を保証します。
+** *Strong-site*：サイト内のすべてのクライアントリクエストに対して、書き込み後の読み取りの一貫性を保証します。
+** *Read-after-new-write*（デフォルト）：新規オブジェクトに対しては書き込み後の読み取り一貫性を、オブジェクト更新に対しては結果整合性を提供します。高可用性とデータ保護を保証します。ほとんどの場合に推奨されます。
+** *利用可能*：新規オブジェクトとオブジェクト更新の両方に対して、最終的な一貫性を提供します。S3バケットの場合は、必要な場合にのみ使用してください（たとえば、めったに読み取られないログ値を含むバケット、または存在しないキーに対するHEADまたはGET操作の場合など）。S3 FabricPoolバケットではサポートされていません。
+
+
+. *変更を保存* を選択します。
+
+
+
+
+[[what-happens-when-you-change-bucket-settings]]
+== バケットの設定を変更するとどうなりますか？
+
+バケットには、バケット自体の動作やバケット内のオブジェクトの動作に影響を与える複数の設定があります。
+
+以下のバケット設定では、デフォルトで*強力な*一貫性が使用されます。いずれかのサイト内で2つ以上のストレージノードが利用できない場合、またはサイト自体が利用できない場合、これらの設定への変更が反映されない可能性があります。
+
+* link:deleting-s3-bucket-objects.html["バックグラウンドでの空バケットの削除"]
+* link:enabling-or-disabling-last-access-time-updates.html["最終アクセス時間"]
+* link:../s3/create-s3-lifecycle-configuration.html["バケットのライフサイクル"]
+* link:../s3/use-access-policies.html["バケットポリシー"]
+* link:../s3/operations-on-buckets.html["バケットタグ付け"]
+* link:changing-bucket-versioning.html["バケットのバージョン管理"]
+* link:using-s3-object-lock.html["S3 Object Lock"]
+* link:../admin/reviewing-storagegrid-encryption-methods.html#bucket-encryption-table["バケット暗号化"]
+
+
+
+NOTE: バケットのバージョン管理、S3 Object Lock、およびバケット暗号化の整合性値は、強整合性でない値に設定することはできません。
+
+以下のバケット設定では、強力な一貫性は使用されず、変更に対する可用性が高くなります。これらの設定を変更しても、反映されるまでには時間がかかる場合があります。
+
+* link:considerations-for-platform-services.html["プラットフォームサービス構成：通知、レプリケーション、または検索の統合"]
+* link:configuring-cross-origin-resource-sharing-for-buckets-and-objects.html["バケットとオブジェクトの StorageGRID CORS を設定する"]
+* <<change-bucket-consistency,バケットの整合性を変更する>>
+
+
+
+TIP: バケット設定を変更する際に使用されるデフォルトの整合性がクライアントアプリケーションの要件を満たさない場合は、 `Consistency-Control`ヘッダーをlink:../s3/put-bucket-consistency-request.html["S3 REST API"]に使用するか、 `reducedConsistency`または `force`オプションをlink:understanding-tenant-management-api.html["テナント管理API"]で使用することで整合性を変更できます。

@@ -1,0 +1,78 @@
+---
+permalink: s3/get-storage-usage-request.html 
+sidebar: sidebar 
+keywords: S3 REST API, S3 operations, GET storage usage request 
+summary: GET Storage Usageリクエストは、アカウントが使用しているストレージの総量と、そのアカウントに関連付けられている各バケットごとのストレージ使用量を示します。 
+---
+= StorageGRIDでGET Storage Usageリクエストを使用してアカウントとバケットのストレージ使用量を取得
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+GET Storage Usageリクエストは、アカウントが使用しているストレージの総量と、そのアカウントに関連付けられている各バケットごとのストレージ使用量を示します。
+
+アカウントとそのバケットが使用するストレージ容量は、 `x-ntap-sg-usage`クエリパラメータを使用した修正済みのListBucketsリクエストで取得できます。バケットストレージの使用状況は、システムによって処理される PUT および DELETE リクエストとは別に追跡されます。リクエストの処理状況によっては、特にシステム負荷が高い場合、使用状況の値が期待値と一致するまでに多少の遅延が生じる可能性があります。
+
+デフォルトでは、StorageGRID は強力なグローバル整合性を使用して使用状況情報を取得しようとします。強力なグローバル整合性が達成できない場合、StorageGRID はサイトの強力な整合性で使用状況情報を取得しようとします。
+
+この操作を完了するには、s3:ListAllMyBuckets 権限が必要です。またはアカウントのrootである必要があります。
+
+
+
+[[request-example]]
+== リクエスト例
+
+[listing, subs="specialcharacters,quotes"]
+----
+GET /?x-ntap-sg-usage HTTP/1.1
+Date: _date_
+Authorization: _authorization string_
+Host: _host_
+----
+
+
+[[response-example]]
+== 回答例
+
+この例は、2つのバケットに4つのオブジェクトと12バイトのデータを持つアカウントを示しています。各バケットには2つのオブジェクトと6バイトのデータが含まれています。
+
+[listing]
+----
+HTTP/1.1 200 OK
+Date: Sat, 29 Nov 2015 00:49:05 GMT
+Connection: KEEP-ALIVE
+Server: StorageGRID/10.2.0
+x-amz-request-id: 727237123
+Content-Length: 427
+Content-Type: application/xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<UsageResult xmlns="http://s3.storagegrid.com/doc/2015-02-01">
+<CalculationTime>2014-11-19T05:30:11.000000Z</CalculationTime>
+<ObjectCount>4</ObjectCount>
+<DataBytes>12</DataBytes>
+<Buckets>
+<Bucket>
+<Name>bucket1</Name>
+<ObjectCount>2</ObjectCount>
+<DataBytes>6</DataBytes>
+</Bucket>
+<Bucket>
+<Name>bucket2</Name>
+<ObjectCount>2</ObjectCount>
+<DataBytes>6</DataBytes>
+</Bucket>
+</Buckets>
+</UsageResult>
+----
+
+
+[[versioning]]
+== バージョン管理
+
+保存されるすべてのオブジェクトバージョンは、応答内の `ObjectCount`および `DataBytes`の値に反映されます。削除マーカーは `ObjectCount`の合計には追加されません。
+
+.関連情報
+link:consistency.html["一貫性"]

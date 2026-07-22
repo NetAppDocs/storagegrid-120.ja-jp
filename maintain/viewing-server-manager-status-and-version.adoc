@@ -1,0 +1,50 @@
+---
+permalink: maintain/viewing-server-manager-status-and-version.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, server manager, status, version 
+summary: 各グリッドノードについて、そのノードで実行されている Server Manager の現在の状態とバージョンを確認できます。また、そのグリッドノード上で実行されているすべてのサービスの現在の状態を取得することもできます。 
+---
+= StorageGRIDサーバーマネージャーのステータスとバージョンを表示
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+各グリッドノードについて、そのノードで実行されている Server Manager の現在の状態とバージョンを確認できます。また、そのグリッドノード上で実行されているすべてのサービスの現在の状態を取得することもできます。
+
+.開始する前に
+あなたは `Passwords.txt`ファイルを持っています。
+
+.手順
+. グリッドノードにログインします。
++
+.. 次のコマンドを入力します： `ssh admin@_grid_node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+
+
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+. グリッドノードで実行中の Server Manager の現在のステータスを表示します： `*service servermanager status*`
++
+グリッドノード上で実行されているサーバーマネージャの現在の状態（実行中か否か）が報告されます。サーバーマネージャーのステータスが `running`の場合、前回起動してからの稼働時間が表示されます。例：
+
++
+[listing]
+----
+servermanager running for 1d, 13h, 0m, 30s
+----
+. グリッドノードで実行中の Server Manager の現在のバージョンを表示します： `*service servermanager version*`
++
+現在のバージョンが表示されます。例：
+
++
+[listing]
+----
+11.1.0-20180425.1905.39c9493
+----
+. コマンドシェルからログアウトします： `*exit*`
+

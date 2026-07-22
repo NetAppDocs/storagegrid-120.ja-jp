@@ -1,0 +1,46 @@
+---
+permalink: ilm/access-create-ilm-rule-wizard.html 
+sidebar: sidebar 
+keywords: create ILM rule, information lifecycle rule 
+summary: ILMルールを作成するには、ILMルール作成ウィザードを使用します。 
+---
+= StorageGRIDでILMルールの作成ウィザードにアクセスする
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ILMルールを使用すると、オブジェクトデータの配置を時間経過とともに管理できます。ILMルールを作成するには、「ILMルールの作成ウィザード」を使用します。
+
+
+NOTE: ポリシーのデフォルト ILM ルールを作成する場合は、代わりに link:creating-default-ilm-rule.html["デフォルトのILMルールを作成するための手順"] に従ってください。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* link:../admin/admin-group-permissions.html["特定のアクセス権限"]があります。
+* このルールが適用されるテナント アカウントを指定する場合は、link:../admin/admin-group-permissions.html["テナントアカウントの権限"]か、各アカウントのアカウント ID を把握している必要があります。
+* ルールでオブジェクトを最終アクセス時刻のメタデータに基づいてフィルタリングしたい場合は、S3 バケットで最終アクセス時刻の更新を有効にする必要があります。
+* 使用予定のクラウドストレージプールはすべて設定済みです。link:creating-cloud-storage-pool.html["クラウドストレージプールを作成する"]を参照してください。
+* link:data-protection-options-for-ingest.html["取り込みオプション"]についてよく理解しています。
+* S3 Object Lock で使用する準拠ルールを作成する必要がある場合は、link:requirements-for-s3-object-lock.html["S3オブジェクトロックの要件"]に精通している必要があります。
+* （任意）以下の動画をご覧になったこと：
++
+.ILMルールの概要
+video::9872d38f-80b3-4ad4-9f79-b1ff008760c7[panopto]
+
+
+.タスク概要
+ILMルールを作成する際：
+
+* StorageGRID システムのトポロジーとストレージ構成を検討してください。
+* 作成するオブジェクトコピーの種類（レプリケートまたはイレイジャー コーディング）と、各オブジェクトに必要なコピー数を検討してください。
+* StorageGRID システムに接続するアプリケーションで使用されるオブジェクトメタデータの種類を確認します。ILM ルールは、メタデータに基づいてオブジェクトをフィルタリングします。
+* オブジェクトのコピーを時間の経過とともにどこに配置したいかを検討してください。
+* 使用する取り込みオプション（バランス型、厳密型、デュアルコミット）を決定します。
+
+
+.手順
+. *ILM* > *ルール*を選択します。
+. 「作成」を選択します。link:create-ilm-rule-enter-details.html["ステップ1（詳細を入力）"] ILMルール作成ウィザードが表示されます。
+

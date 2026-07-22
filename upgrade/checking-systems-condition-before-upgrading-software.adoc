@@ -1,0 +1,24 @@
+---
+permalink: upgrade/checking-systems-condition-before-upgrading-software.html 
+sidebar: sidebar 
+keywords: upgrade, grid tasks, firewall, ports 
+summary: StorageGRID システムをアップグレードする前に、システムがアップグレードに対応できる状態になっていることを確認します。システムが正常に稼働しており、すべてのグリッドノードが動作していることを確認してください。 
+---
+= アップグレード前にStorageGRIDシステムの状態を確認してください
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID システムをアップグレードする前に、システムがアップグレードに対応できる状態になっていることを確認します。システムが正常に稼働しており、すべてのグリッドノードが動作していることを確認してください。
+
+.手順
+. グリッドマネージャーにlink:../admin/web-browser-requirements.html["対応ウェブブラウザ"]を使用してサインインします。
+. アクティブなアラートがないか確認し、あれば解決してください。
+. アップグレードの前に、StorageGRID 12.0 に必要なすべてのポートが開いていることを確認するには、link:../network/internal-grid-node-communications.html["内部でのGridノードの通信"]およびlink:../network/external-communications.html["外部通信"]を参照してください。
++
+
+NOTE: StorageGRID 12.0 へのアップグレード時に、追加のポートは必要ありません。
+
+

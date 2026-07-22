@@ -1,0 +1,125 @@
+---
+permalink: monitor/using-snmp-monitoring.html 
+sidebar: sidebar 
+keywords: snmp, monitoring 
+summary: Simple Network Management Protocol （SNMP）を使用して StorageGRID を監視する場合は、StorageGRID に付属の SNMP エージェントを設定する必要があります。 
+---
+= StorageGRIDでSNMP監視を使用する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Simple Network Management Protocol （SNMP）を使用して StorageGRID を監視する場合は、StorageGRID に付属の SNMP エージェントを設定する必要があります。
+
+* link:configuring-snmp-agent.html["SNMPエージェントを設定する"]
+* link:updating-snmp-agent.html["SNMPエージェントを更新する"]
+
+
+
+
+[[capabilities]]
+== 機能
+
+各 StorageGRID ノードは、MIB を提供する SNMP エージェント（デーモン）を実行します。StorageGRID MIB には、アラートに関するテーブル定義と通知定義が含まれています。MIB には、各ノードのプラットフォームやモデル番号などのシステム記述情報も含まれています。各 StorageGRID ノードは、MIB-II オブジェクトのサブセットもサポートしています。
+
+
+NOTE: グリッドノードにMIB ファイルをダウンロードする場合は、link:access-snmp-mib.html["MIBファイルにアクセスする"]を参照してください。
+
+初期状態では、すべてのノードでSNMPは無効になっています。SNMPエージェントを設定すると、すべてのStorageGRIDノードが同じ設定を受け取ります。
+
+StorageGRID SNMPエージェントは、SNMPプロトコルの3つのバージョンすべてをサポートしています。クエリ用の読み取り専用MIBアクセスを提供し、2種類のイベント駆動型通知を管理システムに送信できます：
+
+トラップ:: トラップとは、SNMPエージェントによって送信される通知であり、管理システムによる確認応答を必要としません。トラップは、アラートがトリガーされた場合など、StorageGRID内で何かが発生したことを管理システムに通知する役割を果たします。
++
+--
+トラップはSNMPの3つのバージョンすべてでサポートされています。
+
+--
+通知する:: インフォームはトラップに似ていますが、管理システムによる承認が必要です。SNMPエージェントは、一定時間内に確認応答を受信しない場合、確認応答を受信するか、最大再試行回数に達するまで、インフォームを再送信します。
++
+--
+インフォームは SNMPv2c および SNMPv3 でサポートされています。
+
+--
+
+
+トラップ通知と情報通知は、以下の場合に送信されます：
+
+* デフォルトまたはカスタムのアラートは、どの重大度レベルでもトリガーされます。アラートの SNMP 通知を抑制するには、アラートに対して link:silencing-alert-notifications.html["サイレンスを設定する"] 必要があります。アラート通知は、link:../primer/what-admin-node-is.html["優先送信者 管理ノード"] によって送信されます。
++
+各アラートは、アラートの重大度レベルに基づいて、3つのトラップタイプのいずれかにマッピングされます：activeMinorAlert、activeMajorAlert、およびactiveCriticalAlert。これらのトラップをトリガーする可能性のあるアラートの一覧については、link:alerts-reference.html["アラート一覧"]を参照してください。
+
+
+
+
+
+[[snmp-version-support]]
+== SNMPのバージョンのサポート
+
+この表は、各SNMPバージョンでサポートされている機能の概要を示しています。
+
+[cols="1a,2a,2a,2a"]
+|===
+|  | SNMPv1を使用したチャンク アップロード署名要求がサポートされるようになりました。 | SNMPv2cを使用したチャンク アップロード署名要求がサポートされるようになりました。 | SNMPv3を使用したチャンク アップロード署名要求がサポートされるようになりました。 
+
+
+ a| 
+クエリ
+
+（GETとGETNEXT）
+ a| 
+読み取り専用MIBクエリ
+ a| 
+読み取り専用MIBクエリ
+ a| 
+読み取り専用MIBクエリ
+
+
+
+ a| 
+クエリ認証
+ a| 
+コミュニティストリング
+ a| 
+コミュニティストリング
+ a| 
+ユーザーベースセキュリティモデル（USM）ユーザー
+
+
+
+ a| 
+通知
+
+（TRAP および INFORM）
+ a| 
+トラップのみ
+ a| 
+トラップと通知
+ a| 
+トラップと通知
+
+
+
+ a| 
+通知認証
+ a| 
+トラップの宛先ごとに、デフォルトのトラップコミュニティまたはカスタムコミュニティ文字列
+ a| 
+トラップの宛先ごとに、デフォルトのトラップコミュニティまたはカスタムコミュニティ文字列
+ a| 
+各トラップの宛先ごとのUSMユーザー
+
+|===
+
+
+[[limitations]]
+== 制限事項
+
+* StorageGRID は読み取り専用の MIB アクセスをサポートしています。読み書きアクセスはサポートされていません。
+* グリッド内のすべてのノードは同じ構成を受け取ります。
+* SNMPv3：StorageGRID はトランスポートサポートモード（TSM）をサポートしていません。
+* SNMPv3：サポートされている唯一の認証プロトコルは SHA（HMAC-SHA-96）です。
+* SNMPv3：サポートされているプライバシープロトコルは AES のみです。
+

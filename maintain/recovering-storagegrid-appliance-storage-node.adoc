@@ -1,0 +1,23 @@
+---
+permalink: maintain/recovering-storagegrid-appliance-storage-node.html 
+sidebar: sidebar 
+keywords: recover, appliance storage node failure, workflow 
+summary: 障害が発生した StorageGRID アプライアンスストレージノードを復旧する手順は、システムドライブの損失から復旧する場合でも、ストレージボリュームのみの損失から復旧する場合でも同じです。 
+---
+= StorageGRIDアプライアンスストレージノードのリカバリに関する警告
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+障害が発生した StorageGRID アプライアンスストレージノードを復旧する手順は、システムドライブの損失から復旧する場合でも、ストレージボリュームのみの損失から復旧する場合でも同じです。
+
+
+CAUTION: 複数のストレージノードが故障（またはオフライン）している場合は、テクニカルサポートにお問い合わせください。以下の復旧手順は実行しないでください。データ損失が発生する可能性があります。詳細については、link:how-site-recovery-is-performed-by-technical-support.html["テクニカルサポートがサイトを復旧する方法"]を参照してください。
+
+
+CAUTION: ILMルールが複製コピーを1つだけ保存するように構成されていて、そのコピーが障害が発生したストレージボリューム上に存在する場合、オブジェクトを復旧することはできません。
+
+
+NOTE: コントローラーの交換や SANtricity OS の再インストールなど、ハードウェアのメンテナンス手順については、 https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/index.html["ストレージ機器のメンテナンス手順"^]を参照してください。

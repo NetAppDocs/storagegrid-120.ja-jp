@@ -1,0 +1,86 @@
+---
+permalink: s3/post-object-restore.html 
+sidebar: sidebar 
+keywords: post, RestoreObject, object 
+summary: S3 RestoreObject リクエストを使用して、Cloud Storage Pool に保存されているオブジェクトをリストアできます。 
+---
+= S3 RestoreObjectリクエストを使用してStorageGRIDでオブジェクトを復元する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+S3 RestoreObject リクエストを使用して、Cloud Storage Pool に保存されているオブジェクトをリストアできます。
+
+
+
+[[supported-request-type]]
+== サポートされているリクエストタイプ
+
+StorageGRID は、オブジェクトを復元するための RestoreObject リクエストのみをサポートしています。 `SELECT` タイプの復元はサポートしていません。Select リクエストは `XNotImplemented`を返します。
+
+
+
+[[versioning]]
+== バージョン管理
+
+オプションで、 `versionId`を指定して、バージョン管理されたバケット内のオブジェクトの特定バージョンを復元します。 `versionId`を指定しない場合、オブジェクトの最新バージョンが復元されます
+
+
+
+[[behavior-of-restoreobject-on-cloud-storage-pool-objects]]
+== クラウドストレージプールオブジェクトに対する RestoreObject の動作
+
+オブジェクトがlink:../ilm/what-cloud-storage-pool-is.html["クラウド ストレージ プール"]に保存されている場合、RestoreObjectリクエストは、オブジェクトの状態に基づいて以下の動作をします。詳細については、link:head-object.html["HeadObject"]を参照してください。
+
+
+NOTE: オブジェクトがクラウドストレージプールに保存され、かつそのオブジェクトのコピーがグリッド上にも1つ以上存在する場合、RestoreObjectリクエストを発行してオブジェクトをリストアする必要はありません。代わりに、GetObjectリクエストを使用して、ローカルコピーを直接取得できます。
+
+[cols="1a,2a"]
+|===
+| オブジェクトの状態 | RestoreObject の動作 
+
+
+ a| 
+StorageGRID に取り込まれたオブジェクトで、ILM による評価がまだ行われていないか、クラウドストレージプールに存在しないオブジェクト
+ a| 
+`403 Forbidden`, `InvalidObjectState`
+
+
+
+ a| 
+クラウドストレージプール内のオブジェクトだが、まだ取得不可能な状態に移行していない
+ a| 
+`200 OK`変更は行われません。
+
+*注*: オブジェクトが取得不可能な状態に移行する前は、その `expiry-date`を変更することはできません。
+
+
+
+ a| 
+オブジェクトが復元不可能な状態に遷移しました
+ a| 
+`202 Accepted`リクエスト本文で指定された日数だけ、オブジェクトの復元可能なコピーをクラウドストレージプールに復元します。この期間が終了すると、オブジェクトは復元不可能な状態に戻ります。
+
+オプションで、 `Tier`リクエスト要素を使用して、復元ジョブの完了にかかる時間を決定します（(`Expedited`、 `Standard`、または `Bulk`）。 `Tier`を指定しない場合、 `Standard`ティアが使用されます。
+
+*重要*：オブジェクトが S3 Glacier Deep Archive に移行されている場合、またはクラウドストレージプールが Azure Blob ストレージを使用している場合、 `Expedited`階層を使用してオブジェクトを復元することはできません。以下のエラーが返されます `403 Forbidden`、 `InvalidTier`： `Retrieval option is not supported by this storage class`。
+
+
+
+ a| 
+復元不可能な状態から復元処理中のオブジェクト
+ a| 
+`409 Conflict`, `RestoreAlreadyInProgress`
+
+
+
+ a| 
+オブジェクトがクラウドストレージプールに完全に復元されました。
+ a| 
+`200 OK`
+
+*注：* オブジェクトが取得可能な状態に復元されている場合、 `Days`に新しい値を指定してRestoreObjectリクエストを再発行することで、その `expiry-date`を変更できます。復元日は、リクエストの時間を基準に更新されます。
+
+|===

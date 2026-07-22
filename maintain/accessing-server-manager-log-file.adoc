@@ -1,0 +1,71 @@
+---
+permalink: maintain/accessing-server-manager-log-file.html 
+sidebar: sidebar 
+keywords: storagegrid, server manager, log file 
+summary: サーバーマネージャーの使用中に問題が発生した場合は、ログファイルを確認してください。 
+---
+= StorageGRID でのサーバーマネージャーのトラブルシューティング
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+サーバーマネージャーの使用中に問題が発生した場合は、ログファイルを確認してください。
+
+Server Manager に関連するエラーメッセージは、Server Manager のログファイルに記録されます。ログファイルは次の場所にあります： `/var/local/log/servermanager.log`
+
+エラーに関するメッセージについては、このファイルを確認してください。必要に応じて、問題を技術サポートにエスカレーションしてください。技術サポートにログファイルを転送するよう求められる場合があります。
+
+
+
+[[service-with-an-error-state]]
+== エラー状態のサービス
+
+サービスがエラー状態になったことを検出した場合は、サービスの再起動を試みてください。
+
+.開始する前に
+あなたは `Passwords.txt`ファイルを持っています。
+
+.タスク概要
+サーバーマネージャーはサービスを監視し、予期せず停止したサービスを再起動します。サービスに障害が発生した場合、サーバーマネージャーはサービスの再起動を試みます。5分以内にサービスの起動に3回失敗した場合、サービスはエラー状態になります。サーバーマネージャーは、再度の再起動を試みません。
+
+.手順
+. グリッドノードにログインします。
++
+.. 次のコマンドを入力します： `ssh admin@_grid_node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+
+
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+. サービスのエラー状態を確認します： `service _servicename_ status`
++
+次に例を示します。
+
++
+[listing]
+----
+service ldr status
+----
++
+サービスがエラー状態にある場合、次のメッセージが返されます： `_servicename_ in error state`。例えば：
+
++
+[listing]
+----
+ldr in error state
+----
++
+
+NOTE: サービスステータスが `disabled`の場合は、link:using-donotstart-file.html["サービスの DoNotStart ファイルを削除する"]の手順を参照してください。
+
+. サービスを再起動することで、エラー状態を解消してみてください。 `service _servicename_ restart`
++
+サービスが再起動しない場合は、テクニカルサポートにお問い合わせください。
+
+. コマンドシェルからログアウトします： `exit`
+

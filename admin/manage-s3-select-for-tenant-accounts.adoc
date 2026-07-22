@@ -1,0 +1,82 @@
+---
+permalink: admin/manage-s3-select-for-tenant-accounts.html 
+sidebar: sidebar 
+keywords: s3 select, selectobjectcontent, best practices, object format, s3 select requirements 
+summary: 特定のS3テナントがS3 Selectを使用して、個々のオブジェクトに対するSelectObjectContentリクエストを発行できるようにすることができます。 
+---
+= StorageGRID でテナント アカウントの S3 Select を管理する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+特定のS3テナントがS3 Selectを使用して、個々のオブジェクトに対するSelectObjectContentリクエストを発行できるようにすることができます。
+
+S3 Selectは、データベースや関連リソースをデプロイすることなく、大量のデータを効率的に検索できる方法を提供します。また、データ取得にかかるコストと遅延も削減します。
+
+
+
+[[what-is-s3-select]]
+== S3 Selectとは何ですか？
+
+S3 Select を使用すると、S3 クライアントはSelectObjectContentリクエストを使用して、オブジェクトから必要なデータのみをフィルタリングして取得できます。StorageGRID の S3 Select の実装には、S3 Select のコマンドと機能のサブセットが含まれています。
+
+
+
+[[considerations-and-requirements-for-using-s3-select]]
+== S3 Selectを使用する際の考慮事項と要件
+
+
+
+[[grid-administration-requirements]]
+=== グリッド管理要件
+
+グリッド管理者は、テナントにS3 Select権限を付与する必要があります。「S3 Selectを許可する」を選択するのは、link:creating-tenant-account.html["テナントの作成"]またはlink:editing-tenant-account.html["テナントの編集"]の場合です。
+
+
+
+[[object-format-requirements]]
+=== オブジェクトフォーマットの要件
+
+クエリ対象のオブジェクトは、以下のいずれかの形式である必要があります。
+
+* *CSV*。そのまま使用することも、GZIPまたはBZIP2アーカイブに圧縮して使用することもできます。
+* *Parquet*。Parquetオブジェクトに関する追加要件：
++
+** S3 Selectは、GZIPまたはSnappyを使用したカラム型圧縮のみをサポートしています。S3 Selectは、Parquetオブジェクトのオブジェクト全体の圧縮をサポートしていません。
+** S3 SelectはParquet形式の出力に対応していません。出力形式はCSVまたはJSONのいずれかを指定する必要があります。
+** 圧縮されていない行グループの最大サイズは 512 MB です。
+** オブジェクトのスキーマで指定されているデータ型を使用する必要があります。
+** INTERVAL、JSON、LIST、TIME、またはUUIDの論理型は使用できません。
+
+
+
+
+
+
+[[endpoint-requirements]]
+=== エンドポイント要件
+
+SelectObjectContent リクエストは、link:configuring-load-balancer-endpoints.html["StorageGRID ロードバランサーエンドポイント"] に送信する必要があります。
+
+エンドポイントで使用される管理ノードとゲートウェイノードは、次のいずれかである必要があります：
+
+* サービスアプライアンスノード
+* VMwareベースのソフトウェアノード
+* cgroup v2が有効になっているカーネルを実行しているベアメタルノード
+
+
+
+
+[[general-considerations]]
+=== 一般的な考慮事項
+
+クエリをストレージノードに直接送信することはできません。
+
+
+CAUTION: SelectObjectContent リクエストは、すべての S3 クライアントとすべてのテナントのロードバランサーのパフォーマンスを低下させる可能性があります。この機能は、必要な場合にのみ、信頼できるテナントに対してのみ有効にしてください。
+
+link:../s3/use-s3-select.html["S3 Selectの使用方法"]を参照してください。
+
+S3 Select 操作のlink:../monitor/reviewing-support-metrics.html["Grafanaチャート"]を時系列で表示するには、グリッドマネージャで *サポート* > *ツール* > *メトリクス* を選択します。

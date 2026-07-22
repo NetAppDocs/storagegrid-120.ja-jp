@@ -1,0 +1,180 @@
+---
+permalink: troubleshoot/troubleshooting-admin-node-and-user-interface-issues.html 
+sidebar: sidebar 
+keywords: how to troubleshoot admin node issues, how to troubleshoot user interface issues 
+summary: 管理ノードおよび StorageGRID ユーザーインターフェースに関連する問題の原因を特定するために、いくつかのタスクを実行できます。 
+---
+= StorageGRIDの管理ノードとユーザーインターフェースの問題のトラブルシューティング
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+管理ノードおよび StorageGRID ユーザーインターフェースに関連する問題の原因を特定するために、いくつかのタスクを実行できます。
+
+
+
+[[admin-node-sign-in-errors]]
+== 管理者ノードのサインインエラー
+
+StorageGRID 管理ノードへのサインイン時にエラーが発生した場合、システムにlink:../troubleshoot/troubleshooting-network-hardware-and-platform-issues.html["ネットワーク"]または https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/troubleshooting-hardware-installation-sg100-and-sg1000.html["ハードウェア"^]の問題、link:../primer/what-admin-node-is.html["管理ノードサービス"]に関する問題、あるいは接続されたストレージノード上のlink:../maintain/recovering-failed-storage-volumes-and-rebuilding-cassandra-database.html["Cassandraデータベースに関する問題"]が原因である可能性があります。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* あなたは `Passwords.txt`ファイルを持っています。
+* link:../admin/admin-group-permissions.html["特定のアクセス権限"]があります。
+
+
+.タスク概要
+管理ノードへのサインイン時に以下のいずれかのエラーメッセージが表示された場合は、以下のトラブルシューティング ガイドラインを参照してください。
+
+* `Your credentials for this account were invalid. Please try again.`
+* `Waiting for services to start...`
+* `Internal server error. The server encountered an error and could not complete your request. Please try again. If the problem persists, contact Technical Support.`
+* `Unable to communicate with server. Reloading page...`
+
+
+.手順
+. 10分待ってから、もう一度ログインしてみてください。
++
+エラーが自動的に解決されない場合は、次の手順に進んでください。
+
+. StorageGRID システムに複数の管理ノードがある場合は、別の管理ノードからGrid Managerにサインインして、利用できない管理ノードのステータスを確認してください。
++
+** ログインできる場合は、*ダッシュボード*、*ノード*、*アラート*、*サポート*の各オプションを使用して、エラーの原因を特定できます。
+** 管理者ノードが1つしかない場合、またはそれでもサインインできない場合は、次の手順に進んでください。
+
+
+. ノードのハードウェアがオフラインかどうかを判断します。
+. StorageGRID システムでシングル サインオン（SSO）が有効になっている場合は、link:../admin/configure-sso.html["シングル サインオンの設定"]の手順を参照してください。
++
+問題解決のために、特定の管理ノードに対して一時的にSSOを無効化してから再度有効化する必要がある場合があります。
+
++
+
+NOTE: シングル サインオンが有効になっている場合、制限されたポートを使用してサインオンすることはできません。ポート443を使用する必要があります。
+
+. 使用しているアカウントがフェデレーションユーザーのものであるかどうかを確認してください。
++
+連携ユーザーアカウントが機能しない場合は、rootなどのローカルユーザーとしてGrid Managerにサインインしてみてください。
+
++
+** ローカルユーザーがサインインできる場合：
++
+... アラートを確認します。
+... *設定* ＞ *アクセス制御* ＞ *IDフェデレーション* を選択します。
+... *接続テスト* をクリックして、LDAPサーバの接続設定を検証します。
+... テストが失敗した場合は、設定エラーをすべて解決してください。
+
+
+** ローカルユーザーがサインインできない場合で、認証情報が正しいと確信できる場合は、次の手順に進んでください。
+
+
+. Secure Shell (SSH) を使用して管理ノードにログインします。
++
+.. 次のコマンドを入力します： `ssh admin@Admin_Node_IP`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+
+
+. グリッドノードで実行中のすべてのサービスのステータスを表示します： `storagegrid-status`
++
+nms、mi、nginx、およびmgmt apiサービスがすべて実行されていることを確認してください。
+
++
+サービスのステータスが変更されると、出力は即座に更新されます。
+
++
+....
+$ storagegrid-status
+Host Name                      99-211
+IP Address                     10.96.99.211
+Operating System Kernel        4.19.0         Verified
+Operating System Environment   Debian 10.1    Verified
+StorageGRID Webscale Release   11.4.0         Verified
+Networking                                    Verified
+Storage Subsystem                             Verified
+Database Engine                5.5.9999+default Running
+Network Monitoring             11.4.0         Running
+Time Synchronization           1:4.2.8p10+dfsg Running
+ams                            11.4.0         Running
+cmn                            11.4.0         Running
+nms                            11.4.0         Running
+ssm                            11.4.0         Running
+mi                             11.4.0         Running
+dynip                          11.4.0         Running
+nginx                          1.10.3         Running
+tomcat                         9.0.27         Running
+grafana                        6.4.3          Running
+mgmt api                       11.4.0         Running
+prometheus                     11.4.0         Running
+persistence                    11.4.0         Running
+ade exporter                   11.4.0         Running
+alertmanager                   11.4.0         Running
+attrDownPurge                  11.4.0         Running
+attrDownSamp1                  11.4.0         Running
+attrDownSamp2                  11.4.0         Running
+node exporter                  0.17.0+ds      Running
+sg snmp agent                  11.4.0         Running
+....
+. nginx-gwサービスが実行されていることを確認してください `# service nginx-gw status`
+. [[use_Lumberjack_to_collect_logs]]Lumberjack を使用してログを収集する： `# /usr/local/sbin/lumberjack.rb`
++
+認証失敗が過去に発生した場合は、Lumberjackスクリプトのオプションである--startと--endを使用して、適切な時間範囲を指定できます。これらのオプションの詳細については、lumberjack -h を使用してください。
+
++
+端末への出力には、ログアーカイブがコピーされた場所が表示されます。
+
+. [[review_logs, start=10]]以下のログを確認してください：
++
+** `/var/local/log/bycast.log`
+** `/var/local/log/bycast-err.log`
+** `/var/local/log/nms.log`
+** `**/*commands.txt`
+
+
+. 管理ノードに問題が見つからない場合は、以下のいずれかのコマンドを実行して、サイトでADCサービスを実行している3つのストレージノードのIPアドレスを特定してください。通常、これらはそのサイトに設置された最初の3台のストレージノードです。
++
+[listing]
+----
+# cat /etc/hosts
+----
++
+[listing]
+----
+# gpt-list-services adc
+----
++
+管理ノードは、認証プロセス中にADCサービスを使用します。
+
+. 管理ノードから、特定したIPアドレスを使用して、ssh経由で各ADCストレージノードにログインします。
+. グリッドノードで実行中のすべてのサービスのステータスを表示します： `storagegrid-status`
++
+idnt、acct、nginx、およびcassandraの各サービスがすべて実行されていることを確認してください。
+
+. 手順 <<use_Lumberjack_to_collect_logs,Lumberjackを使用してログを収集する>> および <<review_logs,ログの確認>> を繰り返して、ストレージノード上のログを確認します。
+. 問題を解決できない場合は、テクニカル サポートにお問い合わせください。
++
+収集したログをテクニカルサポートに提供してください。関連項目：link:../monitor/logs-files-reference.html["ログファイル参照"]
+
+
+
+
+
+[[user-interface-issues]]
+== ユーザ インターフェイスに関する問題
+
+StorageGRID ソフトウェアのアップグレード後、Grid Manager またはTenant Manager のユーザーインターフェイスが期待どおりに応答しない場合があります。
+
+.手順
+. 必ずlink:../admin/web-browser-requirements.html["対応ウェブブラウザ"]を使用してください。
+. ウェブブラウザのキャッシュをクリアしてください。
++
+キャッシュをクリアすると、以前のバージョンの StorageGRID ソフトウェアで使用されていた古いリソースが削除され、ユーザーインターフェースが再び正常に動作するようになります。詳しい手順については、お使いのウェブブラウザのマニュアルを参照してください。
+
+

@@ -1,0 +1,238 @@
+---
+permalink: admin/what-is-autosupport.html 
+sidebar: sidebar 
+keywords: autosupport, technical support, storagegrid health, system status, Active IQ 
+summary: AutoSupport 機能を使用すると、StorageGRID は健全性およびステータスパッケージを NetApp テクニカルサポートに送信できます。 
+---
+= StorageGRIDのAutoSupportについて学ぶ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+AutoSupport 機能を使用すると、StorageGRID は健全性およびステータスパッケージを NetApp テクニカルサポートに送信できます。
+
+AutoSupportを使用すると、問題をより迅速に解決できます。テクニカルサポートは、お客様のシステムのストレージニーズを監視し、新しいノードやサイトを追加する必要があるかどうかを判断するお手伝いをいたします。オプションとして、AutoSupportはパッケージをもう1つの追加の宛先に送信できます。
+
+StorageGRID には 2 種類の AutoSupport があります：
+
+* *StorageGRID AutoSupport* は、StorageGRID ソフトウェアの問題をレポートします。StorageGRID の初回インストール時にデフォルトで有効になります。必要に応じてlink:configure-autosupport-grid-manager.html["デフォルトの AutoSupport 構成を変更する"]できます。
++
+
+NOTE: StorageGRID AutoSupport が有効になっていない場合、Grid Manager ダッシュボードにメッセージが表示されます。メッセージには、AutoSupport の設定ページへのリンクが含まれています。メッセージを閉じると、AutoSupport が無効のままであっても、ブラウザのキャッシュがクリアされるまで再び表示されません。
+
+* *アプライアンスハードウェア AutoSupport* は、StorageGRID アプライアンスの問題を報告します。次の操作が必要です。link:configure-autosupport-grid-manager.html#autosupport-for-appliances["各アプライアンスでハードウェア AutoSupport を設定する"]
+
+
+
+
+[[what-is-active-iq]]
+== Active IQ とは何ですか？
+
+Active IQ は、クラウドベースのデジタルアドバイザーであり、NetApp のインストールベースから得られる予測分析とコミュニティの知見を活用します。継続的なリスク評価、予測アラート、処方的ガイダンス、および自動化されたアクションにより、問題が発生する前に防止し、システムの健全性の向上とシステム可用性の向上を実現します。
+
+NetApp Support Site で Active IQ のダッシュボードと機能を使用する場合は、AutoSupport を有効にする必要があります。
+
+https://docs.netapp.com/us-en/active-iq/index.html["Active IQ Digital Advisor ドキュメント"^]
+
+
+
+[[information-included-in-autosupport-package]]
+== AutoSupport パッケージに含まれる情報
+
+AutoSupport パッケージには以下のファイルと詳細情報が含まれています。
+
+[cols="2a,2a,3a"]
+|===
+| ファイル名 | フィールド | 説明 
+
+
+ a| 
+AUTOSUPPORT-HISTORY.XML
+ a| 
+AutoSupport シーケンス番号 + この AutoSupport の宛先 + 配信ステータス + 配信試行回数 + AutoSupport 件名 + 配信 URI + 最終エラー + AutoSupport PUT ファイル名 + 生成時刻 + Autosupport 圧縮サイズ + Autosupport 非圧縮サイズ + 合計収集時間 （ms）
+ a| 
+AutoSupport 履歴ファイル。
+
+
+
+ a| 
+AUTOSUPPORT.XML
+ a| 
+ノード + サポートへの連絡プロトコル + HTTP/HTTPS のサポート URL + サポートアドレス + AutoSupport OnDemand 状態 + AutoSupport OnDemand サーバー URL + AutoSupport OnDemand ポーリング間隔
+ a| 
+AutoSupport ステータスファイル。使用されているプロトコルの詳細、テクニカルサポートの URL とアドレス、ポーリング間隔、および OnDemand AutoSupport が有効か無効かを示します。
+
+
+
+ a| 
+BUCKETS.XML
+ a| 
+バケットID + アカウントID + ビルドバージョン + ロケーション制約構成 + コンプライアンス有効 + コンプライアンス構成 + S3オブジェクトロック有効 + S3オブジェクトロック構成 + 一貫性構成 + CORS有効 + CORS構成 + 最終アクセス時間有効 + ポリシー有効 + ポリシー構成 + 通知有効 + 通知構成 + クラウドミラー有効 + クラウドミラー構成 + 検索有効 + 検索構成 + バケットタグ付け有効 + バケットタグ付け構成 + バージョン管理構成
+ a| 
+バケットレベルでの設定詳細と統計情報を提供します。バケット構成の例としては、プラットフォームサービス、コンプライアンス、バケットの一貫性などが挙げられます。
+
+
+
+ a| 
+GRID-CONFIGURATIONS.XML
+ a| 
+属性ID + 属性名 + 値 + インデックス + テーブルID + テーブル名
+ a| 
+グリッド全体の構成情報ファイル。グリッド証明書、メタデータのリザーブ スペース、グリッド全体の構成設定（コンプライアンス、S3 オブジェクト ロック、オブジェクト圧縮、アラート、syslog、および ILM 構成）、イレイジャーコーディング プロファイルの詳細、DNS 名、および link:../primer/nodes-and-services.html#storagegrid-services["NMS name"] に関する情報が含まれています。
+
+
+
+ a| 
+GRID-SPEC.XML
+ a| 
+グリッド仕様、生のXML
+ a| 
+StorageGRID の設定および展開に使用されます。グリッド仕様、NTP サーバーの IP アドレス、DNS サーバーの IP アドレス、ネットワークトポロジー、およびノードのハードウェアプロファイルが含まれています。
+
+
+
+ a| 
+GRID-TASKS.XML
+ a| 
+ノード + サービスパス + 属性ID + 属性名 + 値 + インデックス + テーブルID + テーブル名
+ a| 
+グリッドタスク（保守手順）のステータスファイル。グリッド上で実行中のタスク、終了したタスク、完了したタスク、失敗したタスク、および保留中のタスクの詳細を提供します。
+
+
+
+ a| 
+GRID.JSON
+ a| 
+グリッド + 改訂版 + ソフトウェアバージョン + 概要 + ライセンス + パスワード + DNS + NTP + サイト + ノード
+ a| 
+グリッド情報。
+
+
+
+ a| 
+ILM-CONFIGURATION.XML
+ a| 
+属性ID + 属性名 + 値 + インデックス + テーブルID + テーブル名
+ a| 
+ILM構成の属性一覧。
+
+
+
+ a| 
+ILM-STATUS.XML
+ a| 
+ノード + サービスパス + 属性ID + 属性名 + 値 + インデックス + テーブルID + テーブル名
+ a| 
+ILMメトリクス情報ファイル。各ノードのILM評価率とグリッド全体のメトリクスが含まれています。
+
+
+
+ a| 
+ILM.XML
+ a| 
+ILMの生のXML
+ a| 
+ILMアクティブポリシーファイル。ストレージプールID、取り込み動作、フィルタ、ルール、概要など、アクティブなILMポリシーに関する詳細情報が含まれています。
+
+
+
+ a| 
+LOG.TGZ
+ a| 
+_該当なし_
+ a| 
+ダウンロード可能なログファイル。各ノードの `bycast-err.log`および `servermanager.log`が含まれます。
+
+
+
+ a| 
+MANIFEST.XML
+ a| 
+収集順序 + AutoSupport このデータのコンテンツファイル名 + このデータ項目の概要 + 収集されたバイト数 + 収集にかかった時間 + このデータ項目のステータス + エラーの概要 + AutoSupport このデータのコンテンツタイプ +
+ a| 
+AutoSupport のメタデータとすべての AutoSupport ファイルの簡単な説明が含まれます。
+
+
+
+ a| 
+NMS-ENTITIES.XML
+ a| 
+属性インデックス + エンティティOID + ノードID + デバイスモデルID + デバイスモデルバージョン + エンティティ名
+ a| 
+グループおよびサービスエンティティ（link:../primer/nodes-and-services.html#storagegrid-services["NMSツリー"]）。グリッドトポロジーの詳細を提供します。ノードは、そのノード上で実行されているサービスに基づいて特定できます。
+
+
+
+ a| 
+OBJECTS-STATUS.XML
+ a| 
+ノード + サービスパス + 属性ID + 属性名 + 値 + インデックス + テーブルID + テーブル名
+ a| 
+オブジェクトの状態（バックグラウンド スキャン ステータス、アクティブ転送、転送速度、総転送量、削除率、破損したフラグメント、失われたオブジェクト、欠落したオブジェクト、修復試行回数、スキャン率、推定スキャン期間、および修復完了ステータスを含む）。
+
+
+
+ a| 
+SERVER-STATUS.XML
+ a| 
+ノード + サービスパス + 属性ID + 属性名 + 値 + インデックス + テーブルID + テーブル名
+ a| 
+サーバー構成。各ノードに関する以下の詳細情報が含まれています：プラットフォームの種類、オペレーティングシステム、インストール済みメモリ、利用可能なメモリ、ストレージ接続、ストレージアプライアンスシャーシのシリアル番号、ストレージコントローラの障害ドライブ数、コンピュートコントローラシャーシの温度、コンピュートハードウェア、コンピュートコントローラのシリアル番号、電源、ドライブサイズ、およびドライブタイプ。
+
+
+
+ a| 
+SERVICE-STATUS.XML
+ a| 
+ノード + サービスパス + 属性ID + 属性名 + 値 + インデックス + テーブルID + テーブル名
+ a| 
+サービスノード情報ファイル。割り当てられたテーブルスペース、空きテーブルスペース、データベースのReaperメトリック、セグメント修復時間、修復ジョブ時間、自動ジョブ再起動、自動ジョブ終了などの詳細情報が含まれます。
+
+
+
+ a| 
+STORAGE-GRADES.XML
+ a| 
+ストレージグレードID + ストレージグレード名 + ストレージノードID + ストレージノードパス
+ a| 
+各ストレージノードに対応するストレージグレード定義ファイル。
+
+
+
+ a| 
+SUMMARY-ATTRIBUTES.XML
+ a| 
+グループOID + グループパス + サマリー属性ID + サマリー属性名 + 値 + インデックス + テーブルID + テーブル名
+ a| 
+StorageGRID の使用状況情報を要約した高レベルのシステムステータスデータです。グリッド名、サイト名、グリッドごとおよびサイトごとのストレージノード数、ライセンスの種類、ライセンス容量と使用状況、ソフトウェアサポート条件、S3 操作の詳細などの情報を提供します。
+
+
+
+ a| 
+SYSTEM-ALERTS.XML
+ a| 
+名前 + 重要度 + ノード名 + アラートステータス + サイト名 + アラート発生時刻 + アラート解決時刻 + ルールID + ノードID + サイトID + ミュート済み + その他の注釈 + その他のラベル
+ a| 
+StorageGRID システムの潜在的な問題を示す現在のシステムアラート。
+
+
+
+ a| 
+USERAGENTS.XML
+ a| 
+ユーザーエージェント + 日数 + HTTP リクエストの合計 + 取り込まれたバイトの合計 + 取得されたバイトの合計 + PUT リクエスト + GET リクエスト + DELETE リクエスト + HEAD リクエスト + POST リクエスト + OPTIONS リクエスト + 平均リクエスト時間 （ms） + 平均 PUT リクエスト時間 （ms） + 平均 GET リクエスト時間 （ms） + 平均 DELETE リクエスト時間 （ms） + 平均 HEAD リクエスト時間 （ms） + 平均 POST リクエスト時間 （ms） + 平均 OPTIONS リクエスト時間 （ms）
+ a| 
+アプリケーションのユーザーエージェントに基づいた統計情報。例えば、ユーザーエージェントごとのPUT/GET/DELETE/HEAD操作の回数や、各操作の合計バイトサイズなど。
+
+
+
+ a| 
+X-HEADER-DATA
+ a| 
+X-Netapp-asup-generated-on + X-Netapp-asup-hostname + X-Netapp-asup-os-version + X-Netapp-asup-serial-num + X-Netapp-asup-subject + X-Netapp-asup-system-id + X-Netapp-asup-model-name +
+ a| 
+AutoSupport ヘッダーデータ。
+
+|===

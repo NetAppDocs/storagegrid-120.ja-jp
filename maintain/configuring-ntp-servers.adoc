@@ -1,0 +1,77 @@
+---
+permalink: maintain/configuring-ntp-servers.html 
+sidebar: sidebar 
+keywords: storagegrid, ntp, ntp server, configure ntp, configuring ntp 
+summary: ネットワークタイムプロトコル（NTP）サーバーを追加、更新、または削除して、StorageGRID システムのグリッドノード間でデータが正確に同期されるようにすることができます。 
+---
+= StorageGRIDでNTPサーバーを管理する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ネットワークタイムプロトコル（NTP）サーバーを追加、更新、または削除して、StorageGRID システムのグリッドノード間でデータが正確に同期されるようにすることができます。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* あなたはlink:../admin/admin-group-permissions.html["メンテナンス権限またはルートアクセス権限"]があります。
+* プロビジョニングパスフレーズをお持ちです。
+* 設定する必要のあるNTPサーバーのIPv4アドレスがあります。
+
+
+
+
+[[how-storagegrid-uses-ntp]]
+== StorageGRID が NTP を使用する方法
+
+StorageGRID システムは、ネットワークタイムプロトコル（NTP）を使用して、グリッド内のすべてのグリッドノード間で時刻を同期します。
+
+各サイトでは、StorageGRIDシステム内の少なくとも2つのノードにプライマリNTPの役割が割り当てられます。それらは、推奨される最小4つ、最大6つの外部時間ソースと、互いに同期します。プライマリNTPノードではないStorageGRIDシステムのすべてのノードは、NTPクライアントとして機能し、これらのプライマリNTPノードと同期します。
+
+外部NTPサーバーは、以前にプライマリNTPロールを割り当てたノードに接続します。このため、プライマリNTPロールを持つノードを少なくとも2つ指定することをお勧めします。
+
+
+
+[[ntp-server-guidelines]]
+== NTPサーバーのガイドライン
+
+タイミングの問題を防ぐために、以下のガイドラインに従ってください。
+
+* 外部NTPサーバーは、以前にプライマリNTPロールを割り当てたノードに接続します。このため、プライマリNTPロールを持つノードを少なくとも2つ指定することをお勧めします。
+* 各サイトの少なくとも2つのノードが、少なくとも4つの外部NTPソースにアクセスできることを確認してください。あるサイト内でNTPソースにアクセスできるノードが1つしかない場合、そのノードがダウンするとタイミングの問題が発生します。さらに、サイトごとに2つのノードを主要なNTPソースとして指定することで、サイトがグリッドの他の部分から隔離された場合でも正確な時刻同期が保証されます。
+* 指定された外部NTPサーバーはNTPプロトコルを使用する必要があります。時刻ずれの問題を防ぐため、NTPサーバーの参照先はStratum 3以上を指定する必要があります。
+
+
+
+NOTE: 運用レベルの StorageGRID インストールの外部 NTP ソースを指定する場合、Windows Server 2016 より前のバージョンの Windows では、Windows 時刻 （W32Time） サービスを使用しないでください。以前のバージョンの Windows のタイム サービスは十分な精度を備えておらず、StorageGRID を含む高精度環境での使用は Microsoft によってサポートされていません。詳細については、 https://support.microsoft.com/en-us/help/939322/support-boundary-to-configure-the-windows-time-service-for-high-accura["高精度環境向けに Windows タイム サービスを構成するためのサポート境界"^]を参照してください。
+
+
+
+[[configure-ntp-servers]]
+== NTPサーバーの設定
+
+NTPサーバーの追加、更新、削除を行うには、以下の手順に従ってください。
+
+.手順
+. *Maintenance* > *Network* > *NTP servers* を選択します。
+. 「サーバー」セクションで、必要に応じて NTP サーバーのエントリを追加、更新、または削除します。
++
+NTPサーバーは最低4つ含める必要があり、最大6つまで指定できます。
+
+. StorageGRID システムのプロビジョニングパスフレーズを入力し、*保存*を選択します。
++
+設定の更新が完了するまで、このページは無効になっています。
+
++
+
+NOTE: 新しいNTPサーバーを保存した後、すべてのNTPサーバーが接続テストに失敗した場合は、先に進まないでください。技術サポートにお問い合わせください。
+
+
+
+
+
+[[resolve-ntp-server-issues]]
+== NTPサーバーの問題を解決する
+
+インストール時に最初に指定した NTP サーバーの安定性または可用性に問題が発生した場合、サーバーの追加、既存サーバーの更新または削除によって、StorageGRID システムが使用する外部 NTP ソースのリストを更新できます。

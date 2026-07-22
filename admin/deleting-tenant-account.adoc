@@ -1,0 +1,37 @@
+---
+permalink: admin/deleting-tenant-account.html 
+sidebar: sidebar 
+keywords: tenant, delete, remove tenant 
+summary: テナントのシステムへのアクセス権を完全に削除したい場合は、テナントアカウントを削除できます。 
+---
+= StorageGRID テナント アカウントを削除する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+テナントのシステムへのアクセス権を完全に削除したい場合は、テナントアカウントを削除できます。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* link:admin-group-permissions.html["特定のアクセス権限"]があります。
+* テナントアカウントに関連付けられているすべてのS3バケットとオブジェクトを削除しました。
+* テナントがグリッドフェデレーション接続の使用を許可されている場合、link:grid-federation-manage-tenants.html["グリッドフェデレーション接続の使用権限を持つテナントを削除する"]に関する考慮事項を確認済みであることが必要です。
+
+
+.手順
+. 「テナント」を選択します。
+. 削除するテナントアカウントを特定します。
++
+検索ボックスを使用して、名前またはテナント ID でテナントを検索できます。
+
+. 複数のテナントを削除するには、チェックボックスを選択し、*Actions* > *Delete* を選択します。
+. 単一のテナントを削除するには、次のいずれかの操作を行います。
++
+** チェックボックスを選択し、*Actions* > *Delete* を選択します。
+** テナント名を選択して詳細ページを表示し、*アクション* > *削除* を選択します。
+
+
+. 「はい」を選択します。
+

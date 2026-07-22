@@ -1,0 +1,54 @@
+---
+permalink: audit/client-read-audit-messages.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, messages, client read, S3SL, SGET, SHEA, WGET, WHEA, S3 
+summary: S3クライアントアプリケーションがオブジェクトの取得を要求した際に、クライアント読み取り監査メッセージがログに記録されます。 
+---
+= StorageGRID におけるクライアントの読み取り操作の監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+S3クライアントアプリケーションがオブジェクトの取得を要求した際に、クライアント読み取り監査メッセージがログに記録されます。
+
+[cols="1a,3a,1a,1a"]
+|===
+| Code | 説明 | 使用者 | 詳細については、 
+
+
+ a| 
+S3SLを使用したチャンク アップロード署名要求がサポートされるようになりました。
+ a| 
+S3 Selectリクエスト：S3 Selectリクエストがクライアントに返された後、完了をログに記録します。S3SLメッセージには、エラーメッセージとエラーコードの詳細が含まれる場合があります。リクエストが成功しなかった可能性があります。
+ a| 
+S3クライアント
+ a| 
+link:s3-select-request.html["S3SL: S3 Select リクエスト"]
+
+
+
+ a| 
+SGET
+ a| 
+S3 GET：オブジェクトを取得したり、バケット内のオブジェクトを一覧表示したりするトランザクションが成功したことをログに記録します。
+
+*注:* トランザクションがサブリソースに対して実行される場合、監査メッセージにはフィールド S3SR が含まれます。
+ a| 
+S3クライアント
+ a| 
+link:sget-s3-get.html["SGET：S3 GET"]
+
+
+
+ a| 
+SHEA
+ a| 
+S3 HEAD: オブジェクトまたはバケットの存在を確認するために、トランザクションが成功したことをログに記録します。
+ a| 
+S3クライアント
+ a| 
+link:shea-s3-head.html["SHEA：S3 HEAD"]
+
+|===

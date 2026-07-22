@@ -1,0 +1,267 @@
+---
+permalink: s3/put-object.html 
+sidebar: sidebar 
+keywords: object, add object, put, PutObject request 
+summary: S3 PutObject リクエストを使用して、バケットにオブジェクトを追加できます。 
+---
+= S3 PutObjectリクエストを使用してStorageGRIDのバケットにオブジェクトを追加する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+S3 PutObject リクエストを使用して、バケットにオブジェクトを追加できます。
+
+
+
+[[resolve-conflicts]]
+== 競合を解決する
+
+2つのクライアントが同じキーに書き込むなど、クライアントのリクエストが競合する場合は、「最新の要求が優先される」方式で解決されます。「最新の要求が優先される」評価のタイミングは、S3クライアントが操作を開始したときではなく、StorageGRID システムが特定のリクエストを完了したときに基づきます。
+
+
+
+[[object-size]]
+== オブジェクトサイズ
+
+単一のPutObjectオペレーションの推奨最大サイズは 5 GiB（5,368,709,120 バイト）です。5 GiB を超えるオブジェクトがある場合は、代わりにlink:operations-for-multipart-uploads.html["マルチパートアップロード"]を使用してください。
+
+単一のPutObject操作でサポートされる最大サイズは 5 TiB （5,497,558,138,880 バイト）です。
+
+
+NOTE: StorageGRID 11.6以前からアップグレードした場合、5 GiBを超えるオブジェクトをアップロードしようとすると、「S3 PUT Object size too large」アラートがトリガーされます。StorageGRID 11.7または11.8を新規インストールした場合、この場合はアラートはトリガーされません。ただし、AWS S3標準に準拠するため、StorageGRIDの今後のリリースでは5 GiBを超えるオブジェクトのアップロードはサポートされません。
+
+
+
+[[user-metadata-size]]
+== ユーザーメタデータサイズ
+
+Amazon S3 は、各 PUT リクエストヘッダー内のユーザー定義メタデータのサイズを 2 KB に制限します。StorageGRID はユーザーメタデータを 24 KiB に制限します。ユーザー定義メタデータのサイズは、各キーと値の UTF-8 エンコーディングにおけるバイト数の合計によって測定されます。
+
+
+
+[[utf-8-characters-in-user-metadata]]
+== ユーザーメタデータ内のUTF-8文字
+
+リクエストに、ユーザー定義メタデータのキー名または値に（エスケープされていない）UTF-8値が含まれている場合、StorageGRID の動作は未定義です。
+
+StorageGRID は、ユーザー定義メタデータのキー名または値に含まれるエスケープされた UTF-8 文字を解析または解釈しません。エスケープされた UTF-8 文字は ASCII 文字として扱われます：
+
+* PutObject、CopyObject、GetObject、およびHeadObjectリクエストは、ユーザー定義のメタデータにエスケープされた UTF-8 文字が含まれている場合に成功します。
+* StorageGRID は、キー名または値の解釈された値に印刷不可能な文字が含まれている場合、 `x-amz-missing-meta` ヘッダーを返しません。
+
+
+
+
+[[object-tag-limits]]
+== オブジェクトタグの制限
+
+新規オブジェクトをアップロードする際にタグを追加することも、既存のオブジェクトにタグを追加することもできます。StorageGRID と Amazon S3 はどちらも、各オブジェクトにつき最大 10 個のタグをサポートします。オブジェクトに関連付けられたタグには、一意のタグキーが必要です。タグキーは最大 128 Unicode 文字、タグ値は最大 256 Unicode 文字で構成できます。キーと値は大文字と小文字を区別します。
+
+
+
+[[object-ownership]]
+== オブジェクトの所有権
+
+StorageGRID では、所有者以外のアカウントまたは匿名ユーザーによって作成されたオブジェクトを含め、すべてのオブジェクトはバケット所有者アカウントが所有します。
+
+
+
+[[supported-request-headers]]
+== サポートされているリクエストヘッダー
+
+以下のリクエストヘッダーがサポートされています：
+
+* `Cache-Control`
+* `Content-Disposition`
+* `Content-Encoding`
++
+に対して `aws-chunked`を指定した場合``Content-Encoding``、StorageGRID は以下の項目を検証しません：
+
++
+** StorageGRID は、 `chunk-signature`をチャンクデータと照合して検証しません。
+** StorageGRID は、 `x-amz-decoded-content-length` に指定した値をオブジェクトに対して検証しません。
+
+
+* `Content-Language`
+* `Content-Length`
+* `Content-MD5`
+* `Content-Type`
+* `Expires`
+* `Transfer-Encoding`
++
+チャンク転送エンコーディングは、 `aws-chunked`ペイロード署名も使用されている場合にサポートされます。
+
+* `x-amz-checksum-sha256`
+* `x-amz-meta-`、ユーザー定義のメタデータを含む名前と値のペアが続きます。
++
+ユーザー定義メタデータの名前と値のペアを指定する場合は、次の一般的な形式を使用してください。
+
++
+[listing, subs="specialcharacters,quotes"]
+----
+x-amz-meta-_name_: _value_
+----
++
+ILM ルールの参照時間として *ユーザー定義の作成時間* オプションを使用する場合は、オブジェクトが作成された日時を記録するメタデータの名前として `creation-time`を使用する必要があります。例：
+
++
+[listing]
+----
+x-amz-meta-creation-time: 1443399726
+----
++
+ `creation-time`の値は、1970年1月1日からの秒数として評価されます。
+
++
+
+NOTE: ILMルールでは、参照時間に「ユーザー定義の作成時間」と「バランス型」または「厳密型」の取り込みオプションの両方を使用することはできません。ILMルールを作成する際にエラーが返されます。
+
+* `x-amz-tagging`
+* S3オブジェクトロックリクエストヘッダー
++
+** `x-amz-object-lock-mode`
+** `x-amz-object-lock-retain-until-date`
+** `x-amz-object-lock-legal-hold`
++
+これらのヘッダーなしでリクエストが行われた場合、バケットのデフォルトの保持設定を使用して、オブジェクトのバージョンモードと保持期限が計算されます。link:../s3/use-s3-api-for-s3-object-lock.html["S3 REST APIを使用してS3オブジェクトロックを設定する"]を参照してください。
+
+
+
+* SSEリクエストヘッダー：
++
+** `x-amz-server-side-encryption`
+** `x-amz-server-side-encryption-customer-key-MD5`
+** `x-amz-server-side-encryption-customer-key`
+** `x-amz-server-side-encryption-customer-algorithm`
++
+<<サーバー側暗号化のためのリクエストヘッダー>>を参照してください。
+
+
+
+
+
+
+
+[[unsupported-request-headers]]
+== サポートされていないリクエストヘッダー
+
+以下のリクエストヘッダーはサポートされていません：
+
+* `If-Match`
++
+ `If-Match header`は受け入れられるが、機能しない。
+
+* `If-None-Match`
++
+ `If-None-Match header`は受け入れられるが、機能しない。
+
+* `x-amz-acl`
+* `x-amz-sdk-checksum-algorithm`
+* `x-amz-trailer`
+* `x-amz-website-redirect-location`
++
+ `x-amz-website-redirect-location`ヘッダーは `XNotImplemented`を返します。
+
+
+
+
+
+[[storage-class-options]]
+== ストレージクラスのオプション
+
+ `x-amz-storage-class`リクエストヘッダーはサポートされています。 `x-amz-storage-class`に送信された値は、取り込み中に StorageGRID がオブジェクトデータを保護する方法に影響しますが、StorageGRID システムにオブジェクトの永続的なコピーがいくつ保存されるか（ILM によって決定）には影響しません。
+
+取り込まれたオブジェクトに一致する ILM ルールが厳密な取り込みオプションを使用する場合、 `x-amz-storage-class`ヘッダーは効果がありません。
+
+以下の値を `x-amz-storage-class`に使用できます：
+
+* `STANDARD`（デフォルト）
++
+** *デュアルコミット*：ILMルールで取り込み動作にデュアルコミットオプションが指定されている場合、オブジェクトが取り込まれるとすぐに、そのオブジェクトの2番目のコピーが作成され、別のストレージノードに配布されます（デュアルコミット）。ILMを評価する際、StorageGRIDはこれらの最初の暫定コピーがルールに定められた配置指示を満たしているかどうかを判定します。満たしていない場合は、別の場所に新しいオブジェクトのコピーを作成する必要があり、最初の暫定コピーを削除する必要が生じる場合があります。
+** *バランス*：ILM ルールでバランスオプションが指定されており、StorageGRID がルールで指定されたすべてのコピーをすぐに作成できない場合、StorageGRID は異なるストレージノード上に2つの暫定コピーを作成します。
++
+StorageGRID がILM ルールで指定されたすべてのオブジェクトコピーを即座に作成できる場合（同期配置）、 `x-amz-storage-class`ヘッダーは効果がありません。
+
+
+
+* `REDUCED_REDUNDANCY`
++
+** *デュアルコミット*：ILMルールの取り込み動作にデュアルコミットオプションが指定されている場合、StorageGRID はオブジェクトの取り込み時に単一の中間コピーを作成します（シングルコミット）。
+** *バランス*：ILM ルールでバランス オプションが指定されている場合、StorageGRID はシステムがルールで指定されたすべてのコピーをすぐに作成できない場合にのみ、一時的なコピーを 1 つ作成します。StorageGRID が同期配置を実行できる場合、このヘッダーは効果がありません。 `REDUCED_REDUNDANCY`オプションは、オブジェクトに一致する ILM ルールが単一の複製コピーを作成する場合に最適です。この場合、 `REDUCED_REDUNDANCY`を使用することで、取り込み操作ごとに不要なオブジェクトコピーの作成と削除をなくすことができます。
+
+
++
+ `REDUCED_REDUNDANCY`オプションの使用は、その他の状況では推奨されません。 `REDUCED_REDUNDANCY`取り込み時のオブジェクトデータ損失のリスクを高めます。たとえば、ILM評価が行われる前に障害が発生したストレージノードに単一のコピーが最初に保存された場合、データが失われる可能性があります。
+
+
+
+
+CAUTION: 一定期間にわたって複製コピーが1つしかない場合、データが永久に失われるリスクがあります。オブジェクトの複製コピーが1つしか存在しない場合、ストレージノードが故障したり重大なエラーが発生したりすると、そのオブジェクトは失われます。アップグレードなどのメンテナンス手順中は、一時的にオブジェクトへのアクセスができなくなる場合もあります。
+
+指定する `REDUCED_REDUNDANCY`は、オブジェクトが最初に取り込まれたときに作成されるコピーの数にのみ影響します。これは、アクティブな ILM ポリシーによってオブジェクトが評価されるときに作成されるオブジェクトのコピーの数には影響せず、StorageGRID システムでより低いレベルの冗長性でデータが保存されることもありません。
+
+
+NOTE: S3オブジェクトロックが有効になっているバケットにオブジェクトを取り込む場合、 `REDUCED_REDUNDANCY`オプションは無視されます。レガシー準拠バケットにオブジェクトを取り込む場合、 `REDUCED_REDUNDANCY`オプションはエラーを返します。StorageGRIDは、コンプライアンス要件を満たすため、常に二重コミットによるデータ取り込みを実行します。
+
+
+
+[[request-headers-for-server-side-encryption]]
+== サーバー側暗号化のためのリクエストヘッダー
+
+以下のリクエストヘッダーを使用すると、サーバー側暗号化でオブジェクトを暗号化できます。SSEオプションとSSE-Cオプションは相互に排他的です。
+
+* *SSE*: StorageGRID が管理する一意のキーでオブジェクトを暗号化する場合は、次のヘッダーを使用します。
++
+** `x-amz-server-side-encryption`
++
+ `x-amz-server-side-encryption`ヘッダーがPutObjectリクエストに含まれていない場合、グリッド全体のlink:../admin/changing-network-options-object-encryption.html["保存されたオブジェクトの暗号化設定"]はPutObjectレスポンスから省略されます。
+
+
+
+* *SSE-C*：提供および管理する固有のキーを使用してオブジェクトを暗号化する場合は、これら 3 つのヘッダーすべてを使用してください。
++
+** `x-amz-server-side-encryption-customer-algorithm`： `AES256`を指定します。
+** `x-amz-server-side-encryption-customer-key`：新しいオブジェクトの暗号化キーを指定してください。
+** `x-amz-server-side-encryption-customer-key-MD5`：新しいオブジェクトの暗号化キーのMD5ダイジェストを指定します。
+
+
+
+
+
+CAUTION: ご提供いただいた暗号化キーは一切保存されません。暗号化キーを紛失した場合、対応するオブジェクトも失われます。オブジェクトデータを保護するために顧客提供のキーを使用する前に、link:using-server-side-encryption.html["サーバー側暗号化を使用する"]に関する考慮事項を確認してください。
+
+
+NOTE: オブジェクトがSSEまたはSSE-Cで暗号化されている場合、バケットレベルまたはグリッドレベルの暗号化設定はすべて無視されます。
+
+
+
+[[versioning]]
+== バージョン管理
+
+バケットでバージョン管理が有効になっている場合、一意の `versionId`は、保存されるオブジェクトのバージョンに対して自動的に生成されます。この `versionId`は、 `x-amz-version-id`レスポンスヘッダーを使用してレスポンスにも返されます。
+
+バージョン管理が中断された場合、オブジェクトのバージョンはnull `versionId`で保存され、nullバージョンが既に存在する場合は上書きされます。
+
+
+
+[[signature-calculations-for-the-authorization-header]]
+== Authorizationヘッダーの署名計算
+
+ `Authorization`ヘッダーを使用してリクエストを認証する場合、StorageGRID は次の点で AWS と異なります：
+
+* StorageGRID は、 `host` ヘッダーを  `CanonicalHeaders` 内に含める必要はありません。
+* StorageGRID は、 `Content-Type` が  `CanonicalHeaders` 内に含まれることを必要としません。
+* StorageGRID は、 `x-amz-*` ヘッダーを  `CanonicalHeaders` 内に含める必要はありません。
+
+
+
+NOTE: 一般的なベストプラクティスとして、これらのヘッダーは常に `CanonicalHeaders`に含めて検証されるようにしてください。ただし、これらのヘッダーを除外しても、StorageGRID はエラーを返しません。
+
+詳細については、 https://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-header-based-auth.html["認証ヘッダーの署名計算：ペイロードを単一のチャンクで転送する（AWS Signature Version 4）"^]を参照してください。
+
+.関連情報
+* link:../ilm/index.html["ILMを使用してオブジェクトを管理する"]
+* link:https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html["Amazon Simple Storage Service API リファレンス：PutObject"^]
+

@@ -1,0 +1,182 @@
+---
+permalink: swnodes/configuring-docker-storage-volume.html 
+sidebar: sidebar 
+keywords: how to configure container engine storage volume, Docker, Podman 
+summary: DockerまたはPodmanコンテナエンジンをインストールする前に、ストレージボリュームをフォーマットしてマウントする必要がある場合があります。 
+---
+= Linux上のStorageGRID用にコンテナエンジンのストレージボリュームを設定する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+DockerまたはPodmanコンテナエンジンをインストールする前に、ストレージボリュームをフォーマットしてマウントする必要がある場合があります。
+
+
+NOTE: ソフトウェアのみのデプロイメントにおけるコンテナエンジンとしての Docker のサポートは非推奨となりました。今後のリリースでは、Docker は別のコンテナエンジンに置き換えられる予定です。
+
+
+NOTE: 「Linux」とは、RHEL、Ubuntu、またはDebianのいずれかの環境を指します。サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool（IMT）"^]を参照してください。
+
+.タスク概要
+DockerまたはPodmanストレージボリュームにルートボリュームを使用する予定で、次の内容を含むホストパーティションに十分な空き容量がある場合は、これらの手順をスキップできます。
+
+* Podman： `/var/lib/containers`
+* Docker： `/var/lib/docker`
+
+
+.手順
+. コンテナエンジンのストレージボリューム上にファイルシステムを作成します。
++
+[role="tabbed-block"]
+====
+.RHEL
+--
+[listing]
+----
+sudo mkfs.ext4 container-engine-storage-volume-device
+----
+--
+.UbuntuまたはDebian
+--
+[listing]
+----
+sudo mkfs.ext4 docker-storage-volume-device
+----
+--
+====
+. コンテナエンジンのストレージボリュームをマウントします。
++
+[role="tabbed-block"]
+====
+.RHEL
+--
+** Dockerの場合：
++
+[listing]
+----
+sudo mkdir -p /var/lib/docker
+sudo mount container-storage-volume-device /var/lib/docker
+----
+** Podman向け：
++
+[listing]
+----
+sudo mkdir -p /var/lib/containers
+sudo mount container-storage-volume-device /var/lib/containers
+----
+
+
+--
+.UbuntuまたはDebian
+--
+[listing]
+----
+sudo mkdir -p /var/lib/docker
+sudo mount docker-storage-volume-device /var/lib/docker
+----
+** Podman向け：
++
+[listing]
+----
+sudo mkdir -p /var/lib/podman
+sudo mount container-storage-volume-device /var/lib/podman
+----
+
+
+--
+====
+. コンテナストレージボリュームデバイスのエントリを/etc/fstabに追加します。
++
+** RHEL: コンテナストレージボリュームデバイス
+** UbuntuまたはDebian：docker-storage-volume-device
++
+この手順により、ホストの再起動後にストレージボリュームが自動的に再マウントされます。
+
+
+
+
+
+
+
+[[install-docker]]
+== Dockerをインストールする
+
+StorageGRID システムは、コンテナの集合体として Linux 上で動作させることができます。
+
+* Ubuntu または Debian に StorageGRID をインストールする前に、Docker をインストールする必要があります。
+* Dockerコンテナエンジンを使用することを選択した場合は、以下の手順に従ってDockerをインストールしてください。それ以外の場合は、<<install-podman-rhel,Podmanをインストールする>>。
+
+
+
+NOTE: ソフトウェアのみのデプロイメントにおけるコンテナエンジンとしての Docker のサポートは非推奨となりました。今後のリリースでは、Docker は別のコンテナエンジンに置き換えられる予定です。
+
+.手順
+. お使いのLinuxディストリビューションの手順に従って、Dockerをインストールしてください。
++
+
+NOTE: LinuxディストリビューションにDockerが含まれていない場合は、Dockerのウェブサイトからダウンロードできます。
+
+. 以下の2つのコマンドを実行して、Dockerが有効になり起動していることを確認してください。
++
+[listing]
+----
+sudo systemctl enable docker
+----
++
+[listing]
+----
+sudo systemctl start docker
+----
+. 以下のコマンドを入力して、想定されるバージョンの Docker がインストールされていることを確認してください。
++
+[listing]
+----
+sudo docker version
+----
++
+クライアントとサーバーのバージョンは 1.11.0 以降である必要があります。
+
+
+
+
+
+[[install-podman]]
+[[install-podman-rhel]]
+== Podmanをインストールする
+
+StorageGRIDシステムはコンテナの集合体として動作します。Podmanコンテナエンジンを使用する場合は、以下の手順に従ってPodmanをインストールしてください。それ以外の場合は、<<Dockerをインストールする,Dockerをインストールする>>。
+
+.手順
+. お使いのLinuxディストリビューションの手順に従って、PodmanとPodman-Dockerをインストールしてください。
++
+
+NOTE: Podmanをインストールする際には、Podman-Dockerパッケージもインストールする必要があります。
+
+. 以下のコマンドを入力して、PodmanとPodman-Dockerの想定されるバージョンがインストールされていることを確認してください。
++
+[listing]
+----
+sudo docker version
+----
++
+
+NOTE: Podman-Dockerパッケージを使用すると、Dockerコマンドを使用できます。
+
++
+クライアントとサーバーのバージョンは3.2.3以降である必要があります。
+
++
+[listing]
+----
+Version: 3.2.3
+API Version: 3.2.3
+Go Version: go1.15.7
+Built: Tue Jul 27 03:29:39 2021
+OS/Arch: linux/amd64
+----
+
+
+.関連情報
+link:configuring-host-storage.html["ホストストレージを構成する"]

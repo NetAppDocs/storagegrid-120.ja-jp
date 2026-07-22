@@ -1,0 +1,140 @@
+---
+permalink: tenant/grid-federation-account-clone.html 
+sidebar: sidebar 
+keywords: account clone, cloning tenant, grid federation, cross-grid replication 
+summary: テナントがグリッドフェデレーション接続を使用するように作成または編集された場合、そのテナントは1つのStorageGRIDシステム（ソーステナント）から別のStorageGRIDシステム（レプリカテナント）にレプリケートされます。テナントの複製が完了すると、ソーステナントに追加されたグループとユーザーは、レプリカテナントにクローニングされます。 
+---
+= StorageGRID でテナントグループとユーザーをクローニング
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+テナントがグリッドフェデレーション接続を使用するように作成または編集された場合、そのテナントは1つのStorageGRIDシステム（ソーステナント）から別のStorageGRIDシステム（レプリカテナント）にレプリケートされます。テナントの複製が完了すると、ソーステナントに追加されたグループとユーザーは、レプリカテナントにクローニングされます。
+
+テナントが最初に作成されたStorageGRIDシステムは、テナントの_ソースグリッド_です。テナントが複製されるStorageGRIDシステムは、テナントの_宛先グリッド_です。両方のテナントアカウントは、アカウントID、名前、説明、ストレージクォータ、および割り当てられた権限が同じですが、宛先テナントには初期状態でルートユーザーのパスワードがありません。詳細については、link:../admin/grid-federation-what-is-account-clone.html["アカウントクローンとは何ですか？"]およびlink:../admin/grid-federation-manage-tenants.html["許可されたテナントを管理する"]を参照してください。
+
+テナントアカウント情報の複製は、バケットオブジェクトのlink:../admin/grid-federation-what-is-cross-grid-replication.html["グリッド間複製"]に必要です。両方のグリッドで同じテナントグループとユーザーを使用することで、どちらのグリッドでも対応するバケットとオブジェクトにアクセスできるようになります。
+
+
+
+[[tenant-workflow-for-account-clone]]
+== アカウントクローン用のテナントワークフロー
+
+テナントアカウントに「グリッドフェデレーション接続を使用する」権限が付与されている場合は、ワークフロー図を参照して、グループ、ユーザー、およびS3アクセスキーを複製するために実行する手順を確認してください。
+
+image:grid-federation-account-clone-workflow-tm.png["テナントのアカウント複製ワークフロー。手順は以下の文章に記載されています。"]
+
+ワークフローの主な手順は以下のとおりです。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["1"]テナントにサインイン
+[role="quick-margin-para"]
+ソースグリッド（テナントが最初に作成されたグリッド）でテナントアカウントにサインインします。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["2"]オプションで、IDフェデレーションを設定します
+[role="quick-margin-para"]
+テナントアカウントに、フェデレーショングループとユーザーを使用するための「独自のIDソースを使用する」権限が付与されている場合は、送信元テナントアカウントと宛先テナントアカウントの両方に、同じIDソース（同じ設定）を設定してください。フェデレーションされたグループとユーザーは、両方のグリッドが同じIDソースを使用していない限り、複製できません。手順については、link:using-identity-federation.html["IDフェデレーションを使用する"]を参照してください。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["3つ"]グループとユーザーを作成する
+[role="quick-margin-para"]
+グループやユーザーを作成する際は、必ずテナントのソースグリッドから始めてください。新しいグループを追加すると、StorageGRID は自動的に宛先グリッドに複製します。
+
+[role="quick-margin-list"]
+* ID フェデレーションが StorageGRID システム全体またはテナントアカウントに対して設定されている場合、link:creating-groups-for-s3-tenant.html["新しいテナントグループを作成する"] ID ソースからフェデレーテッドグループをインポートすることで実現できます。
+
+
+[role="quick-margin-list"]
+* IDフェデレーションを使用していない場合は、link:creating-groups-for-s3-tenant.html["新しいローカルグループを作成する"]、次にlink:manage-users.html["ローカルユーザーを作成する"]。
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["4"]S3アクセスキーを作成する
+[role="quick-margin-para"]
+link:creating-your-own-s3-access-keys.html["独自のアクセスキーを作成する"]またはlink:creating-another-users-s3-access-keys.html["別のユーザーのアクセスキーを作成する"]を使用して、ソースグリッドまたは宛先グリッドのいずれかにアクセスし、そのグリッド上のバケットにアクセスできます。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-5.png["五"]必要に応じて、S3アクセスキーを複製します
+[role="quick-margin-para"]
+両方のグリッドで同じアクセスキーを使用してバケットにアクセスする必要がある場合は、ソースグリッドでアクセスキーを作成し、Tenant Manager APIを使用して手動で宛先グリッドに複製してください。手順については、link:../tenant/grid-federation-clone-keys-with-api.html["APIを使用してS3アクセスキーを複製する"]を参照してください。
+
+
+
+[[how-are-groups-users-and-s3-access-keys-cloned]]
+== グループ、ユーザー、およびS3アクセスキーはどのように複製されますか？
+
+このセクションでは、テナントのソースグリッドと宛先グリッド間でグループ、ユーザー、およびS3アクセスキーがどのように複製されるかについて説明します。
+
+
+
+[[local-groups-created-on-source-grid-are-cloned]]
+=== ソースグリッド上で作成されたローカルグループはクローンされます
+
+テナントアカウントが作成され、宛先グリッドにレプリケートされた後、StorageGRID はテナントのソースグリッドに追加したローカルグループをテナントの宛先グリッドに自動的にクローニングします。
+
+元のグループとそのクローンは、同じアクセスモード、グループ権限、およびS3グループポリシーを持っています。手順については、link:creating-groups-for-s3-tenant.html["S3テナント用のグループを作成する"]を参照してください。
+
+image:grid-federation-account-clone.png["ローカルグループがソースグリッドから宛先グリッドに複製される様子を示す画像"]
+
+
+NOTE: ソースグリッドでローカルグループを作成する際に選択したユーザーは、グループが宛先グリッドに複製される際には含まれません。そのため、グループを作成する際にユーザーを選択しないでください。代わりに、ユーザーを作成する際にグループを選択してください。
+
+
+
+[[local-users-created-on-source-grid-are-cloned]]
+=== ソースグリッドで作成されたローカルユーザーはクローンされます
+
+ソースグリッドで新しいローカルユーザーを作成すると、StorageGRIDはそのユーザーを自動的に宛先グリッドに複製します。元のユーザーとそのクローンは、どちらも同じフルネーム、ユーザー名、および「アクセス拒否」設定を持っています。両ユーザーは同じグループに所属しています。手順については、link:manage-users.html["ユーザの管理"]を参照してください。
+
+セキュリティ上の理由から、ローカルユーザーのパスワードは宛先グリッドに複製されません。ローカルユーザーが宛先グリッド上のテナントマネージャーにアクセスする必要がある場合、テナントアカウントのルートユーザーが、宛先グリッド上でそのユーザーのパスワードを追加する必要があります。手順については、link:manage-users.html["ユーザの管理"]を参照してください。
+
+image:grid-federation-local-user-clone.png["ローカルユーザーがソースグリッドから宛先グリッドに複製される様子を示す画像"]
+
+
+
+[[federated-groups-created-on-source-grid-are-cloned]]
+=== ソースグリッド上で作成されたフェデレーテッドグループはクローンされます
+
+link:../admin/grid-federation-what-is-account-clone.html#account-clone-sso["シングル サインオン"]およびlink:../admin/grid-federation-what-is-account-clone.html#account-clone-identity-federation["アイデンティティフェデレーション"]を使用したアカウントクローンの要件が満たされている場合、ソースグリッド上のテナント用に作成（インポート）したフェデレーショングループは、宛先グリッド上のテナントに自動的に複製されます。
+
+両グループとも同じアクセスモード、グループ権限、およびS3グループポリシーを持っています。
+
+ソーステナント用にフェデレーショングループが作成され、宛先テナントに複製されると、フェデレーションユーザーはどちらのグリッドからでもテナントにサインインできるようになります。
+
+image:grid-federation-federated-group-clone.png["連合グループがソースグリッドから宛先グリッドに複製される様子を示す画像"]
+
+
+
+[[s3-access-keys-can-be-manually-cloned]]
+=== S3アクセスキーは手動でクローンできます
+
+StorageGRID は、グリッドごとに異なるキーを使用することでセキュリティが向上するため、S3 アクセスキーを自動的に複製しません。
+
+2つのグリッドのアクセスキーを管理するには、以下のいずれかの方法を実行できます。
+
+* 各グリッドで同じキーを使用する必要がない場合は、各グリッドでlink:creating-your-own-s3-access-keys.html["独自のアクセスキーを作成する"]またはlink:creating-another-users-s3-access-keys.html["別のユーザーのアクセスキーを作成する"]することができます。
+* 両方のグリッドで同じキーを使用する必要がある場合は、ソースグリッドでキーを作成し、Tenant Manager APIを使用して手動でlink:../tenant/grid-federation-clone-keys-with-api.html["キーを複製する"]宛先グリッドにインポートできます。
+
+
+image:grid-federation-s3-access-key.png["S3アクセスキーをソースグリッドから宛先グリッドにオプションでクローンできることを示す画像"]
+
+
+NOTE: フェデレーションユーザーのS3アクセスキーをクローンすると、ユーザーとS3アクセスキーの両方がクローン先のテナントにクローンされます。
+
+
+
+[[groups-and-users-added-to-destination-grid-arent-cloned]]
+=== 宛先グリッドに追加されたグループとユーザーは複製されません
+
+クローン作成は、テナントのソースグリッドからテナントの宛先グリッドへのみ行われます。テナントの宛先グリッドでグループやユーザーを作成またはインポートした場合、StorageGRID はこれらのアイテムをテナントのソースグリッドに複製しません。
+
+image:grid-federation-account-not-cloned.png["宛先グリッドの詳細がソースグリッドに複製されていないことを示す画像"]
+
+
+
+[[edited-or-deleted-groups-users-and-access-keys-arent-cloned]]
+=== 編集または削除されたグループ、ユーザー、およびアクセスキーは複製されません
+
+クローン作成は、新しいグループとユーザーを作成した場合にのみ発生します。
+
+いずれかのグリッドでグループ、ユーザー、またはアクセスキーを編集または削除した場合、その変更はもう一方のグリッドには反映されません。
+
+image:grid-federation-account-clone-edit-delete.png["編集または削除された詳細情報が複製されないことを示す画像"]

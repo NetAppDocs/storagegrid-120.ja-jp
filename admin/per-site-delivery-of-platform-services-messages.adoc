@@ -1,0 +1,24 @@
+---
+permalink: admin/per-site-delivery-of-platform-services-messages.html 
+sidebar: sidebar 
+keywords: platform services message delivery 
+summary: プラットフォームサービスのすべての運用は、サイトごとに実行されます。 
+---
+= サイトごとの StorageGRID プラットフォーム サービス メッセージの配信
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+プラットフォームサービスのすべての運用は、サイトごとに実行されます。
+
+つまり、テナントがクライアントを使用してデータセンターサイト 1 のゲートウェイノードに接続し、オブジェクトに対して S3 API の作成操作を実行すると、その操作に関する通知がデータセンターサイト 1 からトリガーされ、送信されます。
+
+image:notification_multiple_sites.gif["サイト1にあるオブジェクトに対するアクションがサイト1からの通知をトリガーすることを示す図"]
+
+クライアントがその後、データセンターサイト2から同じオブジェクトに対してS3 API削除操作を実行すると、削除アクションに関する通知がデータセンターサイト2からトリガーされ、送信されます。
+
+image:notifications_site_2.gif["サイト2からのオブジェクトに対するアクションがサイト2からの通知をトリガーすることを示す図"]
+
+各サイトのネットワークが、プラットフォームサービスのメッセージを宛先に配信できるように構成されていることを確認してください。

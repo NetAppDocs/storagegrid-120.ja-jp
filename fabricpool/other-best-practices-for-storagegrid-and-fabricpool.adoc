@@ -1,0 +1,63 @@
+---
+permalink: fabricpool/other-best-practices-for-storagegrid-and-fabricpool.html 
+sidebar: sidebar 
+keywords: fabricPool, StorageGRID, best practices, audit log, encryption, compressions, tiering, ontap, consistency 
+summary: FabricPoolで使用するためにStorageGRIDシステムを構成する場合、他のStorageGRIDオプションを変更する必要がある場合があります。グローバル設定を変更する前に、その変更が他のS3アプリケーションにどのように影響するかを考慮してください。 
+---
+= FabricPoolを使用したStorageGRIDグローバル設定のベストプラクティス
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FabricPoolで使用するためにStorageGRIDシステムを構成する場合、他のStorageGRIDオプションを変更する必要がある場合があります。グローバル設定を変更する前に、その変更が他のS3アプリケーションにどのように影響するかを考慮してください。
+
+
+
+[[audit-message-and-log-destinations]]
+== 監査メッセージおよびログの送信先
+
+FabricPoolワークロードは読み取り操作の頻度が高く、その結果、大量の監査メッセージが生成される場合があります。
+
+* FabricPoolまたはその他の S3 アプリケーションのクライアント読み取り操作の記録が不要な場合は、必要に応じて *構成* > *監視* > *監査と syslog サーバ* に移動します。監査ログに記録される監査メッセージの数を減らすには、*クライアント読み取り* の設定を *エラー* に変更します。詳細については、link:../monitor/configure-log-management.html["ログ管理と外部 syslog サーバの設定"]を参照してください。
+* 大規模なグリッドを使用している場合、複数の種類の S3 アプリケーションを使用している場合、またはすべての監査データを保持したい場合は、外部 syslog サーバーを設定して監査情報をリモートで保存してください。外部サーバーを使用することで、監査データの完全性を損なうことなく、監査メッセージのログ記録によるパフォーマンスへの影響を最小限に抑えることができます。詳細については、link:../monitor/considerations-for-external-syslog-server.html["外部 syslog サーバに関する考慮事項"]を参照してください。
+
+
+
+
+[[object-encryption]]
+== オブジェクト暗号化
+
+StorageGRIDを構成する際、他のStorageGRIDクライアントでデータの暗号化が必要な場合は、オプションでlink:../admin/changing-network-options-object-encryption.html["保存オブジェクト暗号化のグローバルオプション"]を有効にすることができます。FabricPoolからStorageGRIDに階層化されるデータはすでに暗号化されているため、StorageGRIDの設定を有効にする必要はありません。クライアント側の暗号化キーはONTAPが所有します。
+
+
+
+[[object-compression]]
+== オブジェクト圧縮
+
+StorageGRIDを構成する際は、link:../admin/configuring-stored-object-compression.html["保存されたオブジェクトを圧縮するグローバルオプション"]を有効にしないでください。FabricPoolからStorageGRIDに階層化されるデータは、すでに圧縮されています。StorageGRIDのオプションを使用しても、オブジェクトのサイズはそれ以上縮小されません。
+
+
+
+[[s3-object-lock]]
+== S3 Object Lock
+
+StorageGRID システムでグローバル S3 オブジェクト ロック設定が有効になっている場合は、FabricPool バケットを作成するときに link:../s3/use-s3-api-for-s3-object-lock.html["S3 Object Lock"] を有効にしないでください。S3 オブジェクト ロックは FabricPool バケットではサポートされていません。
+
+
+
+[[bucket-consistency]]
+== バケットの整合性
+
+FabricPool バケットの場合、推奨されるバケットの整合性は *Read-after-new-write* であり、これは新しいバケットのデフォルトの整合性です。FabricPool バケットを編集して *Available* または *Strong-site* を使用しないでください。
+
+
+
+[[fabricpool-tiering]]
+== FabricPool 階層化
+
+StorageGRID ノードが NetApp ONTAP システムから割り当てられたストレージを使用している場合は、そのボリュームに FabricPool 階層化ポリシーが有効になっていないことを確認してください。たとえば、StorageGRID ノードが VMware ホスト上で実行されている場合は、StorageGRID ノードのデータストアを支えるボリュームに FabricPool 階層化ポリシーが有効になっていないことを確認してください。StorageGRID ノードで使用するボリュームの FabricPool 階層化を無効にすることで、トラブルシューティングとストレージ操作が簡素化されます。
+
+
+CAUTION: FabricPoolを使用してStorageGRIDに関連するデータをStorageGRID自体に階層化することは絶対にしないでください。StorageGRIDにStorageGRIDデータを階層化すると、トラブルシューティングと運用がより複雑になります。

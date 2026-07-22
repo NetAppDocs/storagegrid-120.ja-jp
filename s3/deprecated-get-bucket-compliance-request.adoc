@@ -1,0 +1,98 @@
+---
+permalink: s3/deprecated-get-bucket-compliance-request.html 
+sidebar: sidebar 
+keywords: S3 REST API, S3 operations, deprecated GET compliance requests 
+summary: GET Bucket コンプライアンス要求は非推奨になりました。ただし、このリクエストを使用して、既存のレガシー準拠バケットに対して現在適用されているコンプライアンス設定を確認することは引き続き可能です。 
+---
+= StorageGRID で廃止された GET Bucket compliance リクエスト
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+GET Bucket コンプライアンス要求は非推奨になりました。ただし、このリクエストを使用して、既存のレガシー準拠バケットに対して現在適用されているコンプライアンス設定を確認することは引き続き可能です。
+
+[NOTE]
+====
+以前のバージョンの StorageGRID で利用可能だった StorageGRID コンプライアンス機能は非推奨となり、S3 Object Lock に置き換えられました。詳細については、以下をご覧ください。
+
+* link:../s3/use-s3-api-for-s3-object-lock.html["S3 REST APIを使用してS3オブジェクトロックを設定する"]
+* https://kb.netapp.com/Advice_and_Troubleshooting/Hybrid_Cloud_Infrastructure/StorageGRID/How_to_manage_legacy_Compliant_buckets_in_StorageGRID_11.5["NetApp ナレッジベース：StorageGRID 11.5 でレガシー準拠バケットを管理する方法"^]
+
+
+====
+この操作を完了するには、s3:GetBucketCompliance 権限が必要です。またはアカウントのrootである必要があります。
+
+
+
+[[request-example]]
+== リクエスト例
+
+このリクエスト例では、 `mybucket`という名前のバケットのコンプライアンス設定を確認できます。
+
+[listing, subs="specialcharacters,quotes"]
+----
+GET /mybucket/?x-ntap-sg-compliance HTTP/1.1
+Date: _date_
+Authorization: _authorization string_
+Host: _host_
+----
+
+
+[[response-example]]
+== 回答例
+
+レスポンスXMLでは、 `<SGCompliance>`バケットに適用されているコンプライアンス設定を一覧表示します。この応答例は、オブジェクトがグリッドに取り込まれた時点から1年間（525,600分）保持されるバケットのコンプライアンス設定を示しています。現在、このバケットには法的ホールドはありません。各オブジェクトは1年後に自動的に削除されます。
+
+[listing, subs="specialcharacters,quotes"]
+----
+HTTP/1.1 200 OK
+Date: _date_
+Connection: _connection_
+Server: StorageGRID/11.1.0
+x-amz-request-id: _request ID_
+Content-Length: _length_
+Content-Type: application/xml
+
+<SGCompliance>
+  <RetentionPeriodMinutes>525600</RetentionPeriodMinutes>
+  <LegalHold>false</LegalHold>
+  <AutoDelete>true</AutoDelete>
+</SGCompliance>
+----
+[cols="1a,2a"]
+|===
+| Name | 説明 
+
+
+ a| 
+RetentionPeriodMinutes
+ a| 
+このバケットに追加されたオブジェクトの保持期間（分単位）。保持期間は、オブジェクトがグリッドに取り込まれた時点から開始されます。
+
+
+
+ a| 
+LegalHold
+ a| 
+* True：このバケットは現在、法的保留状態にあります。このバケット内のオブジェクトは、保持期間が過ぎていても、法的保留が解除されるまで削除できません。
+* False：このバケットは現在、法的保留下にはありません。このバケット内のオブジェクトは、保持期間が経過すると削除できます。
+
+
+
+
+ a| 
+AutoDelete
+ a| 
+* 正しい：このバケット内のオブジェクトは、バケットが法的保留下にない限り、保持期間が満了すると自動的に削除されます。
+* False: このバケット内のオブジェクトは、保持期間が満了しても自動的に削除されません。これらのオブジェクトを削除する必要がある場合は、手動で削除してください。
+
+
+|===
+
+
+[[error-responses]]
+== エラー応答
+
+バケットが準拠するように作成されていない場合、応答の HTTP ステータスコードは `404 Not Found`となり、S3 エラーコードは `XNoSuchBucketCompliance`です。

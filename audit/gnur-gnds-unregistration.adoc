@@ -1,0 +1,42 @@
+---
+permalink: audit/gnur-gnds-unregistration.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, GNUR, GNDS Unregistration 
+summary: CMN サービスは、サービスが StorageGRID システムから自身に関する情報の登録を解除したときに、この監査メッセージを生成します。 
+---
+= StorageGRIDにおけるGNDS登録解除に関するGNUR監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+CMN サービスは、サービスが StorageGRID システムから自身に関する情報の登録を解除したときに、この監査メッセージを生成します。
+
+[cols="1a,1a,4a"]
+|===
+| Code | フィールド | 説明 
+
+
+ a| 
+RSLT
+ a| 
+結果
+ a| 
+更新リクエストの結果：
+
+* SUCS：成功
+* SUNV：サービス利用不可
+* GERR: その他の失敗
+
+
+
+
+ a| 
+GNID
+ a| 
+ノードID
+ a| 
+更新要求を開始したサービスのノードID。
+
+|===

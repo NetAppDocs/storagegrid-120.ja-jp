@@ -1,0 +1,26 @@
+---
+permalink: tenant/deleting-group.html 
+sidebar: sidebar 
+keywords: how to delete tenant group 
+summary: システムからグループを削除できます。そのグループにのみ属するユーザーは、テナントマネージャーにサインインしたり、テナントアカウントを使用したりすることができなくなります。 
+---
+= StorageGRIDテナントグループを削除する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+システムからグループを削除できます。そのグループにのみ属するユーザーは、テナントマネージャーにサインインしたり、テナントアカウントを使用したりすることができなくなります。
+
+.開始する前に
+* テナントマネージャーに link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用してサインインしています。
+* あなたは、ルートアクセス権限を持つユーザーグループに属しています。link:tenant-management-permissions.html["テナント管理権限"]を参照してください。
+
+
+.手順
+. *アクセス管理* ＞ *グループ* を選択します。
+. 削除する各グループのチェックボックスを選択してください。
+. *Actions* > *Delete group* を選択します。
+. 「グループを削除」を選択します。
+

@@ -1,0 +1,163 @@
+---
+permalink: admin/manage-tls-ssh-policy.html 
+sidebar: sidebar 
+keywords: TLS and SSH policy, secure connection, FIPS, Common Criteria 
+summary: TLSおよびSSHポリシーは、クライアントアプリケーションとの安全なTLS接続および内部StorageGRIDサービスへの安全なSSH接続を確立するために使用されるプロトコルと暗号を決定します。 
+---
+= StorageGRID でTLSおよびSSHポリシーを管理する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+TLSおよびSSHポリシーは、クライアントアプリケーションとの安全なTLS接続および内部StorageGRIDサービスへの安全なSSH接続を確立するために使用されるプロトコルと暗号を決定します。
+
+セキュリティポリシーは、TLSとSSHが転送中のデータをどのように暗号化するかを制御します。一般的には、システムがCommon Criteriaに準拠する必要がある場合や、他の暗号方式を使用する必要がある場合を除き、最新の互換性（デフォルト）ポリシーを使用してください。
+
+
+NOTE: 一部の StorageGRID サービスは、これらのポリシーの暗号化を使用するように更新されていません。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* あなたはlink:admin-group-permissions.html["ルートアクセス権限"]があります。
+
+
+
+
+[[select-a-security-policy]]
+== セキュリティポリシーを選択してください
+
+.手順
+. *Configuration* > *Security* > *Security settings* を選択します。
++
+*TLSおよびSSHポリシー*タブには、利用可能なポリシーが表示されます。現在有効なポリシーは、ポリシータイルに緑色のチェックマークで示されます。
+
++
+image:securitysettings_tls_ssh_policies_current.png["TLSおよびSSHポリシー"]
+
+. 各タブを確認して、利用可能なポリシーについて学習してください。
++
+[role="tabbed-block"]
+====
+.最新互換性（デフォルト）
+--
+強力な暗号化が必要で、特別な要件がない場合は、デフォルトポリシーを使用してください。このポリシーは、ほとんどのTLSおよびSSHクライアントと互換性があります。
+
+--
+.レガシー互換性
+--
+古いクライアントとの互換性に関する追加オプションが必要な場合は、レガシー互換性ポリシーを使用してください。このポリシーに含まれる追加オプションは、最新の互換性ポリシーよりもセキュリティを低下させる可能性があります。
+
+--
+.共通基準
+--
+共通基準認証が必要な場合は、共通基準ポリシーを使用してください。
+
+--
+.FIPS strict
+--
+Common Criteria認証が必要で、ロードバランサーエンドポイント、テナントマネージャ、およびグリッドマネージャへの外部クライアント接続にNetApp Cryptographic Security Module（NCSM）3.0.8またはNetApp StorageGRID Kernel Crypto API 6.1.129-1-ntap1-amd64モジュールを使用する必要がある場合は、FIPSの厳格なポリシーを使用してください。このポリシーを使用すると、パフォーマンスが低下する可能性があります。
+
+NCSM 3.0.8とNetApp StorageGRID Kernel Crypto API 6.1.129-1-ntap1-amd64モジュールは、以下の操作で使用されます。
+
+** NCSM
++
+*** 以下のサービス間のTLS接続：ADC、AMS、CMN、DDS、LDR、SSM、NMS、mgmt-api、nginx、nginx-gw、およびcache-svc
+*** クライアントとnginx-gwサービス（ロードバランサーのエンドポイント）間のTLS接続
+*** クライアントとLDRサービス間のTLS接続
+*** SSE-S3、SSE-C、および保存オブジェクト暗号化設定のオブジェクトコンテンツ暗号化
+*** SSH 接続
+
+
++
+詳細については、NIST 暗号化アルゴリズム検証プログラム link:https://csrc.nist.gov/projects/cryptographic-module-validation-program/certificate/4838["証明書番号4838"^] を参照してください。
+
+** NetApp StorageGRID カーネル暗号化 API モジュール
++
+NetApp StorageGRID カーネル暗号化 API モジュールは、VM および StorageGRID アプライアンス プラットフォームにのみ存在します。
+
++
+*** エントロピーコレクション
+*** ノード暗号化
+
+
++
+詳細については、NIST 暗号化アルゴリズム検証プログラム link:https://csrc.nist.gov/projects/cryptographic-algorithm-validation-program/validation-search?searchMode=implementation&product=NetApp+StorageGRID+Kernel+Crypto+API&productType=-1&ipp=50["証明書番号A6242～A6257"^] および link:https://csrc.nist.gov/projects/cryptographic-module-validation-program/entropy-validations/certificate/223["エントロピー証明書番号E223"^] を参照してください。
+
+
+
+*注*: このポリシーを選択すると、link:../maintain/rolling-reboot-procedure.html["ローリングリブートを実行する"]すべてのノードで NCSM がアクティブ化されます。*メンテナンス* > *ローリング再起動* を使用して、再起動を開始および監視します。
+
+--
+.Custom
+--
+独自の暗号方式を適用する必要がある場合は、カスタムポリシーを作成してください。
+
+オプションとして、StorageGRID に FIPS 140 の暗号化要件がある場合は、FIPS モード機能を有効にして NCSM 3.0.8 および NetApp StorageGRID Kernel Crypto API 6.1.129-1-ntap1-amd64 モジュールを使用してください：
+
+..  `fipsMode`パラメータを `true`に設定します。
+.. 指示されたら、link:../maintain/rolling-reboot-procedure.html["ローリングリブートを実行する"]すべてのノードの暗号化モジュールをアクティブ化します。*Maintenance* > *Rolling reboot* を使用して、再起動を開始および監視します。
+.. アクティブな FIPS モジュールバージョンを表示するには、*サポート* ＞ *診断* を選択してください。
+
+
+--
+====
+. 各ポリシーの暗号、プロトコル、アルゴリズムの詳細を確認するには、*詳細を表示*を選択してください。
+. 現在のポリシーを変更するには、*ポリシーを使用する*を選択してください。
++
+ポリシータイルの *Current policy* の横に緑色のチェックマークが表示されます。
+
+
+
+
+
+[[create-a-custom-security-policy]]
+== カスタムセキュリティポリシーを作成する
+
+独自の暗号方式を適用する必要がある場合は、カスタムポリシーを作成できます。
+
+.手順
+. 作成したいカスタムポリシーに最も近いポリシーのタイルから、*詳細を表示*を選択します。
+. 「クリップボードにコピー」を選択し、次に「キャンセル」を選択します。
++
+image:securitysettings-custom-security-policy-copy.png["既存のポリシーをコピーしてカスタムポリシーを作成する"]
+
+. 「カスタムポリシー」タイルから「設定して使用する」を選択します。
+. コピーしたJSONを貼り付け、必要に応じて変更を加えてください。
+. 「ポリシーを使用」を選択します。
++
+カスタムポリシーのタイルにある *Current policy* の横に緑色のチェックマークが表示されます。
+
+. 必要に応じて、*設定の編集* を選択すると、新しいカスタムポリシーにさらに変更を加えることができます。
+
+
+
+
+[[temporarily-revert-to-the-default-security-policy]]
+[[temporarily-revert-to-default-security-policy]]
+== 一時的にデフォルトのセキュリティポリシーに戻す
+
+カスタムセキュリティポリシーを設定した場合、設定されたTLSポリシーがlink:global-certificate-types.html["構成済みのサーバー証明書"]と互換性がないと、Grid Managerにサインインできない可能性があります。
+
+一時的にデフォルトのセキュリティポリシーに戻すことができます。
+
+.手順
+. 管理ノードにログインします。
++
+.. 次のコマンドを入力します： `ssh admin@_Admin_Node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+
+
+. 次のコマンドを実行します。
++
+`restore-default-cipher-configurations`
+
+. ウェブブラウザから、同じ管理ノード上のグリッドマネージャにアクセスします。
+. <<select-a-security-policy,セキュリティポリシーを選択してください>>の手順に従って、ポリシーを再度設定してください。
+

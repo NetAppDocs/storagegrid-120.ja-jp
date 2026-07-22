@@ -1,0 +1,137 @@
+---
+section: ilm
+title: ILMを使用してオブジェクトを管理する
+entries:
+- title: ILM を使用
+  pdf-filename: ILM を使用した StorageGRID オブジェクトの管理
+  url: "/ilm/index.html"
+- title: ILMとオブジェクトライフサイクル
+  entries:
+  - title: ILMがオブジェクトのライフサイクル全体を通してどのように機能するか
+    url: "/ilm/how-ilm-operates-throughout-objects-life.html"
+  - title: オブジェクトの取り込み方法
+    entries:
+    - title: 取り込みオプション
+      url: "/ilm/data-protection-options-for-ingest.html"
+    - title: 取り込みオプションの利点、欠点、および制限
+      url: "/ilm/advantages-disadvantages-of-ingest-options.html"
+  - title: オブジェクトがどのように保存されるか（複製またはイレイジャー コーディング）
+    entries:
+    - title: レプリケーションとは
+      url: "/ilm/what-replication-is.html"
+    - title: 単一コピー複製を使用すべきでない理由
+      url: "/ilm/why-you-should-not-use-single-copy-replication.html"
+    - title: イレイジャー コーディングとは
+      url: "/ilm/what-erasure-coding-is.html"
+    - title: イレイジャー コーディング方式とは何ですか？
+      url: "/ilm/what-erasure-coding-schemes-are.html"
+    - title: イレイジャー コーディングの利点、欠点、および要件
+      url: "/ilm/advantages-disadvantages-and-requirements-for-ec.html"
+  - title: オブジェクト保持期間の決定方法
+    url: "/ilm/how-object-retention-is-determined.html"
+  - title: オブジェクトが削除される方法
+    url: "/ilm/how-objects-are-deleted.html"
+- title: 保管等級を作成して割り当てる
+  url: "/ilm/creating-and-assigning-storage-grades.html"
+- title: ストレージプールを使用する
+  entries:
+  - title: ストレージプールとは
+    url: "/ilm/what-storage-pool-is.html"
+  - title: ストレージプールの作成に関するガイドライン
+    url: "/ilm/guidelines-for-creating-storage-pools.html"
+  - title: サイト損失保護を有効にする
+    url: "/ilm/using-multiple-storage-pools-for-cross-site-replication.html"
+  - title: ストレージプールを作成する
+    url: "/ilm/creating-storage-pool.html"
+  - title: ストレージプールの詳細を表示
+    url: "/ilm/viewing-storage-pool-details.html"
+  - title: ストレージプールを編集する
+    url: "/ilm/editing-storage-pool.html"
+  - title: ストレージプールを削除する
+    url: "/ilm/removing-storage-pool.html"
+- title: クラウドストレージプールを使用する
+  entries:
+  - title: クラウドストレージプールとは何ですか？
+    url: "/ilm/what-cloud-storage-pool-is.html"
+  - title: クラウドストレージプールオブジェクトのライフサイクル
+    url: "/ilm/lifecycle-of-cloud-storage-pool-object.html"
+  - title: クラウドストレージプールを使用するタイミング
+    url: "/ilm/when-to-use-cloud-storage-pools.html"
+  - title: クラウドストレージプールに関する考慮事項
+    url: "/ilm/considerations-for-cloud-storage-pools.html"
+  - title: クラウドストレージプールと CloudMirror レプリケーションの比較
+    url: "/ilm/comparing-cloud-storage-pools-to-cloudmirror-replication.html"
+  - title: クラウドストレージプールを作成する
+    url: "/ilm/creating-cloud-storage-pool.html"
+  - title: クラウドストレージプールの詳細を表示
+    url: "/ilm/view-cloud-storage-pool-details.html"
+  - title: クラウドストレージプールを編集する
+    url: "/ilm/editing-cloud-storage-pool.html"
+  - title: クラウドストレージプールを削除する
+    url: "/ilm/removing-cloud-storage-pool.html"
+  - title: クラウドストレージプールのトラブルシューティング
+    url: "/ilm/troubleshooting-cloud-storage-pools.html"
+- title: 消去符号化プロファイルを管理する
+  url: "/ilm/manage-erasure-coding-profiles.html"
+- title: S3リージョンの設定
+  url: "/ilm/configuring-regions-optional-and-s3-only.html"
+- title: ILMルールを作成する
+  entries:
+  - title: ルールを使用してオブジェクトを管理する
+    url: "/ilm/what-ilm-rule-is.html"
+  - title: ILMルール作成ウィザードにアクセス
+    url: "/ilm/access-create-ilm-rule-wizard.html"
+  - title: ステップ1/3：詳細を入力
+    url: "/ilm/create-ilm-rule-enter-details.html"
+  - title: ステップ2/3：配置を定義する
+    url: "/ilm/create-ilm-rule-define-placements.html"
+  - title: ILMルールで最終アクセス時間を使用する
+    url: "/ilm/using-last-access-time-in-ilm-rules.html"
+  - title: ステップ3/3：取り込み動作を選択する
+    url: "/ilm/create-ilm-rule-select-ingest-behavior.html"
+  - title: デフォルトのILMルールを作成する
+    url: "/ilm/creating-default-ilm-rule.html"
+- title: ILMポリシーを管理する
+  entries:
+  - title: ILMポリシーを使用する
+    url: "/ilm/ilm-policy-overview.html"
+  - title: ILMポリシーを作成する
+    url: "/ilm/creating-ilm-policy.html"
+  - title: ILMポリシーシミュレーションの例
+    url: "/ilm/simulating-ilm-policy-examples.html"
+  - title: ILMポリシータグの管理
+    url: "/ilm/manage-ilm-policy-tags.html"
+  - title: オブジェクトメタデータルックアップを使用してILMポリシーを検証する
+    url: "/ilm/verifying-ilm-policy-with-object-metadata-lookup.html"
+- title: ILMポリシーとルールの操作
+  url: "/ilm/working-with-ilm-rules-and-ilm-policies.html"
+- title: S3オブジェクトロックを使用する
+  entries:
+  - title: S3 Object Lock でオブジェクトを管理する
+    url: "/ilm/managing-objects-with-s3-object-lock.html"
+  - title: S3オブジェクトロックタスク
+    url: "/ilm/workflow-for-s3-object-lock.html"
+  - title: S3 Object Lock の要件
+    url: "/ilm/requirements-for-s3-object-lock.html"
+  - title: S3オブジェクトロックをグローバルに有効にする
+    url: "/ilm/enabling-s3-object-lock-globally.html"
+  - title: S3 Object Lock またはレガシーコンプライアンス設定を更新する際の整合性エラーを解決する
+    url: "/ilm/resolving-consistency-errors-when-updating-bucket-s3-object-lock-configuration.html"
+- title: ILMの規則とポリシーの例
+  entries:
+  - title: 例1：オブジェクトストレージに関するILMルールとポリシー
+    url: "/ilm/example-1-ilm-rules-and-policy-for-object-storage.html"
+  - title: 例2：ECオブジェクトサイズフィルタリングのILMルールとポリシー
+    url: "/ilm/example-2-ilm-rules-and-policy-for-ec-object-size-filtering.html"
+  - title: 例3：画像ファイルの保護を強化するための ILM ルールとポリシー
+    url: "/ilm/example-3-ilm-rules-and-policy-for-better-protection-for-image-files.html"
+  - title: 例4：S3バージョン管理オブジェクトに関するILMルールとポリシー
+    url: "/ilm/example-4-ilm-rules-and-policy-for-s3-versioned-objects.html"
+  - title: 例5：厳格な取り込み動作に関するILMルールとポリシー
+    url: "/ilm/example-5-ilm-rules-and-policy-for-strict-ingest-behavior.html"
+  - title: 例6：ILMポリシーの変更
+    url: "/ilm/example-6-changing-ilm-policy.html"
+  - title: 例7：S3 Object Lockの準拠ILMポリシー
+    url: "/ilm/example-7-compliant-ilm-policy-for-s3-object-lock.html"
+  - title: 例8：S3バケットのライフサイクルとILMポリシーの優先順位
+    url: "/ilm/example-8-priorities-for-s3-bucket-lifecycle-and-ilm-policy.html"

@@ -1,0 +1,47 @@
+---
+permalink: audit/sade-security-audit-enable.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, SADE, Security Audit Enable 
+summary: このメッセージは、発信元のサービス（ノードID）が監査メッセージのログ記録を復元したことを示しています。StorageGRID は監査メッセージの収集と配信を再開しました。 
+---
+= StorageGRIDにおけるセキュリティ監査有効化のためのSADE監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+このメッセージは、発信元のサービス（ノードID）が監査メッセージのログ記録を復元したことを示しています。StorageGRID は監査メッセージの収集と配信を再開しました。
+
+[cols="1a,1a,4a"]
+|===
+| Code | フィールド | 説明 
+
+
+ a| 
+AETM
+ a| 
+有効化メソッド
+ a| 
+監査を有効にするために使用される方法。
+
+
+
+ a| 
+AEUN
+ a| 
+ユーザ名
+ a| 
+監査ログを有効にするコマンドを実行したユーザー名。
+
+
+
+ a| 
+RSLT
+ a| 
+結果
+ a| 
+このフィールドの値は NONE です。RSLT は必須メッセージフィールドですが、このメッセージには関係ありません。このメッセージがフィルタリングされないように、SUCS ではなく NONE が使用されます。
+
+|===
+このメッセージは、以前はログ記録が無効（SADD）されていたが、現在は復元されたことを示しています。これは通常、システムパフォーマンスを向上させるために、大量データ取り込み時にのみ使用されます。一括処理が完了すると、監査機能が復元され、監査機能を無効にする機能は永久的にブロックされます。

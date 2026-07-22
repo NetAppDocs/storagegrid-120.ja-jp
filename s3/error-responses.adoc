@@ -1,0 +1,380 @@
+---
+permalink: s3/error-responses.html 
+sidebar: sidebar 
+keywords: error, error responses 
+summary: StorageGRID システムは、該当するすべての標準 S3 REST API エラーレスポンスをサポートしています。さらに、StorageGRID の実装ではいくつかのカスタムレスポンスが追加されています。 
+---
+= StorageGRID S3 REST API エラー応答
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID システムは、該当するすべての標準 S3 REST API エラーレスポンスをサポートしています。さらに、StorageGRID の実装ではいくつかのカスタムレスポンスが追加されています。
+
+
+
+[[supported-s3-api-error-codes]]
+== サポートされているS3 APIエラーコード
+
+[cols="1a,1a"]
+|===
+| Name | HTTPのステータス 
+
+
+ a| 
+AccessDenied
+ a| 
+403 Forbidden
+
+
+
+ a| 
+BadDigest
+ a| 
+400 Bad Request
+
+
+
+ a| 
+BucketAlreadyExists
+ a| 
+409 Conflict
+
+
+
+ a| 
+BucketNotEmpty
+ a| 
+409 Conflict
+
+
+
+ a| 
+IncompleteBody
+ a| 
+400 Bad Request
+
+
+
+ a| 
+InternalError
+ a| 
+500 内部サーバーエラー
+
+
+
+ a| 
+InvalidAccessKeyId
+ a| 
+403 Forbidden
+
+
+
+ a| 
+InvalidArgument
+ a| 
+400 Bad Request
+
+
+
+ a| 
+InvalidBucketName
+ a| 
+400 Bad Request
+
+
+
+ a| 
+InvalidBucketState
+ a| 
+409 Conflict
+
+
+
+ a| 
+InvalidDigest
+ a| 
+400 Bad Request
+
+
+
+ a| 
+InvalidEncryptionAlgorithmError
+ a| 
+400 Bad Request
+
+
+
+ a| 
+InvalidPart
+ a| 
+400 Bad Request
+
+
+
+ a| 
+InvalidPartOrder
+ a| 
+400 Bad Request
+
+
+
+ a| 
+InvalidRange
+ a| 
+416 Requested Range Not Satisfiable
+
+
+
+ a| 
+InvalidRequest
+ a| 
+400 Bad Request
+
+
+
+ a| 
+InvalidStorageClass
+ a| 
+400 Bad Request
+
+
+
+ a| 
+InvalidTag
+ a| 
+400 Bad Request
+
+
+
+ a| 
+無効なURI
+ a| 
+400 Bad Request
+
+
+
+ a| 
+KeyTooLong
+ a| 
+400 Bad Request
+
+
+
+ a| 
+不正なXML
+ a| 
+400 Bad Request
+
+
+
+ a| 
+MetadataTooLarge
+ a| 
+400 Bad Request
+
+
+
+ a| 
+MethodNotAllowed
+ a| 
+405 Method Not Allowed
+
+
+
+ a| 
+MissingContentLength
+ a| 
+411 Length Required
+
+
+
+ a| 
+MissingRequestBodyError
+ a| 
+400 Bad Request
+
+
+
+ a| 
+MissingSecurityHeader
+ a| 
+400 Bad Request
+
+
+
+ a| 
+NoSuchBucket
+ a| 
+404 Not Found
+
+
+
+ a| 
+NoSuchKey
+ a| 
+404 Not Found
+
+
+
+ a| 
+NoSuchUpload
+ a| 
+404 Not Found
+
+
+
+ a| 
+NotImplemented
+ a| 
+501 未実装
+
+
+
+ a| 
+NoSuchBucketPolicy
+ a| 
+404 Not Found
+
+
+
+ a| 
+ObjectLockConfigurationNotFoundError
+ a| 
+404 Not Found
+
+
+
+ a| 
+PreconditionFailed
+ a| 
+412 Precondition Failed
+
+
+
+ a| 
+RequestTimeTooSkewed
+ a| 
+403 Forbidden
+
+
+
+ a| 
+ServiceUnavailable
+ a| 
+503 Service Unavailable
+
+
+
+ a| 
+SignatureDoesNotMatch
+ a| 
+403 Forbidden
+
+
+
+ a| 
+TooManyBuckets
+ a| 
+400 Bad Request
+
+
+
+ a| 
+UserKeyMustBeSpecified
+ a| 
+400 Bad Request
+
+|===
+
+
+[[storagegrid-custom-error-codes]]
+== StorageGRID カスタムエラーコード
+
+[cols="2a,2a,1a"]
+|===
+| Name | 説明 | HTTPのステータス 
+
+
+ a| 
+XBucketLifecycleNotAllowed
+ a| 
+従来の準拠バケットでは、バケットのライフサイクル構成は許可されていません。
+ a| 
+400 Bad Request
+
+
+
+ a| 
+XBucketPolicyParseException
+ a| 
+受信したバケットポリシーのJSONを解析できませんでした。
+ a| 
+400 Bad Request
+
+
+
+ a| 
+XComplianceConflict
+ a| 
+旧式のコンプライアンス設定のため、操作が拒否されました。
+ a| 
+403 Forbidden
+
+
+
+ a| 
+XComplianceReducedRedundancyForbidden
+ a| 
+レガシー準拠バケットでは冗長性の削減は許可されていません
+ a| 
+400 Bad Request
+
+
+
+ a| 
+XMaxBucketPolicyLengthExceeded
+ a| 
+お客様のポリシーは、許可されている最大バケットポリシーの長さを超えています。
+ a| 
+400 Bad Request
+
+
+
+ a| 
+XMissingInternalRequestHeader
+ a| 
+内部リクエストのヘッダーが欠落しています。
+ a| 
+400 Bad Request
+
+
+
+ a| 
+XNoSuchBucketCompliance
+ a| 
+指定されたバケットでは、従来のコンプライアンスが有効になっていません。
+ a| 
+404 Not Found
+
+
+
+ a| 
+XNotAcceptable
+ a| 
+リクエストには、満たすことのできなかった1つ以上のAcceptヘッダーが含まれています。
+ a| 
+406 Not Acceptable
+
+
+
+ a| 
+XNotImplemented
+ a| 
+ご提示いただいたご要望は、実装されていない機能に関するものです。
+ a| 
+501 未実装
+
+|===

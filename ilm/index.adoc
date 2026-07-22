@@ -1,0 +1,41 @@
+---
+permalink: ilm/index.html 
+sidebar: sidebar 
+keywords: information lifecycle management overview, about information lifecycle management, ilm overview, about ilm 
+summary: ILMポリシーの情報ライフサイクル管理（ILM）ルールは、オブジェクトデータのコピーを作成および配布する方法と、それらのコピーを長期にわたって管理する方法をStorageGRIDに指示します。 
+---
+= StorageGRID で ILM を使用してオブジェクトを管理
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ILMポリシーの情報ライフサイクル管理（ILM）ルールは、オブジェクトデータのコピーを作成および配布する方法と、それらのコピーを長期にわたって管理する方法をStorageGRIDに指示します。
+
+
+
+[[about-these-instructions]]
+== これらの説明書について
+
+ILM（情報ライフサイクル管理）のルールとポリシーを設計・実装するには、綿密な計画が必要です。運用要件、StorageGRID システムのトポロジー、オブジェクト保護のニーズ、および利用可能なストレージの種類を理解する必要があります。次に、さまざまな種類のオブジェクトをどのようにコピー、配布、および保存するかを決定する必要があります。
+
+以下の手順に従ってください：
+
+* StorageGRID の情報ライフサイクル管理（ILM）について学ぶ（link:how-ilm-operates-throughout-objects-life.html["ILMがオブジェクトのライフサイクル全体を通してどのように機能するか"]を含む）。
+* link:what-storage-pool-is.html["ストレージプール"]、link:what-cloud-storage-pool-is.html["クラウドストレージプール"]、およびlink:what-ilm-rule-is.html["ILMルール"]の設定方法について説明します。
+* 1つまたは複数のサイトにわたるオブジェクトデータを保護するlink:creating-ilm-policy.html["ILMポリシーの作成、シミュレーション、および有効化"]方法を説明します。
+* 特定のS3バケット内のオブジェクトが指定された期間、削除または上書きされないようにするためのlink:managing-objects-with-s3-object-lock.html["S3 Object Lockを使用してオブジェクトを管理する"]について説明します。
+
+
+
+
+[[learn-more]]
+== 詳細情報
+
+さらに詳しく知りたい場合は、以下の動画をご覧ください。
+
+.ILMルールの概要
+video::9872d38f-80b3-4ad4-9f79-b1ff008760c7[panopto]
+.ILMポリシーの概要
+video::e768d4da-da88-413c-bbaa-b1ff00874d10[panopto]

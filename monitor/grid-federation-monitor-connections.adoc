@@ -1,0 +1,123 @@
+---
+permalink: monitor/grid-federation-monitor-connections.html 
+sidebar: sidebar 
+keywords: grid federation, monitor connection, cross grid replication metrics 
+summary: すべてのグリッドフェデレーション接続に関する基本情報、特定の接続に関する詳細情報、またはクロスグリッドレプリケーション操作に関するPrometheusメトリクスを監視できます。どちらのグリッドからでも接続状況を監視できます。 
+---
+= StorageGRID グリッド フェデレーション接続を監視
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+すべてのlink:../admin/grid-federation-overview.html["グリッドフェデレーション接続"]に関する基本情報、特定の接続に関する詳細情報、またはクロスグリッドレプリケーション操作に関する Prometheus メトリクスを監視できます。どちらのグリッドからでも接続を監視できます。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して、いずれかのグリッドの Grid Manager にサインインしています。
+* 現在サインインしているグリッドに対してlink:../admin/admin-group-permissions.html["ルートアクセス権限"]があります。
+
+
+
+
+[[view-all-connections]]
+== すべての接続を表示
+
+グリッドフェデレーションのページには、すべてのグリッドフェデレーション接続と、グリッドフェデレーション接続の使用が許可されているすべてのテナントアカウントに関する基本情報が表示されます。
+
+.手順
+. *設定* ＞ *システム* ＞ *グリッド連携* を選択します。
++
+グリッド連携ページが表示されます。
+
+. このグリッド上のすべての接続に関する基本情報を表示するには、*Connections* タブを選択してください。
++
+このタブから、以下の操作が可能です：
+
++
+** link:../admin/grid-federation-create-connection.html["新しい接続を作成する"]。
+** link:../admin/grid-federation-manage-connection.html["編集またはテスト"]への既存の接続を選択します。
+
+
++
+image:grid-federation-connections-tab.png["グリッドフェデレーション接続タブ"]
+
+. このグリッド上で「グリッドフェデレーション接続を使用する」権限を持つすべてのテナントアカウントの基本情報を表示するには、「許可されたテナント」タブを選択します。
++
+このタブから、以下の操作が可能です：
+
++
+** link:../monitor/monitoring-tenant-activity.html["許可されたテナントごとに詳細ページを表示します"]。
+** 各接続の詳細ページを表示します。<<view-specific-connection,特定の接続を表示する>>を参照してください。
+** 許可されたテナントを選択し、link:../admin/grid-federation-manage-tenants.html["権限を削除する"]。
+** グリッド間レプリケーションのエラーを確認し、エラーがあれば最後のエラーを解消します。link:../admin/grid-federation-troubleshoot.html["グリッドフェデレーションのエラーをトラブルシューティングする"]を参照してください。
++
+image:grid-federation-permitted-tenants-tab.png["グリッドフェデレーション 許可されたテナント タブ"]
+
+
+
+
+
+
+
+[[view-specific-connectionview-a-specific-connection]]
+== [[view-specific-connection]]特定の接続を表示する
+
+特定のグリッド連携接続の詳細を表示できます。
+
+.手順
+. グリッド連携ページからいずれかのタブを選択し、テーブルから接続名を選択します。
++
+接続の詳細ページから、以下の操作が可能です。
+
++
+** ローカルホスト名、リモートホスト名、ポート番号、接続状態など、接続に関する基本的なステータス情報を表示します。
+** link:../admin/grid-federation-manage-connection.html["編集、テスト、または削除"]への接続を選択します。
+
+
+. 特定の接続を表示する際は、*許可されたテナント*タブを選択すると、その接続で許可されているテナントの詳細が表示されます。
++
+このタブから、以下の操作が可能です：
+
++
+** link:../monitor/monitoring-tenant-activity.html["許可されたテナントごとに詳細ページを表示します"]。
+** link:../admin/grid-federation-manage-tenants.html["テナントの許可を削除する"]接続を使用します。
+** グリッド間レプリケーションのエラーを確認し、最後のエラーを解消します。link:../admin/grid-federation-troubleshoot.html["グリッドフェデレーションのエラーをトラブルシューティングする"]を参照してください。
++
+image:grid-federation-permitted-tenants-tab-for-connection.png["接続用のグリッド フェデレーション許可済みテナント タブ"]
+
+
+
+. 特定の接続を表示する際は、*Certificates* タブを選択すると、その接続用にシステムが生成したサーバー証明書とクライアント証明書が表示されます。
++
+このタブから、以下の操作が可能です：
+
++
+** link:../admin/grid-federation-manage-connection.html["接続証明書をローテーションする"]。
+** 関連する証明書を表示またはダウンロードするか、証明書のPEMをコピーするには、*サーバー*または*クライアント*を選択します。
++
+image:grid-federation-certificates-tab.png["grid-federation-certificates-tab"]
+
+
+
+
+
+
+
+[[review-cross-grid-replication-metrics]]
+== クロスグリッドレプリケーションのメトリクスを確認する
+
+Grafanaのクロスグリッドレプリケーションダッシュボードを使用すると、グリッド上でのクロスグリッドレプリケーション操作に関するPrometheusメトリクスを表示できます。
+
+.手順
+. グリッドマネージャーから、「サポート」>「ツール」>「メトリクス」を選択します。
++
+
+NOTE: メトリクスページで利用できるツールは、テクニカルサポート担当者による使用を想定しています。これらのツールに含まれる一部の機能やメニュー項目は、意図的に動作しないように設定されており、変更される可能性があります。link:../monitor/commonly-used-prometheus-metrics.html["一般的に使用されるPrometheusメトリクス"]のリストを参照してください。
+
+. ページの Grafana セクションで、*Cross Grid Replication* を選択します。
++
+詳細な手順については、link:../monitor/reviewing-support-metrics.html["サポート指標を確認する"]を参照してください。
+
+. 複製に失敗したオブジェクトの複製を再試行するには、link:../admin/grid-federation-retry-failed-replication.html["失敗したレプリケーション操作を特定して再試行する"]を参照してください。
+

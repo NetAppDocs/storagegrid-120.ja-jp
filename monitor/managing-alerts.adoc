@@ -1,0 +1,36 @@
+---
+permalink: monitor/managing-alerts.html 
+sidebar: sidebar 
+keywords: alert rules, managing alerts, alerts, alert notifications. edit alert rules 
+summary: アラートシステムは、StorageGRID の運用中に発生する可能性のある問題を検知、評価、および解決するための使いやすいインターフェイスを提供します。 
+---
+= StorageGRID でアラートを管理する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+アラートシステムは、StorageGRID の運用中に発生する可能性のある問題を検知、評価、および解決するための使いやすいインターフェイスを提供します。
+
+アラートルールの条件が真と評価された場合、特定の重大度レベルでアラートがトリガーされます。アラートがトリガーされると、以下の動作が発生します。
+
+* グリッドマネージャーのダッシュボードにアラートの深刻度を示すアイコンが表示され、現在のアラート数が増加します。
+* アラートは、*ノード*サマリーページと*ノード* > *_node_* > *概要*タブに表示されます。
+* SMTPサーバーを設定し、受信者のメールアドレスを指定している場合、メール通知が送信されます。
+* Simple Network Management Protocol （SNMP）通知が送信されます（StorageGRID SNMPエージェントを設定済みの場合）。
+
+
+カスタムアラートの作成、アラートの編集または無効化、アラート通知の管理が可能です。
+
+詳細はこちらをご覧ください：
+
+* 動画をご覧ください：
++
+.アラートの概要
+video::2eea81c5-8323-417f-b0a0-b1ff008506c1[panopto]
++
+.カスタムアラート
+video::54af90c4-9a38-4136-9621-b1ff008604a3[panopto]
+* link:alerts-reference.html["アラート一覧"]を参照してください。
+

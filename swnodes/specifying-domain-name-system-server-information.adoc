@@ -1,0 +1,33 @@
+---
+permalink: swnodes/specifying-domain-name-system-server-information.html 
+sidebar: sidebar 
+keywords: how to specify domain name system server information, dns 
+summary: StorageGRID システムのDNS情報を指定する必要があります。これにより、IPアドレスではなくホスト名を使用して外部サーバーにアクセスできるようになります。 
+---
+= StorageGRID のDNSサーバー情報を指定します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID システムのDNS情報を指定する必要があります。これにより、IPアドレスではなくホスト名を使用して外部サーバーにアクセスできるようになります。
+
+.タスク概要
+ https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/checking-dns-server-configuration.html["DNSサーバの情報"^]を指定すると、メール通知およびAutoSupportでIPアドレスではなく完全修飾ドメイン名（FQDN）ホスト名を使用できるようになります。
+
+適切な動作を確保するため、DNSサーバーを2つまたは3つ指定してください。3つ以上指定した場合、一部のプラットフォームにおける既知のOS制限により、3つしか使用されない可能性があります。環境にルーティング制限がある場合は、link:../maintain/modifying-dns-configuration-for-single-grid-node.html["DNSサーバーリストをカスタマイズする"]個々のノード（通常はサイト内のすべてのノード）が、最大3つの異なるDNSサーバーセットを使用するように設定できます。
+
+可能であれば、各サイトがローカルからアクセスできるDNSサーバを使用し、独立したサイトが外部宛先のFQDNを解決できるようにしてください。
+
+.手順
+. 「サーバー1」テキストボックスに、少なくとも1つのDNSサーバーのIPv4アドレスを指定してください。
+. 必要に応じて、最後のエントリの横にあるプラス記号を選択して、サーバーエントリを追加してください。
++
+image:9_gmi_installer_dns_page.gif["この図には説明が付随しています。"]
+
++
+少なくとも2つのDNSサーバーを指定することをお勧めします。最大6つのDNSサーバーを指定できます。
+
+. *Next* を選択します。
+

@@ -1,0 +1,75 @@
+---
+permalink: monitor/deployment-and-maintenance-logs.html 
+sidebar: sidebar 
+keywords: deployment, logs, Maintenance 
+summary: デプロイメントログとメンテナンスログを使用して、問題のトラブルシューティングを行うことができます。 
+---
+= StorageGRIDの導入とメンテナンスのログ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+デプロイメントログとメンテナンスログを使用して、問題のトラブルシューティングを行うことができます。
+
+[cols="1a,3a,1a"]
+|===
+| ファイル名 | Notes | 発見場所 
+
+
+| /var/local/log/install.log  a| 
+ソフトウェアのインストール中に作成されます。インストールイベントの記録が含まれています。
+ a| 
+すべてのノード
+
+
+
+| /var/local/log/expansion-progress.log  a| 
+拡張処理中に作成されます。拡張イベントの記録が含まれています。
+ a| 
+ストレージ ノード
+
+
+
+| /var/local/log/pa-move.log  a| 
+ `pa-move.sh`スクリプトの実行中に作成されました。
+ a| 
+プライマリ管理ノード
+
+
+
+| /var/local/log/pa-move-new_pa.log  a| 
+ `pa-move.sh`スクリプトの実行中に作成されました。
+ a| 
+プライマリ管理ノード
+
+
+
+| /var/local/log/pa-move-old_pa.log  a| 
+ `pa-move.sh`スクリプトの実行中に作成されました。
+ a| 
+プライマリ管理ノード
+
+
+
+| /var/local/log/gdu-server.log  a| 
+GDUサービスによって作成されました。プライマリ管理ノードによって管理されるプロビジョニングおよびメンテナンス手順に関連するイベントが含まれます。
+ a| 
+管理ノード
+
+
+
+| /var/local/log/send_admin_hw.log  a| 
+インストール中に作成されます。プライマリ管理ノードとのノード間の通信に関するデバッグ情報が含まれています。
+ a| 
+すべてのノード
+
+
+
+| /var/local/log/upgrade.log  a| 
+ソフトウェアのアップグレード中に作成されました。ソフトウェア更新イベントの記録が含まれています。
+ a| 
+すべてのノード
+
+|===

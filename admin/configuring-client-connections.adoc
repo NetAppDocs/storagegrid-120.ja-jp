@@ -1,0 +1,178 @@
+---
+permalink: admin/configuring-client-connections.html 
+sidebar: sidebar 
+keywords: s3 connection, connect to storagegrid, s3 setup wizard 
+summary: グリッド管理者として、S3クライアントアプリケーションがデータの保存と取得のためにStorageGRIDシステムに接続する方法を制御する構成オプションを管理します。 
+---
+= S3 クライアント接続を StorageGRID に設定
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+グリッド管理者として、S3クライアントアプリケーションがデータの保存と取得のためにStorageGRIDシステムに接続する方法を制御する構成オプションを管理します。
+
+
+TIP: このバージョンのドキュメントサイトからは、Swiftに関する詳細情報が削除されました。参照してください https://docs.netapp.com/us-en/storagegrid-118/admin/configuring-client-connections.html["StorageGRID 11.8: S3およびSwiftクライアント接続の設定"^]。
+
+
+
+[[configuration-tasks]]
+== 設定タスク
+
+. クライアントアプリケーションがStorageGRIDに接続する方法に基づいて、StorageGRIDで前提条件タスクを実行します。
+
+
+[role="tabbed-block"]
+====
+.必須タスク
+--
+以下のものを入手する必要があります：
+
+* IPアドレス
+* ドメイン名
+* SSL証明書
+
+
+--
+.オプションのタスク
+--
+必要に応じて、以下を設定します：
+
+* アイデンティティフェデレーション
+* SSO
+
+
+--
+====
+. StorageGRID を使用して、アプリケーションがグリッドに接続するために必要な値を取得します。S3 セットアップ ウィザードを使用するか、各 StorageGRID エンティティを手動で設定することができます。+
+
+
+[role="tabbed-block"]
+====
+.S3 セットアップ ウィザードを使用する
+--
+S3 セットアップ ウィザードの手順に従ってください。
+
+--
+.手動で設定する
+--
+. 高可用性グループを作成する
+. ロードバランサーエンドポイントを作成する
+. テナントアカウントを作成する
+. バケットとアクセスキーを作成する
+. ILMルールとポリシーを設定する
+
+
+--
+====
+. S3アプリケーションを使用して、StorageGRIDへの接続を完了します。使用予定のドメイン名にIPアドレスを関連付けるためのDNSエントリを作成してください。
++
+必要に応じて、追加のアプリケーション設定を行ってください。
+
+. アプリケーションと StorageGRID でオブジェクトストレージを長期にわたって管理および監視するための継続的なタスクを実行します。
+
+
+
+
+[[information-needed-to-attach-storagegrid-to-a-client-application]]
+== StorageGRID をクライアントアプリケーションに接続するために必要な情報
+
+StorageGRID を S3 クライアントアプリケーションに接続する前に、StorageGRID で設定手順を実行し、必要な値を取得する必要があります。
+
+
+
+[[what-values-do-i-need]]
+=== 必要な値は何ですか？
+
+次の表に、StorageGRID で設定する必要がある値と、それらの値が S3 アプリケーションおよび DNS サーバーでどのように使用されるかを示します。
+
+[cols="1a,1a,1a"]
+|===
+| Value | 値が設定されている場所 | 価値が活用される場所 
+
+
+ a| 
+仮想IP（VIP）アドレス
+ a| 
+StorageGRID > HA グループ
+ a| 
+DNSエントリ
+
+
+
+ a| 
+ポート
+ a| 
+StorageGRID > ロードバランサーエンドポイント
+ a| 
+クライアントアプリケーション
+
+
+
+ a| 
+SSL証明書
+ a| 
+StorageGRID > ロードバランサーエンドポイント
+ a| 
+クライアントアプリケーション
+
+
+
+ a| 
+サーバー名（FQDN）
+ a| 
+StorageGRID > ロードバランサーエンドポイント
+ a| 
+* クライアントアプリケーション
+* DNSエントリ
+
+
+
+
+ a| 
+S3アクセスキーIDとシークレットアクセスキー
+ a| 
+StorageGRID > テナントとバケット
+ a| 
+クライアントアプリケーション
+
+
+
+ a| 
+バケット/コンテナ名
+ a| 
+StorageGRID > テナントとバケット
+ a| 
+クライアントアプリケーション
+
+|===
+
+
+[[how-do-i-get-these-values]]
+=== これらの値はどのように取得できますか？
+
+ご要望に応じて、以下のいずれかの方法で必要な情報を取得できます：
+
+* *link:use-s3-setup-wizard.html["S3セットアップ ウィザード"]を使用してください*。S3 セットアップ ウィザードを使用すると、StorageGRID で必要な値をすばやく設定でき、S3 アプリケーションの設定時に使用できるファイルを 1 つまたは 2 つ出力します。ウィザードは必要な手順を案内し、設定が StorageGRID のベストプラクティスに準拠していることを確認します。
++
+
+NOTE: S3 アプリケーションを構成する場合、特別な要件がある場合や実装に大幅なカスタマイズが必要な場合を除き、S3 セットアップ ウィザードの使用をお勧めします。
+
+* *link:../fabricpool/use-fabricpool-setup-wizard.html["FabricPool セットアップ ウィザード"]を使用してください*。S3 セットアップ ウィザードと同様に、FabricPool セットアップ ウィザードを使用すると、必要な値をすばやく設定でき、ONTAP で FabricPool クラウド階層を設定する際に使用できるファイルが出力されます。
++
+
+NOTE: StorageGRID を FabricPool クラウド層のオブジェクトストレージシステムとして使用する予定がある場合は、特別な要件がある場合や実装に大幅なカスタマイズが必要な場合を除き、FabricPool セットアップ ウィザードの使用をお勧めします。
+
+* *アイテムを手動で設定する*。S3 アプリケーションに接続していて、S3 セットアップ ウィザードを使用しない場合は、手動で設定を行うことで必要な値を取得できます。以下の手順に従ってください。
++
+.. S3アプリケーションで使用する高可用性（HA）グループを設定します。link:configure-high-availability-group.html["高可用性グループを構成する"]を参照してください。
+.. S3アプリケーションが使用するロードバランサーのエンドポイントを作成します。link:configuring-load-balancer-endpoints.html["ロードバランサーのエンドポイントを設定する"]を参照してください。
+.. S3アプリケーションが使用するテナントアカウントを作成します。link:creating-tenant-account.html["テナントアカウントを作成する"]を参照してください。
+.. S3テナントの場合は、テナントアカウントにサインインし、アプリケーションにアクセスする各ユーザーに対してアクセスキーIDとシークレットアクセスキーを生成します。link:../tenant/creating-your-own-s3-access-keys.html["独自のアクセスキーを作成する"]を参照してください。
+.. テナントアカウント内に1つ以上のS3バケットを作成します。S3については、link:../tenant/creating-s3-bucket.html["S3バケットを作成する"]を参照してください。
+.. 新しいテナントまたはバケット/コンテナに属するオブジェクトに特定の配置指示を追加するには、新しいILMルールを作成し、そのルールを使用する新しいILMポリシーを有効化します。link:../ilm/access-create-ilm-rule-wizard.html["ILMルールを作成する"]およびlink:../ilm/creating-ilm-policy.html["ILMポリシーを作成する"]を参照してください。
+
+
+

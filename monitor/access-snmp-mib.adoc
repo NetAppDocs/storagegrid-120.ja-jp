@@ -1,0 +1,171 @@
+---
+permalink: monitor/access-snmp-mib.html 
+sidebar: sidebar 
+keywords: mib, snmp, monitoring 
+summary: MIBファイルには、グリッド内のノードが管理するリソースとサービスのプロパティに関する定義と情報が含まれています。StorageGRID のオブジェクトと通知を定義するMIBファイルにアクセスできます。これらのファイルは、グリッドの監視に役立ちます。 
+---
+= StorageGRID MIBファイルにアクセスする
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+MIBファイルには、グリッド内のノードが管理するリソースとサービスのプロパティに関する定義と情報が含まれています。StorageGRID のオブジェクトと通知を定義するMIBファイルにアクセスできます。これらのファイルは、グリッドの監視に役立ちます。
+
+SNMPおよびMIBファイルの詳細については、link:using-snmp-monitoring.html["SNMP監視を使用する"]を参照してください。
+
+
+
+[[access-mib-files]]
+== MIBファイルにアクセスする
+
+MIBファイルにアクセスするには、以下の手順に従ってください。
+
+.手順
+. *設定* ＞ *監視* ＞ *SNMPエージェント* を選択します。
+. SNMPエージェントのページで、ダウンロードするファイルを選択します。
++
+** *NETAPP-STORAGEGRID-MIB.txt*：すべての管理ノードでアクセス可能なアラートテーブルと通知（トラップ）を定義します。
+** *ES-NETAPP-06-MIB.mib*：Eシリーズベースのアプライアンスのオブジェクトと通知を定義します。
+** *MIB_1_10.zip*：BMC インターフェイスを搭載したアプライアンスのオブジェクトと通知を定義します。
++
+
+TIP: MIBファイルには、任意の StorageGRID ノード上の次の場所からもアクセスできます： `/usr/share/snmp/mibs`
+
+
+
+. MIB ファイルから StorageGRID の OID を抽出するには：
++
+.. StorageGRID MIB のルートの OID を取得します：
++
+`root@user-adm1:~ # snmptranslate -On -IR storagegrid`
+
++
+結果： `.1.3.6.1.4.1.789.28669` (`28669`は常に StorageGRID の OID です）
+
+.. StorageGRID の OID をツリー全体で Grep します（行を結合するために  `paste` を使用）：
++
+`root@user-adm1:~ # snmptranslate -Tso | paste -d " " - - | grep 28669`
+
++
+
+TIP:  `snmptranslate`コマンドには、MIBを探索するのに役立つ多くのオプションがあります。このコマンドは、任意の StorageGRID ノードで使用できます。
+
+
+
+
+
+
+
+[[mib-file-contents]]
+== MIBファイルの内容
+
+すべてのオブジェクトは StorageGRID OID の配下にあります。
+
+[cols="1a,1a,2a"]
+|===
+| オブジェクト名 | オブジェクトID（OID） | 説明 
+
+
+| .iso.org.dod.internet.+ private.enterprises.+ netapp.storagegrid | .1.3.6.1.4.1.789.28669  a| 
+NetApp StorageGRIDエンティティのMIBモジュール。
+
+|===
+
+
+[[mib-objects]]
+== MIBオブジェクト
+
+[cols="1a,1a,1a,1a,1a,2a"]
+|===
+| オブジェクト名 | オブジェクトID（OID） | Type | アクセス | MIB モジュール | 説明 
+
+
+| activeAlertCount | .1.3.6.1.4.1.+ 789.28669.1.3  a| 
+Integer32を使用したチャンク アップロード署名要求がサポートされるようになりました。
+ a| 
+read-only
+ a| 
+NETAPP-STORAGEGRID-MIB
+ a| 
+activeAlertTable 内のアクティブなアラートの数。
+
+
+
+| activeAlertTable | .1.3.6.1.4.1.+ 789.28669.1.4  a| 
+ActiveAlertEntry のシーケンス
+ a| 
+アクセス不可
+ a| 
+NETAPP-STORAGEGRID-MIB
+ a| 
+StorageGRID のアクティブなアラートの表。
+
+
+
+| activeAlertEntry | .1.3.6.1.4.1.+ 789.28669.1.4.1  a| 
+順序
+ a| 
+アクセス不可
+ a| 
+NETAPP-STORAGEGRID-MIB
+ a| 
+アラートIDによってインデックス付けされた、単一のStorageGRIDアラート。
+
+
+
+| activeAlertId | .1.3.6.1.4.1.+ 789.28669.1.4.1.1  a| 
+オクテット文字列
+ a| 
+read-only
+ a| 
+NETAPP-STORAGEGRID-MIB
+ a| 
+アラートのID。現在のアクティブなアラートのセット内でのみ一意です。
+
+
+
+| activeAlertName | .1.3.6.1.4.1.+ 789.28669.1.4.1.2  a| 
+オクテット文字列
+ a| 
+read-only
+ a| 
+NETAPP-STORAGEGRID-MIB
+ a| 
+アラートの名前。
+
+
+
+| activeAlertInstance | .1.3.6.1.4.1.+ 789.28669.1.4.1.3  a| 
+オクテット文字列
+ a| 
+read-only
+ a| 
+NETAPP-STORAGEGRID-MIB
+ a| 
+アラートを生成したエンティティの名前。通常はノード名です。
+
+
+
+| activeAlertSeverity | .1.3.6.1.4.1.+ 789.28669.1.4.1.4  a| 
+オクテット文字列
+ a| 
+read-only
+ a| 
+NETAPP-STORAGEGRID-MIB
+ a| 
+アラートの重大度。
+
+
+
+| activeAlertStartTime | .1.3.6.1.4.1.+ 789.28669.1.4.1.5  a| 
+Date and time
+ a| 
+read-only
+ a| 
+NETAPP-STORAGEGRID-MIB
+ a| 
+アラートが発動された時刻。
+
+|===

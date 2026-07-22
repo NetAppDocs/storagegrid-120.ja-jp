@@ -1,0 +1,72 @@
+---
+permalink: audit/audit-message-examples.html 
+sidebar: sidebar 
+keywords: audit message examples, audit.log, atyp, sput, s3 put 
+summary: 各監査メッセージには詳細情報が記載されています。すべての監査メッセージは同じ形式を使用します。 
+---
+= StorageGRID監査メッセージの形式と例
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+各監査メッセージには詳細情報が記載されています。すべての監査メッセージは同じ形式を使用します。
+
+以下は、 `audit.log`ファイルに表示される可能性のある監査メッセージの例です：
+
+[listing]
+----
+2014-07-17T21:17:58.959669
+[AUDT:[RSLT(FC32):SUCS][TIME(UI64):246979][S3AI(CSTR):"bc644d
+381a87d6cc216adcd963fb6f95dd25a38aa2cb8c9a358e8c5087a6af5f"][
+S3AK(CSTR):"UJXDKKQOXB7YARDS71Q2"][S3BK(CSTR):"s3small1"][S3K
+Y(CSTR):"hello1"][CBID(UI64):0x50C4F7AC2BC8EDF7][CSIZ(UI64):0
+][AVER(UI32):10][ATIM(UI64):1405631878959669][ATYP(FC32):SPUT
+][ANID(UI32):12872812][AMID(FC32):S3RQ][ATID(UI64):1579224144
+102530435]]
+----
+監査メッセージには、記録対象のイベントに関する情報と、監査メッセージ自体に関する情報が含まれています。
+
+監査メッセージに記録されているイベントを特定するには、ATYP属性（以下で強調表示）を探してください：
+
+[listing, subs="specialcharacters,quotes"]
+----
+2014-07-17T21:17:58.959669
+[AUDT:[RSLT(FC32):SUCS][TIME(UI64):246979][S3AI(CSTR):"bc644d
+381a87d6cc216adcd963fb6f95dd25a38aa2cb8c9a358e8c5087a6af5f"][
+S3AK(CSTR):"UJXDKKQOXB7YARDS71Q2"][S3BK(CSTR):"s3small1"][S3K
+Y(CSTR):"hello1"][CBID(UI64):0x50C4F7AC2BC8EDF7][CSIZ(UI64):0
+][AVER(UI32):10][ATIM(UI64):1405631878959669][*ATYP(FC32):SP*
+*UT*][ANID(UI32):12872812][AMID(FC32):S3RQ][ATID(UI64):1579224
+144102530435]]
+----
+ATYP属性の値はSPUTです。link:sput-s3-put.html["SPUT"]は、S3 PUTトランザクションを表し、バケットへのオブジェクトの取り込みを記録します。
+
+以下の監査メッセージには、オブジェクトが関連付けられているバケットも表示されます。
+
+[listing, subs="specialcharacters,quotes"]
+----
+2014-07-17T21:17:58.959669
+[AUDT:[RSLT(FC32):SUCS][TIME(UI64):246979][S3AI(CSTR):"bc644d
+381a87d6cc216adcd963fb6f95dd25a38aa2cb8c9a358e8c5087a6af5f"][
+S3AK(CSTR):"UJXDKKQOXB7YARDS71Q2"][*S3BK\(CSTR\):"s3small1"*][S3
+KY(CSTR):"hello1"][CBID(UI64):0x50C4F7AC2BC8EDF7][CSIZ(UI64):
+0][AVER(UI32):10][ATIM(UI64):1405631878959669][ATYP(FC32):SPU
+T][ANID(UI32):12872812][AMID(FC32):S3RQ][ATID(UI64):157922414
+4102530435]]
+----
+PUTイベントが発生した日時を知るには、監査メッセージの冒頭にある協定世界時（UTC）のタイムスタンプを確認してください。この値は、監査メッセージ自体のATIM属性を人間が読みやすい形式にしたものです：
+
+[listing, subs="specialcharacters,quotes"]
+----
+*2014-07-17T21:17:58.959669*
+[AUDT:[RSLT(FC32):SUCS][TIME(UI64):246979][S3AI(CSTR):"bc644d
+381a87d6cc216adcd963fb6f95dd25a38aa2cb8c9a358e8c5087a6af5f"][
+S3AK(CSTR):"UJXDKKQOXB7YARDS71Q2"][S3BK(CSTR):"s3small1"][S3K
+Y(CSTR):"hello1"][CBID(UI64):0x50C4F7AC2BC8EDF7][CSIZ(UI64):0
+][AVER(UI32):10][*ATIM\(UI64\):1405631878959669*][ATYP(FC32):SP
+UT][ANID(UI32):12872812][AMID(FC32):S3RQ][ATID(UI64):15792241
+44102530435]]
+----
+ATIMは、UNIXエポックの開始からの経過時間をマイクロ秒単位で記録します。この例では、値 `1405631878959669`は、2014年7月17日木曜日 21:17:59 UTC に相当します。

@@ -1,0 +1,86 @@
+---
+permalink: swnodes/index.html 
+sidebar: sidebar 
+keywords: about ubuntu, ubuntu overview, vnware, red hat enterprise linux, rhel, quick start 
+summary: LinuxまたはVMware StorageGRIDノードをインストールするための概要手順は以下のとおりです。 
+---
+= ソフトウェアベースのノードへの StorageGRID インストールのクイックスタート
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+LinuxまたはVMware StorageGRIDノードをインストールするための概要手順は以下のとおりです。
+
+
+NOTE: 「Linux」とは、RHEL、Ubuntu、またはDebianのいずれかの環境を指します。サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool（IMT）"^]を参照してください。
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["1"]準備
+[role="quick-margin-list"]
+* link:../primer/storagegrid-architecture-and-network-topology.html["StorageGRID アーキテクチャとネットワークトポロジ"]について学ぶ。
+* link:../network/index.html["StorageGRID ネットワーキング"]の詳細をご確認ください。
+* link:required-materials.html["必要な情報と資料"]を収集して準備します。
+* （VMwareのみ）link:software-requirements.html["VMware vSphere ハイパーバイザー、vCenter、および ESX ホスト"]をインストールして設定します。
+* 必要なlink:cpu-and-ram-requirements.html["CPUおよびRAM"]を準備してください。
+* link:storage-and-performance-requirements.html["ストレージとパフォーマンスの要件"]を提供します。
+* （Linux のみ）link:how-host-wide-settings-change.html["Linuxサーバーを準備する"] StorageGRID ノードをホストします。
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["2"]デプロイメント
+[role="quick-margin-para"]
+グリッドノードを導入します。グリッドノードを導入すると、StorageGRID システムの一部として作成され、1つ以上のネットワークに接続されます。
+
+[role="quick-margin-list"]
+* （Linux のみ）手順 1 で準備したホストにソフトウェアベースのグリッドノードをデプロイするには、Linux コマンドラインと link:creating-node-configuration-files.html["ノード設定ファイル"] を使用します。
+* （VMwareのみ）VMware vSphere Web Client、.vmdk ファイル、および一連の .ovf ファイルテンプレートを使用して、ステップ 1 で準備したサーバー上でlink:collecting-information-about-your-deployment-environment.html["ソフトウェアベースのノードを仮想マシン（VM）としてデプロイする"]します。
+* StorageGRID アプライアンスノードを導入するには、 https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html["ハードウェアのインストールに関するクイックスタートガイド"^]に従ってください。
+
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["3つ"]設定
+[role="quick-margin-para"]
+すべてのノードがデプロイされたら、Grid Manager を使用してlink:navigating-to-grid-manager.html["グリッドを構成してインストールを完了する"]。
+
+
+
+[[automate-the-installation]]
+== インストールを自動化する
+
+
+NOTE: 「Linux」とは、RHEL、Ubuntu、またはDebianのいずれかの環境を指します。サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool（IMT）"^]を参照してください。
+
+[role="tabbed-block"]
+====
+.Linux
+--
+時間を節約し、一貫性を確保するために、StorageGRID ホストサービスのインストールとグリッドノードの設定を自動化できます。
+
+* Ansible、Puppet、Chefなどの標準的なオーケストレーションフレームワークを使用して、以下の作業を自動化します。
++
+** Linuxのインストール
+** ネットワークとストレージの構成
+** コンテナエンジンのインストールとStorageGRIDホストサービス
+** 仮想グリッドノードの展開
+
+
++
+link:automating-installation-linux.html#automate-the-installation-and-configuration-of-the-storagegrid-host-service["StorageGRID ホストサービスのインストールと設定を自動化する"]を参照してください。
+
+* グリッドノードをデプロイした後、link:automating-installation-linux.html#automate-the-configuration-of-storagegrid["StorageGRID システムの設定を自動化する"]インストールアーカイブに含まれている Python 設定スクリプトを使用します。
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/automating-appliance-installation-and-configuration.html["アプライアンスグリッドノードのインストールと構成を自動化する"^]
+* StorageGRID デプロイメントの上級開発者の場合は、link:overview-of-installation-rest-api.html["インストール REST API"]を使用してグリッドノードのインストールを自動化できます。
+
+
+--
+.VMware
+--
+時間を節約し、一貫性を確保するために、グリッドノードの導入と設定、およびStorageGRIDシステムの設定を自動化できます。
+
+* link:automating-grid-node-deployment-in-vmware-vsphere.html#automate-grid-node-deployment["VMware vSphere を使用してグリッドノードの展開を自動化する"]。
+* グリッドノードをデプロイした後、link:automating-grid-node-deployment-in-vmware-vsphere.html#automate-the-configuration-of-storagegrid["StorageGRID システムの設定を自動化する"]インストールアーカイブに含まれている Python 設定スクリプトを使用します。
+* https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/automating-appliance-installation-and-configuration.html["アプライアンスグリッドノードのインストールと構成を自動化する"^]
+* StorageGRID デプロイメントの上級開発者の場合は、link:overview-of-installation-rest-api.html["インストール REST API"]を使用してグリッドノードのインストールを自動化できます。
+
+
+--
+====

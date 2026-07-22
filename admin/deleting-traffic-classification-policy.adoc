@@ -1,0 +1,49 @@
+---
+permalink: admin/deleting-traffic-classification-policy.html 
+sidebar: sidebar 
+keywords: delete traffic classification policy 
+summary: トラフィック分類ポリシーが不要になった場合は、削除できます。 
+---
+= StorageGRID トラフィック分類ポリシーを削除する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+不要になったトラフィック分類ポリシーは削除できます。削除したポリシーは復元できないため、必ず正しいポリシーを削除してください。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* あなたはlink:admin-group-permissions.html["ルートアクセス権限"]があります。
+
+
+.手順
+. *[設定]* > *[ネットワーク]* > *[トラフィック分類]* を選択します。
++
+トラフィック分類ポリシーページが表示され、既存のポリシーが表形式で一覧表示されます。
+
+. 「アクション」メニューまたは詳細ページを使用してポリシーを削除します。
++
+[role="tabbed-block"]
+====
+.[操作]メニュー
+--
+.. 該当するポリシーのチェックボックスを選択してください。
+.. *Actions* > *Remove* を選択します。
+
+
+--
+.ポリシー詳細ページ
+--
+.. ポリシー名を選択します。
+.. ポリシー名の横にある「削除」ボタンを選択します。
+
+
+--
+====
+. ポリシーを削除することを確認するには、*Yes* を選択してください。
++
+ポリシーが削除されます。
+
+

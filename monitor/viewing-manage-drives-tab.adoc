@@ -1,0 +1,25 @@
+---
+permalink: monitor/viewing-manage-drives-tab.html 
+sidebar: sidebar 
+keywords: Manage drives tab, hardware diagnostics, fail drive, logically replace drive 
+summary: 「ドライブの管理」タブを使用すると、この機能をサポートするアプライアンスのドライブの詳細情報にアクセスしたり、トラブルシューティングやメンテナンス作業を実行したりできます。 
+---
+= StorageGRID の [ ドライブの管理 ] タブを表示します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+「ドライブの管理」タブを使用すると、この機能をサポートするアプライアンスのドライブの詳細情報にアクセスしたり、トラブルシューティングやメンテナンス作業を実行したりできます。
+
+「ドライブの管理」タブを使用すると、次の操作を実行できます。
+
+* アプライアンス内のデータストレージドライブのレイアウトを表示します
+* 各ドライブの場所、種類、状態、ファームウェア バージョン、シリアル番号を一覧表示する表を表示します。
+* 各ドライブのトラブルシューティングとメンテナンス機能を実行します。
+
+
+「ドライブの管理」タブにアクセスするには、link:../admin/admin-group-permissions.html["ストレージアプライアンス管理者またはルートアクセス権限"]が必要です。
+
+「ドライブの管理」タブの使用方法については、 https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/manage-drives-tab.html["「ドライブの管理」タブを使用する"^]を参照してください。

@@ -1,0 +1,49 @@
+---
+permalink: maintain/move-adc-service.html 
+sidebar: sidebar 
+keywords: storagegrid, move adc, adc quorum 
+summary: ADCサービスを同じサイト内の別のストレージノードに移動できます。 
+---
+= StorageGRIDでADCサービスを移動します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ADCサービスを同じサイト内の別のストレージノードに移動できます。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* link:../admin/admin-group-permissions.html["メンテナンス権限またはルートアクセス権限"]があります。
+* ソースノードにはADCサービスが含まれています。
+* 対象ノードにはADCサービスが含まれていません。
+* 対象ノードは、メタデータのみのノードか、メタデータとオブジェクトデータの両方を含む複合ノードのいずれかです。
+* 送信元ノードと送信先ノードは同じサイト上にあります。
+
+
+.タスク概要
+Move ADC手順は、次のような場合に使用します。
+
+* ADCサービスをホストするストレージノードを廃止する
+* ADCサービスをホストするストレージノードをデータ専用ストレージノードに変換する
+
+
+ストレージノードまたはlink:../maintain/convert-to-data-only-node.html["ストレージノードをデータ専用ノードに変換する"]を廃止する場合は、まず Move ADC 手順を使用する必要があります。link:../maintain/understanding-adc-service-quorum.html["ADCのクォーラムは維持されています"]を確認する必要があります。
+
+この手順では、ADC、IDNT、ACCT、およびRSMサービスを、同一サイト内の1つのストレージノードから別のストレージノードに移動します。RSM、IDNT、およびACCTサービスはADCサービスに依存しているため、ADCサービスが移動すると自動的に移動します。
+
+.手順
+. ソースノードとターゲットノードのノードIDを記録します。
++
+グリッド管理APIでは、ソースノードIDは `sourceNodeId`と呼ばれます。ターゲットノードIDは `targetNodeId`と呼ばれます。
+
+. グリッドマネージャーの上部にあるヘルプアイコンを選択し、「API documentation」を選択します。
+. 「プライベートAPIドキュメントへ移動」を選択します。
+.  `POST /private/move-adc/start`操作を選択します。詳細については、link:../admin/using-grid-management-api.html#issue-api-requests["API リクエストを発行する"]を参照してください。
++
+この手順中、2つのノードは順番に再起動されます。送信元ノードが最初に再起動し、続いて送信先ノードが再起動します。
+
+.  `GET /private/move-adc`を使用して、手順を監視できます。エラーが発生した場合は、 `POST /private/move-adc/retry`を選択して手順を再試行してください。
+. link:../maintain/downloading-recovery-package.html["復旧パッケージをダウンロードする"]この手順を完了した後。
+

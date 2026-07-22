@@ -1,0 +1,88 @@
+---
+permalink: admin/sending-eseries-autosupport-messages-through-storagegrid.html 
+sidebar: sidebar 
+keywords: eseries, santricity, system manager, asup, autosupport, technical support, appliance 
+summary: EシリーズSANtricity System ManagerのAutoSupportパッケージは、ストレージアプライアンスの管理ポートではなく、StorageGRIDの管理ノードを経由して技術サポートに送信できます。 
+---
+= StorageGRID を経由して Eシリーズ AutoSupport パッケージを送信する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+EシリーズSANtricity System ManagerのAutoSupportパッケージは、ストレージアプライアンスの管理ポートではなく、StorageGRIDの管理ノードを経由して技術サポートに送信できます。
+
+AutoSupport を E シリーズアプライアンスで使用する方法の詳細については、 https://docs.netapp.com/us-en/e-series-santricity/sm-support/autosupport-feature-overview.html["EシリーズハードウェアAutoSupport"^]を参照してください。
+
+.開始する前に
+* Grid Managerにlink:../admin/web-browser-requirements.html["対応ウェブブラウザ"]を使用してサインインしています。
+* あなたはlink:admin-group-permissions.html["ストレージアプライアンス管理者またはルートアクセス権限"]を持っています。
+* SANtricity AutoSupport を設定しました：
++
+** SG6000およびSG5700アプライアンスの場合、 https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/accessing-and-configuring-santricity-system-manager.html["SANtricity System Manager で AutoSupport を設定する"^]
+
+
+
+
+
+NOTE: Grid Manager を使用して SANtricity System Manager にアクセスするには、SANtricity ファームウェア 8.70 以降が必要です。
+
+.タスク概要
+EシリーズのAutoSupportパッケージにはストレージ ハードウェアの詳細が含まれており、StorageGRIDシステムから送信される他のAutoSupportパッケージよりも具体的です。
+
+SANtricity System Manager で特別なプロキシ サーバ アドレスを設定することで、アプライアンスの管理ポートを使用せずに StorageGRID 管理ノードを経由して AutoSupport パッケージを送信できます。この方法で送信された AutoSupport パッケージは link:../primer/what-admin-node-is.html["優先送信者 管理ノード"] によって送信され、Grid Manager で設定されたすべての link:../admin/configuring-admin-proxy-settings.html["管理者プロキシ設定"] が使用されます。
+
+
+NOTE: この手順は、EシリーズAutoSupportパッケージ用のStorageGRIDプロキシ サーバを設定する場合にのみ使用します。EシリーズAutoSupport設定の詳細については、 https://docs.netapp.com/us-en/e-series-family/index.html["NetApp EシリーズおよびSANtricityドキュメント"^]を参照してください。
+
+.手順
+. Grid Managerで、*Nodes*を選択します。
+. 左側のノード一覧から、設定するストレージアプライアンスノードを選択してください。
+. *SANtricity System Manager* を選択します。
++
+SANtricity System Manager のホームページが表示されます。
+
++
+image:autosupport_santricity_home_page.png["AutoSupport SANtricity ホームページ"]
+
+. *サポート* > *サポートセンター* > *AutoSupport* を選択します。
++
+AutoSupport の操作ページが表示されます。
+
++
+image:autosupport_santricity_operations.png["AutoSupport SANtricity AutoSupport処理"]
+
+. *AutoSupport配信方法の設定*を選択します。
++
+AutoSupport の配信方法の設定ページが表示されます。
+
++
+image:autosupport_configure_delivery_santricity.png["AutoSupport の配信方法を設定する AutoSupport SANtricity"]
+
+. 配信方法として「HTTPS」を選択してください。
++
+
+NOTE: HTTPSを有効にする証明書はプリインストールされています。
+
+. 「プロキシ サーバ経由」を選択してください。
+. *ホストアドレス*に `tunnel-host`を入力します。
++
+`tunnel-host`は、管理ノードを使用して E シリーズ AutoSupport パッケージを送信するための特別なアドレスです。
+
+. *ポート番号*に `10225`を入力します。
++
+`10225`は、アプライアンス内のEシリーズコントローラーからAutoSupportパッケージを受信するStorageGRIDプロキシ サーバのポート番号です。
+
+. 「Test Configuration」を選択して、AutoSupportプロキシ サーバのルーティングと設定をテストします。
++
+正しい場合は、緑色のバナーにメッセージが表示されます：「AutoSupportの構成が検証されました。」
+
++
+テストが失敗すると、赤いバナーにエラーメッセージが表示されます。StorageGRIDのDNS設定とネットワークを確認し、link:../primer/what-admin-node-is.html["優先送信者 管理ノード"]がNetApp Support Siteに接続できることを確認して、もう一度テストを実行してください。
+
+. * 保存 * を選択します。
++
+設定が保存され、確認メッセージが表示されます：「AutoSupport の配信方法が設定されました。」
+
+

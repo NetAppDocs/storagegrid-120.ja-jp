@@ -1,0 +1,56 @@
+---
+permalink: release-notes/changes-to-grid-management-api.html 
+sidebar: sidebar 
+keywords: grid management api, api, api version, swagger, rest api, usageCacheDuration 
+summary: StorageGRID 12.0では、グリッド管理APIのバージョン4を使用しています。バージョン4はバージョン3を非推奨とします。ただし、バージョン1、2、3は引き続きサポートされています。 
+---
+= StorageGRID のGrid Management APIの変更点
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID 12.0では、グリッド管理APIのバージョン4を使用しています。バージョン4ではバージョン3は非推奨となりますが、バージョン1、2、および3は引き続きサポートされます。
+
+
+NOTE: 非推奨バージョンの管理 API は StorageGRID 12.0 で引き続き使用できますが、これらのバージョンの API のサポートは StorageGRID の将来のリリースで削除される予定です。StorageGRID 12.0 へのアップグレード後、 `PUT /grid/config/management` API を使用して非推奨の API を無効化できます。
+
+詳細については、link:../admin/using-grid-management-api.html["グリッド管理APIを使用する"]をご覧ください。
+
+
+
+[[new-endpoints-for-branch-buckets]]
+== ブランチバケットの新しいエンドポイント
+
+以下のエンドポイントが追加され、link:../tenant/what-is-branch-bucket.html["ブランチバケットを管理する"]できるようになりました：
+
+`GET /org/containers/{branchBucketName}/branch`
+
+`PUT /org/containers/{branchBucketName}/branch`
+
+
+
+[[new-private-endpoints-for-move-adc]]
+== Move ADC用の新しいプライベートエンドポイント
+
+以下のプライベートエンドポイントが追加され、同一サイト内のある Storage Node から別の Storage Node へlink:../maintain/move-adc-service.html["ADCサービスを移動する"]できるようになりました：
+
+`/private/move-adc`
+
+`/private/move-adc/start`
+
+`/private/move-adc/retry`
+
+
+
+[[new-private-endpoints-for-convert-to-data-only-node]]
+== データ専用ノードへの変換のための新しいプライベートエンドポイント
+
+以下のプライベートエンドポイントが追加され、ADCサービスを含まないノードをデータ専用ノードにlink:../maintain/convert-to-data-only-node.html["1つ以上の結合ストレージノードを変換する"]できるようになりました。
+
+`/private/convert-to-data-only-node`
+
+`/private/convert-to-data-only-node/start`
+
+`/private/convert-to-data-only-node/retry`

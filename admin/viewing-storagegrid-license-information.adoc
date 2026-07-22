@@ -1,0 +1,49 @@
+---
+permalink: admin/viewing-storagegrid-license-information.html 
+sidebar: sidebar 
+keywords: storagegrid license, view license, licensed capacity of grid 
+summary: StorageGRID システムのライセンス情報（グリッドの最大ストレージ容量など）は、必要に応じていつでも表示できます。 
+---
+= StorageGRID ライセンス情報の表示
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID システムのライセンス情報（グリッドの最大ストレージ容量など）は、必要に応じていつでも表示できます。
+
+.開始する前に
+link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+
+.タスク概要
+この StorageGRID システムのソフトウェアライセンスに問題がある場合、ダッシュボードのヘルスステータスカードにライセンスステータスアイコンと「ライセンス」リンクが表示されます。この数字は、ライセンス関連の問題の数を示しています。
+
+image:dashboard_health_panel_license_status.png["ダッシュボード 健康状態カード ライセンスステータス"]
+
+.手順
+. 以下のいずれかの方法でライセンスページにアクセスしてください。
++
+** *Maintenance* > *System* > *License* を選択します。
+** ダッシュボードの「Health status」カードから、「License status」アイコンまたは「License」リンクを選択します。
++
+このリンクは、ライセンスに問題がある場合にのみ表示されます。
+
+
+
+. 現在のライセンスの読み取り専用の詳細を表示します：
++
+** StorageGRID システム ID は、この StorageGRID インストールの固有の識別番号です。
+** ライセンスのシリアル番号
+** ライセンスの種類（*永久ライセンス*または*サブスクリプション*）
+** グリッドのライセンス済みストレージ容量
+** サポートされているストレージ容量
+** ライセンスの有効期限。永久ライセンスの場合は *N/A* と表示されます。
+** サポート終了日
++
+この日付は現在のライセンスファイルから読み取られたもので、ライセンスファイルを取得後にサポート サービス契約を延長または更新した場合は、最新の情報が反映されていない可能性があります。この値を更新するには、link:updating-storagegrid-license-information.html["StorageGRID ライセンス情報の更新"]を参照してください。また、Active IQ を使用して実際の契約終了日を確認することもできます。
+
+** ライセンステキストファイルの内容
+
+
+

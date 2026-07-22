@@ -1,0 +1,31 @@
+= 
+:allow-uri-read: 
+
+
+.手順
+. 各ホストで以下のコマンドを実行します。
++
+[listing]
+----
+sudo systemctl enable storagegrid
+sudo systemctl start storagegrid
+----
+. デプロイメントが順調に進んでいることを確認するには、次のコマンドを実行してください。
++
+[listing]
+----
+sudo storagegrid node status node-name
+----
+. いずれかのノードが「Not Running」または「Stopped」のステータスを返した場合、次のコマンドを実行します：
++
+[listing]
+----
+sudo storagegrid node start node-name
+----
+. 以前に StorageGRID ホストサービスを有効化して起動したことがある場合（またはサービスが有効化されて起動しているかどうか不明な場合）は、次のコマンドも実行してください。
++
+[listing]
+----
+sudo systemctl reload-or-restart storagegrid
+----
+

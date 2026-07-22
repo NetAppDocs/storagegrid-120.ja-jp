@@ -1,0 +1,22 @@
+---
+permalink: network/admin-network-requirements.html 
+sidebar: sidebar 
+keywords: admin network requirements, guidelines for admin network, aesl 
+summary: 管理者ネットワークはオプションです。管理者ネットワークを構成する場合は、以下の要件とガイドラインに従ってください。 
+---
+= StorageGRIDの管理ネットワーク要件
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+管理者ネットワークはオプションです。管理者ネットワークを構成する場合は、以下の要件とガイドラインに従ってください。
+
+管理ネットワークの一般的な用途には、管理接続、AutoSupport、KMS、およびNTP、DNS、LDAPなどの重要なサーバーへの接続（これらの接続がグリッドネットワークまたはクライアントネットワーク経由で提供されていない場合）が含まれます。
+
+
+NOTE: 管理ネットワークとAESLは、必要なネットワークサービスとクライアントにアクセスできる限り、各ノードに固有のものにすることができます。
+
+
+NOTE: 外部サブネットからの受信接続を有効にするには、管理ネットワーク上に少なくとも1つのサブネットを定義する必要があります。AESL内の各サブネットに対して、各ノード上で静的ルートが自動的に生成されます。

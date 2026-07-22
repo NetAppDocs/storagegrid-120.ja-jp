@@ -1,0 +1,20 @@
+---
+permalink: troubleshoot/object-store-storage-volume-failures.html 
+sidebar: sidebar 
+keywords: how to confirm object location, object metadata lookup 
+summary: ストレージノード上の基盤となるストレージは、オブジェクトストアに分割されています。オブジェクトストアは、ストレージボリュームとも呼ばれます。 
+---
+= StorageGRID のストレージボリュームのオブジェクトストア障害について学ぶ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ストレージノード上の基盤となるストレージは、オブジェクトストアに分割されています。オブジェクトストアは、ストレージボリュームとも呼ばれます。
+
+各ストレージノードのオブジェクトストア情報を表示できます。*Nodes* > *_Storage Node_* > *Storage* を選択します。
+
+image:nodes_page_storage_nodes_storage_tables.png["ノードページストレージノードストレージテーブル"]
+
+障害の性質によっては、ストレージボリュームの障害が link:../monitor/alerts-reference.html["ストレージ容量アラート"] に反映される場合があります。ストレージボリュームに障害が発生した場合は、障害が発生したストレージボリュームを修復し、ストレージノードをできるだけ早く完全な機能状態に復旧させる必要があります。必要に応じて、*設定* タブに移動して link:../maintain/checking-storage-state-after-recovering-storage-volumes.html["ストレージノードを読み取り専用状態にする"] することで、サーバーの完全復旧の準備を進める間、StorageGRID システムがデータ復旧にこれを利用できるようになります。

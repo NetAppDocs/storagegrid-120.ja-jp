@@ -1,0 +1,202 @@
+---
+permalink: s3/put-object-copy.html 
+sidebar: sidebar 
+keywords: put object copy, CopyObject 
+summary: S3 CopyObject リクエストを使用して、S3に既に保存されているオブジェクトのコピーを作成できます。CopyObject 操作は、GETを実行してからPUTを実行するのと同じです。 
+---
+= S3 CopyObjectリクエストを使用してStorageGRIDでオブジェクトのコピーを作成する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+S3 CopyObject リクエストを使用して、S3 にすでに保存されているオブジェクトのコピーを作成できます。CopyObject 操作は、GetObject に続いて PutObject を実行することと同じです。
+
+
+
+[[resolve-conflicts]]
+== 競合を解決する
+
+2つのクライアントが同じキーに書き込むなど、クライアントのリクエストが競合する場合は、「最新の要求が優先される」方式で解決されます。「最新の要求が優先される」評価のタイミングは、S3クライアントが操作を開始したときではなく、StorageGRID システムが特定のリクエストを完了したときに基づきます。
+
+
+
+[[object-size]]
+== オブジェクトサイズ
+
+単一のPutObjectオペレーションの推奨最大サイズは 5 GiB（5,368,709,120 バイト）です。5 GiB を超えるオブジェクトがある場合は、代わりにlink:operations-for-multipart-uploads.html["マルチパートアップロード"]を使用してください。
+
+単一のPutObject操作でサポートされる最大サイズは 5 TiB （5,497,558,138,880 バイト）です。
+
+
+NOTE: StorageGRID 11.6以前からアップグレードした場合、5 GiBを超えるオブジェクトをアップロードしようとすると、「S3 PUT Object size too large」アラートがトリガーされます。StorageGRID 11.7または11.8を新規インストールした場合、この場合はアラートはトリガーされません。ただし、AWS S3標準に準拠するため、StorageGRIDの今後のリリースでは5 GiBを超えるオブジェクトのアップロードはサポートされません。
+
+
+
+[[utf-8-characters-in-user-metadata]]
+== ユーザーメタデータ内のUTF-8文字
+
+リクエストに、ユーザー定義メタデータのキー名または値に（エスケープされていない）UTF-8値が含まれている場合、StorageGRID の動作は未定義です。
+
+StorageGRID は、ユーザー定義メタデータのキー名または値に含まれるエスケープされた UTF-8 文字を解析または解釈しません。エスケープされた UTF-8 文字は ASCII 文字として扱われます：
+
+* ユーザー定義のメタデータにエスケープされたUTF-8文字が含まれている場合、リクエストは成功します。
+* StorageGRID は、キー名または値の解釈された値に印刷不可能な文字が含まれている場合、 `x-amz-missing-meta` ヘッダーを返しません。
+
+
+
+
+[[supported-request-headers]]
+== サポートされているリクエストヘッダー
+
+以下のリクエストヘッダーがサポートされています：
+
+* `Content-Type`
+* `x-amz-copy-source`
+* `x-amz-copy-source-if-match`
+* `x-amz-copy-source-if-none-match`
+* `x-amz-copy-source-if-unmodified-since`
+* `x-amz-copy-source-if-modified-since`
+* `x-amz-meta-`続いて、ユーザー定義のメタデータを含む名前と値のペア
+* `x-amz-metadata-directive`：デフォルト値は `COPY`で、オブジェクトとその関連メタデータをコピーできます。
++
+オブジェクトをコピーする際に既存のメタデータを上書きするか、オブジェクトのメタデータを更新するかを `REPLACE`指定できます。
+
+* `x-amz-storage-class`
+* `x-amz-tagging-directive`：デフォルト値は `COPY`で、オブジェクトとすべてのタグをコピーできます。
++
+オブジェクトをコピーする際に既存のタグを上書きするか、タグを更新するかを `REPLACE`で指定できます。
+
+* S3オブジェクトロックリクエストヘッダー：
++
+** `x-amz-object-lock-mode`
+** `x-amz-object-lock-retain-until-date`
+** `x-amz-object-lock-legal-hold`
++
+これらのヘッダーなしでリクエストが行われた場合、バケットのデフォルトの保持設定を使用して、オブジェクトのバージョンモードと保持期限が計算されます。link:use-s3-api-for-s3-object-lock.html["S3 REST APIを使用してS3オブジェクトロックを設定する"]を参照してください。
+
+
+
+* SSEリクエストヘッダー：
++
+** `x-amz-copy-source​-server-side​-encryption​-customer-algorithm`
+** `x-amz-copy-source​-server-side-encryption-customer-key`
+** `x-amz-copy-source​-server-side-encryption-customer-key-MD5`
+** `x-amz-server-side-encryption`
+** `x-amz-server-side-encryption-customer-key-MD5`
+** `x-amz-server-side-encryption-customer-key`
+** `x-amz-server-side-encryption-customer-algorithm`
++
+<<サーバー側暗号化のためのリクエストヘッダー>>を参照してください。
+
+
+
+
+
+
+
+[[unsupported-request-headers]]
+== サポートされていないリクエストヘッダー
+
+以下のリクエストヘッダーはサポートされていません：
+
+* `Cache-Control`
+* `Content-Disposition`
+* `Content-Encoding`
+* `Content-Language`
+* `Expires`
+* `If-Match`
++
+ `If-Match header`は受け入れられるが、機能しない。
+
+* `If-None-Match`
++
+ `If-None-Match header`は受け入れられるが、機能しない。
+
+* `x-amz-checksum-algorithm`
++
+オブジェクトをコピーする場合、ソースオブジェクトにチェックサムがあっても、StorageGRID はそのチェックサム値を新しいオブジェクトにコピーしません。この動作は、オブジェクトリクエストで `x-amz-checksum-algorithm`を使用しようとするかどうかに関わらず適用されます。
+
+* `x-amz-website-redirect-location`
+
+
+
+
+[[storage-class-options]]
+== ストレージクラスのオプション
+
+ `x-amz-storage-class`リクエストヘッダーがサポートされており、一致するILMルールがデュアルコミットまたはバランスlink:../ilm/data-protection-options-for-ingest.html["取り込みオプション"]を使用している場合に、StorageGRIDが作成するオブジェクトコピーの数に影響します。
+
+* `STANDARD`
++
+（デフォルト）ILMルールでデュアルコミットオプションを使用する場合、またはバランスオプションが中間コピーの作成にフォールバックする場合に、デュアルコミット取り込み操作を指定します。
+
+* `REDUCED_REDUNDANCY`
++
+ILMルールでデュアルコミットオプションを使用する場合、またはバランスオプションが中間コピーの作成にフォールバックする場合に、単一コミットの取り込み操作を指定します。
+
++
+
+NOTE: S3オブジェクトロックが有効になっているバケットにオブジェクトを取り込む場合、 `REDUCED_REDUNDANCY`オプションは無視されます。レガシー準拠バケットにオブジェクトを取り込む場合、 `REDUCED_REDUNDANCY`オプションはエラーを返します。StorageGRIDは、コンプライアンス要件を満たすため、常に二重コミットによるデータ取り込みを実行します。
+
+
+
+
+
+[[using-x-amz-copy-source-in-copyobject]]
+== x-amz-copy-source を CopyObject で使用する
+
+ `x-amz-copy-source`ヘッダーで指定されたソースバケットおよびキーが、コピー先のバケットおよびキーと異なる場合、ソースオブジェクトデータのコピーがコピー先に書き込まれます。
+
+送信元と宛先が一致し、 `x-amz-metadata-directive`ヘッダーが `REPLACE`として指定されている場合、オブジェクトのメタデータはリクエストで指定されたメタデータ値で更新されます。この場合、StorageGRID はオブジェクトを再取り込みしません。これには2つの重要な結果があります。
+
+* CopyObjectを使用して、既存のオブジェクトをその場で暗号化したり、既存のオブジェクトの暗号化をその場で変更したりすることはできません。 `x-amz-server-side-encryption`ヘッダーまたは `x-amz-server-side-encryption-customer-algorithm`ヘッダーを指定した場合、StorageGRID はリクエストを拒否し、 `XNotImplemented`を返します。
+* 一致するILMルールで指定されている「取り込み動作」オプションは使用されません。アップデートによって発生するオブジェクト配置の変更は、通常のバックグラウンドILMプロセスによってILMが再評価された際に反映されます。
++
+これは、ILMルールで取り込み動作に「Strict」オプションを使用している場合、必要なオブジェクトの配置ができない場合（たとえば、新たに必要となった場所が利用できない場合など）は、何もアクションが実行されないことを意味します。更新されたオブジェクトは、必要な配置が可能になるまで、現在の配置を維持します。
+
+
+
+
+
+[[request-headers-for-server-side-encryption]]
+== サーバー側暗号化のためのリクエストヘッダー
+
+link:using-server-side-encryption.html["サーバー側暗号化を使用する"]を実行する場合、指定するリクエストヘッダーは、ソースオブジェクトが暗号化されているかどうか、およびターゲットオブジェクトを暗号化する予定があるかどうかによって異なります。
+
+* ソースオブジェクトが顧客提供キー（SSE-C）を使用して暗号化されている場合、オブジェクトを復号化してコピーできるように、CopyObjectリクエストに次の3つのヘッダーを含める必要があります：
++
+** `x-amz-copy-source​-server-side​-encryption​-customer-algorithm`： `AES256`を指定します。
+** `x-amz-copy-source​-server-side-encryption-customer-key`：ソースオブジェクトの作成時に指定した暗号化キーを指定します。
+** `x-amz-copy-source​-server-side-encryption-customer-key-MD5`：ソースオブジェクトを作成した際に指定した MD5 ダイジェストを指定してください。
+
+
+* 対象オブジェクト（コピー）を、ユーザーが提供および管理する固有のキーで暗号化する場合は、次の 3 つのヘッダーを含めてください。
++
+** `x-amz-server-side-encryption-customer-algorithm`： `AES256`を指定します。
+** `x-amz-server-side-encryption-customer-key`：対象オブジェクトに新しい暗号化キーを指定します。
+** `x-amz-server-side-encryption-customer-key-MD5`：新しい暗号化キーのMD5ダイジェストを指定します。
+
+
++
+
+CAUTION: ご提供いただいた暗号化キーは一切保存されません。暗号化キーを紛失した場合、対応するオブジェクトも失われます。オブジェクトデータを保護するために顧客提供のキーを使用する前に、link:using-server-side-encryption.html["サーバー側暗号化を使用する"]に関する考慮事項を確認してください。
+
+* ターゲットオブジェクト（コピー）を StorageGRID で管理される一意のキーで暗号化する場合（SSE）は、このヘッダーを CopyObject リクエストに含めてください：
++
+** `x-amz-server-side-encryption`
++
+
+NOTE:  `server-side-encryption`オブジェクトの値は更新できません。代わりに、 `server-side-encryption`の新しい値を持つコピーを `x-amz-metadata-directive`： `REPLACE`を使用して作成してください。
+
+
+
+
+
+
+
+[[versioning]]
+== バージョン管理
+
+ソースバケットがバージョン管理されている場合は、 `x-amz-copy-source`ヘッダーを使用してオブジェクトの最新バージョンをコピーできます。オブジェクトの特定のバージョンをコピーするには、 `versionId`サブリソースを使用してコピーするバージョンを明示的に指定する必要があります。宛先バケットがバージョン管理されている場合、生成されたバージョンは `x-amz-version-id`レスポンスヘッダーに返されます。対象バケットのバージョン管理が中断されている場合、 `x-amz-version-id`は「null」値を返します。

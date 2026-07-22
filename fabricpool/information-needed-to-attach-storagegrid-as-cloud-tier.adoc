@@ -1,0 +1,99 @@
+---
+permalink: fabricpool/information-needed-to-attach-storagegrid-as-cloud-tier.html 
+sidebar: sidebar 
+keywords: StorageGRID, fabricPool, ONTAP System Manager, ONTAP CLI, port, FQDN, object store name 
+summary: StorageGRID を FabricPool のクラウド階層として接続する前に、StorageGRID で設定手順を実行し、特定の値を取得する必要があります。 
+---
+= StorageGRID を FabricPool クラウド階層として接続するために必要な情報
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID を FabricPool のクラウド階層として接続する前に、StorageGRID で設定手順を実行し、ONTAP で使用する特定の値を取得する必要があります。
+
+
+
+[[what-values-do-i-need]]
+== 必要な値は何ですか？
+
+次の表に、StorageGRID で設定する必要がある値と、それらの値が ONTAP および DNS サーバーでどのように使用されるかを示します。
+
+[cols="1a,1a,1a"]
+|===
+| Value | 値が設定されている場所 | 価値が活用される場所 
+
+
+ a| 
+仮想IP（VIP）アドレス
+ a| 
+StorageGRID > HA グループ
+ a| 
+DNSエントリ
+
+
+
+ a| 
+ポート
+ a| 
+StorageGRID > ロードバランサーエンドポイント
+ a| 
+ONTAP System Manager > クラウド層の追加
+
+
+
+ a| 
+SSL証明書
+ a| 
+StorageGRID > ロードバランサーエンドポイント
+ a| 
+ONTAP System Manager > クラウド層の追加
+
+
+
+ a| 
+サーバー名（FQDN）
+ a| 
+StorageGRID > ロードバランサーエンドポイント
+ a| 
+DNSエントリ
+
+
+
+ a| 
+アクセスキーIDと秘密アクセスキー
+ a| 
+StorageGRID > テナントとバケット
+ a| 
+ONTAP System Manager > クラウド層の追加
+
+
+
+ a| 
+バケット/コンテナ名
+ a| 
+StorageGRID > テナントとバケット
+ a| 
+ONTAP System Manager > クラウド層の追加
+
+|===
+
+
+[[how-do-i-get-these-values]]
+== これらの値はどのように取得できますか？
+
+ご要望に応じて、以下のいずれかの方法で必要な情報を取得できます：
+
+* link:use-fabricpool-setup-wizard.html["FabricPool セットアップ ウィザード"]を使用します。FabricPoolセットアップ ウィザードを使用すると、StorageGRIDで必要な値をすばやく設定し、ONTAP System Managerの設定に使用できるファイルを出力できます。ウィザードの指示に従って必要な手順を実行することで、設定がStorageGRIDおよびFabricPoolのベスト プラクティスに準拠していることを確認できます。
+* 各項目を手動で設定してください。次に、ONTAP System Manager または ONTAP CLI に値を入力します。以下の手順に従ってください。
++
+.. link:creating-ha-group-for-fabricpool.html["FabricPool のハイアベイラビリティ（HA）グループを設定する"]。
+.. link:creating-load-balancer-endpoint-for-fabricpool.html["FabricPool のロードバランサーエンドポイントを作成する"]。
+.. link:creating-tenant-account-for-fabricpool.html["FabricPool のテナントアカウントを作成する"]。
+.. テナントアカウントにサインインして、link:creating-s3-bucket-and-access-key.html["ルートユーザー用のバケットとアクセスキーを作成する"]。
+.. FabricPool データのILMルールを作成し、有効なILMポリシーに追加します。link:using-storagegrid-ilm-with-fabricpool-data.html["FabricPool データの ILM を設定する"]を参照してください。
+.. オプションで、link:creating-traffic-classification-policy-for-fabricpool.html["FabricPool のトラフィック分類ポリシーを作成する"]。
+
+
+

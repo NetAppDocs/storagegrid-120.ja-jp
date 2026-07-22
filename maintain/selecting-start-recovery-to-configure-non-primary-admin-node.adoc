@@ -1,0 +1,56 @@
+---
+permalink: maintain/selecting-start-recovery-to-configure-non-primary-admin-node.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, non-primary admin node 
+summary: プライマリ以外の管理ノードを交換した後は、Grid Managerで「リカバリの開始」を選択し、新しいノードを障害が発生したノードの代替として構成する必要があります。 
+---
+= 非プライマリStorageGRID管理ノードを構成するには、[リカバリの開始]を選択します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+プライマリ以外の管理ノードを交換した後は、Grid Managerで「リカバリの開始」を選択し、新しいノードを障害が発生したノードの代替として構成する必要があります。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* あなたはlink:../admin/admin-group-permissions.html["メンテナンス権限またはルートアクセス権限"]があります。
+* プロビジョニングパスフレーズをお持ちです。
+* 交換用ノードのデプロイと設定が完了しました。
+
+
+.手順
+. グリッドマネージャから、*メンテナンス* > *タスク* > *復旧* を選択します。
+. 保留中のノード一覧から、復旧するグリッドノードを選択します。
++
+ノードは障害発生後にリストに表示されますが、再インストールされて復旧準備が整うまではノードを選択できません。
+
+. プロビジョニングパスフレーズを入力してください。
+. 「リカバリを開始」をクリックします。
++
+image:4b_select_recovery_node.png["Maintenance > Recovery ページを示すスクリーンショット"]
+
+. 復旧状況は、「復旧中のグリッドノード」テーブルで監視してください。
++
+
+NOTE: 復旧処理の実行中に、*Reset* をクリックすると、新しい復旧処理を開始できます。手順をリセットするとノードが不確定な状態になることを示すダイアログボックスが表示されます。
+
++
+image:recovery_reset_warning.gif["リセット回復警告ダイアログボックスのスクリーンショット"]
+
++
+手順をリセットした後に復旧を再試行する場合は、次のようにノードをプリインストール時の状態に復元する必要があります。
+
++
+** *VMware*: デプロイ済みの仮想グリッドノードを削除します。復旧を再開する準備ができたら、ノードを再デプロイしてください。
+** *Linux*：Linuxホスト上で次のコマンドを実行してノードを再起動します： `storagegrid node force-recovery _node-name_`
+** *アプライアンス*：手順をリセットした後にリカバリを再試行する場合は、ノードで `sgareinstall`を実行して、アプライアンスノードをプリインストール状態に復元する必要があります。link:preparing-appliance-for-reinstallation-platform-replacement-only.html["機器の再インストール準備（プラットフォーム交換のみ）"]を参照してください。
+
+
+. StorageGRID システムでシングル サインオン（SSO）が有効になっており、復旧した管理ノードの証明書利用者信頼がデフォルトの管理インターフェイス証明書を使用するように構成されていた場合は、Active Directory Federation Services (AD FS) でノードの証明書利用者信頼を更新（または削除して再作成）してください。管理ノードの復旧プロセス中に生成された新しいデフォルトのサーバー証明書を使用してください。
++
+
+NOTE: 依拠当事者信頼を構成するには、link:../admin/configure-sso.html["シングル サインオンを設定する"]を参照してください。デフォルトのサーバー証明書にアクセスするには、管理ノードのコマンドシェルにログインしてください。 `/var/local/mgmt-api`ディレクトリに移動し、 `server.crt`ファイルを選択します。
+
+

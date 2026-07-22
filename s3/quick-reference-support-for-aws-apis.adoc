@@ -1,0 +1,1065 @@
+---
+permalink: s3/quick-reference-support-for-aws-apis.html 
+sidebar: sidebar 
+keywords: Amazon s3, API, request headers, s3 support, request syntax, supported, aws s3 
+summary: このページでは、StorageGRID が Amazon Simple Storage Service（S3）API をサポートする方法について説明します。 
+---
+= StorageGRID でサポートされている S3 API リクエスト
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+このページでは、StorageGRID が Amazon Simple Storage Service（S3）API をサポートする方法について説明します。
+
+このページには、StorageGRID でサポートされている S3 オペレーションのみが含まれています。
+
+
+NOTE: 各操作に関するAWSドキュメントを表示するには、見出しのリンクを選択してください。
+
+
+
+[[common-uri-query-parameters-and-request-headers]]
+[[common-params]]
+== 一般的なURIクエリパラメータとリクエストヘッダー
+
+特に明記されていない限り、以下の一般的なURIクエリパラメータがサポートされています：
+
+* `versionId`（オブジェクト操作に必要な場合）
+
+
+特に明記されていない限り、以下の一般的なリクエストヘッダーがサポートされています。
+
+* `Authorization`
+* `Connection`
+* `Content-Length`
+* `Content-MD5`
+* `Content-Type`
+* `Date`
+* `Expect`
+* `Host`
+* `x-amz-date`
+
+
+.関連情報
+* link:../s3/s3-rest-api-supported-operations-and-limitations.html["S3 REST API実装の詳細"]
+* https://docs.aws.amazon.com/AmazonS3/latest/API/RESTCommonRequestHeaders.html["Amazon Simple Storage Service API Reference：共通リクエストヘッダー"^]
+
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiabortmultipartupload-htmlabortmultipartupload]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_AbortMultipartUpload.html["AbortMultipartUpload"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加 URI クエリパラメータもサポートしています：
+
+* `uploadId`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-for-multipart-uploads.html["マルチパートアップロードの操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapicompletemultipartupload-htmlcompletemultipartupload]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_CompleteMultipartUpload.html["CompleteMultipartUpload"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加 URI クエリパラメータもサポートしています：
+
+* `uploadId`
+* `x-amz-checksum-sha256`
+
+
+.リクエストボディのXMLタグ
+StorageGRIDは以下のリクエストボディXMLタグをサポートしています：
+
+* `ChecksumSHA256`
+* `CompleteMultipartUpload`
+* `ETag`
+* `Part`
+* `PartNumber`
+
+
+.StorageGRID ドキュメント
+link:complete-multipart-upload.html["CompleteMultipartUpload"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapicopyobject-htmlcopyobject]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_CopyObject.html["CopyObject"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加ヘッダーもサポートしています：
+
+* `x-amz-copy-source`
+* `x-amz-copy-source-if-match`
+* `x-amz-copy-source-if-modified-since`
+* `x-amz-copy-source-if-none-match`
+* `x-amz-copy-source-if-unmodified-since`
+* `x-amz-copy-source-server-side-encryption-customer-algorithm`
+* `x-amz-copy-source-server-side-encryption-customer-key`
+* `x-amz-copy-source-server-side-encryption-customer-key-MD5`
+* `x-amz-metadata-directive`
+* `x-amz-object-lock-legal-hold`
+* `x-amz-object-lock-mode`
+* `x-amz-object-lock-retain-until-date`
+* `x-amz-server-side-encryption`
+* `x-amz-server-side-encryption-customer-algorithm`
+* `x-amz-server-side-encryption-customer-key`
+* `x-amz-server-side-encryption-customer-key-MD5`
+* `x-amz-storage-class`
+* `x-amz-tagging`
+* `x-amz-tagging-directive`
+* `x-amz-meta-<metadata-name>`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:put-object-copy.html["CopyObject"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapicreatebucket-htmlcreatebucket]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html["CreateBucket"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加ヘッダーもサポートしています：
+
+* `x-amz-bucket-object-lock-enabled`
+
+
+.要求の本文
+StorageGRID は、実装時点で Amazon S3 REST API によって定義されたすべてのリクエストボディパラメータをサポートしています。
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapicreatemultipartupload-htmlcreatemultipartupload]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateMultipartUpload.html["CreateMultipartUpload"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加ヘッダーもサポートしています：
+
+* `Cache-Control`
+* `Content-Disposition`
+* `Content-Encoding`
+* `Content-Language`
+* `Expires`
+* `x-amz-checksum-algorithm`
+* `x-amz-server-side-encryption`
+* `x-amz-storage-class`
+* `x-amz-server-side-encryption-customer-algorithm`
+* `x-amz-server-side-encryption-customer-key`
+* `x-amz-server-side-encryption-customer-key-MD5`
+* `x-amz-tagging`
+* `x-amz-object-lock-mode`
+* `x-amz-object-lock-retain-until-date`
+* `x-amz-object-lock-legal-hold`
+* `x-amz-meta-<metadata-name>`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:initiate-multipart-upload.html["CreateMultipartUpload"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideletebucket-htmldeletebucket]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucket.html["DeleteBucket"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideletebucketcors-htmldeletebucketcors]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucketCors.html["DeleteBucketCors"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideletebucketencryption-htmldeletebucketencryption]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucketEncryption.html["DeleteBucketEncryption"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideletebucketlifecycle-htmldeletebucketlifecycle]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucketLifecycle.html["DeleteBucketLifecycle"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+* link:operations-on-buckets.html["バケットに対する操作"]
+* link:create-s3-lifecycle-configuration.html["S3ライフサイクル構成を作成する"]
+
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideletebucketpolicy-htmldeletebucketpolicy]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucketPolicy.html["DeleteBucketPolicy"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideletebucketreplication-htmldeletebucketreplication]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucketReplication.html["DeleteBucketReplication"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideletebuckettagging-htmldeletebuckettagging]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucketTagging.html["DeleteBucketTagging"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideleteobject-htmldeleteobject]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObject.html["DeleteObject"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対するすべての<<common-params,共通パラメータとヘッダー>>に加え、以下の追加リクエストヘッダーをサポートしています：
+
+* `x-amz-bypass-governance-retention`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-objects.html["オブジェクトに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideleteobjects-htmldeleteobjects]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html["DeleteObjects"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対するすべての<<common-params,共通パラメータとヘッダー>>に加え、以下の追加リクエストヘッダーをサポートしています：
+
+* `x-amz-bypass-governance-retention`
+
+
+.要求の本文
+StorageGRID は、実装時点で Amazon S3 REST API によって定義されたすべてのリクエストボディパラメータをサポートしています。
+
+.StorageGRID ドキュメント
+link:operations-on-objects.html["オブジェクトに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapideleteobjecttagging-htmldeleteobjecttagging]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjectTagging.html["DeleteObjectTagging"^]
+
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-objects.html["オブジェクトに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbucketacl-htmlgetbucketacl]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketAcl.html["GetBucketAcl"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbucketcors-htmlgetbucketcors]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketCors.html["GetBucketCors"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbucketencryption-htmlgetbucketencryption]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketEncryption.html["GetBucketEncryption"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbucketlifecycleconfiguration-htmlgetbucketlifecycleconfiguration]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketLifecycleConfiguration.html["GetBucketLifecycleConfiguration"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+* link:operations-on-buckets.html["バケットに対する操作"]
+* link:create-s3-lifecycle-configuration.html["S3ライフサイクル構成を作成する"]
+
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbucketlocation-htmlgetbucketlocation]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketLocation.html["GetBucketLocation"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbucketnotificationconfiguration-htmlgetbucketnotificationconfiguration]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketNotificationConfiguration.html["GetBucketNotificationConfiguration"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbucketpolicy-htmlgetbucketpolicy]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketPolicy.html["GetBucketPolicy"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbucketreplication-htmlgetbucketreplication]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketReplication.html["GetBucketReplication"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbuckettagging-htmlgetbuckettagging]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketTagging.html["GetBucketTagging"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetbucketversioning-htmlgetbucketversioning]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetBucketVersioning.html["GetBucketVersioning"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetobject-htmlgetobject]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html["GetObject"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加 URI クエリパラメータもサポートしています：
+
+* `x-amz-checksum-mode`
+* `partNumber`
+* `response-cache-control`
+* `response-content-disposition`
+* `response-content-encoding`
+* `response-content-language`
+* `response-content-type`
+* `response-expires`
+
+
+追加のリクエストヘッダーは次のとおりです：
+
+* `Range`
+* `x-amz-server-side-encryption-customer-algorithm`
+* `x-amz-server-side-encryption-customer-key`
+* `x-amz-server-side-encryption-customer-key-MD5`
+* `If-Match`
+* `If-Modified-Since`
+* `If-None-Match`
+* `If-Unmodified-Since`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:get-object.html["GetObject"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetobjectacl-htmlgetobjectacl]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObjectAcl.html["GetObjectAcl"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-objects.html["オブジェクトに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetobjectlegalhold-htmlgetobjectlegalhold]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObjectLegalHold.html["GetObjectLegalHold"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:../s3/use-s3-api-for-s3-object-lock.html["S3 REST APIを使用してS3オブジェクトロックを設定する"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetobjectlockconfiguration-htmlgetobjectlockconfiguration]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObjectLockConfiguration.html["GetObjectLockConfiguration"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:../s3/use-s3-api-for-s3-object-lock.html["S3 REST APIを使用してS3オブジェクトロックを設定する"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetobjectretention-htmlgetobjectretention]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObjectRetention.html["GetObjectRetention"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:../s3/use-s3-api-for-s3-object-lock.html["S3 REST APIを使用してS3オブジェクトロックを設定する"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapigetobjecttagging-htmlgetobjecttagging]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObjectTagging.html["GetObjectTagging"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-objects.html["オブジェクトに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiheadbucket-htmlheadbucket]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html["HeadBucket"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiheadobject-htmlheadobject]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html["HeadObject"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加ヘッダーもサポートしています：
+
+* `x-amz-checksum-mode`
+* `x-amz-server-side-encryption-customer-algorithm`
+* `x-amz-server-side-encryption-customer-key`
+* `x-amz-server-side-encryption-customer-key-MD5`
+* `If-Match`
+* `If-Modified-Since`
+* `If-None-Match`
+* `If-Unmodified-Since`
+* `Range`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:head-object.html["HeadObject"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapilistbuckets-htmllistbuckets]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html["ListBuckets"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-the-service.html["サービス上での操作 > ListBuckets"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapilistmultipartuploads-htmllistmultipartuploads]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListMultipartUploads.html["ListMultipartUploads"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対するすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加パラメータもサポートしています：
+
+* `encoding-type`
+* `key-marker`
+* `max-uploads`
+* `prefix`
+* `upload-id-marker`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:list-multipart-uploads.html["ListMultipartUploads"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapilistobjects-htmllistobjects]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjects.html["ListObjects"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対するすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加パラメータもサポートしています：
+
+* `delimiter`
+* `encoding-type`
+* `marker`
+* `max-keys`
+* `prefix`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapilistobjectsv2-htmllistobjectsv2]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html["ListObjectsV2を使用したチャンク アップロード署名要求がサポートされるようになりました。"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対するすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加パラメータもサポートしています：
+
+* `continuation-token`
+* `delimiter`
+* `encoding-type`
+* `fetch-owner`
+* `max-keys`
+* `prefix`
+* `start-after`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapilistobjectversions-htmllistobjectversions]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectVersions.html["ListObjectVersions"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対するすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加パラメータもサポートしています：
+
+* `delimiter`
+* `encoding-type`
+* `key-marker`
+* `max-keys`
+* `prefix`
+* `version-id-marker`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapilistparts-htmllistparts]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListParts.html["ListParts"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対するすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加パラメータもサポートしています：
+
+* `max-parts`
+* `part-number-marker`
+* `uploadId`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:list-multipart-uploads.html["ListMultipartUploads"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputbucketcors-htmlputbucketcors]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketCors.html["PutBucketCors"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+StorageGRID は、実装時点で Amazon S3 REST API によって定義されたすべてのリクエストボディパラメータをサポートしています。
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputbucketencryption-htmlputbucketencryption]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketEncryption.html["PutBucketEncryption"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.リクエストボディのXMLタグ
+StorageGRIDは以下のリクエストボディXMLタグをサポートしています：
+
+* `ApplyServerSideEncryptionByDefault`
+* `Rule`
+* `ServerSideEncryptionConfiguration`
+* `SSEAlgorithm`
+
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputbucketlifecycleconfiguration-htmlputbucketlifecycleconfiguration]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketLifecycleConfiguration.html["PutBucketLifecycleConfiguration"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.リクエストボディのXMLタグ
+StorageGRIDは以下のリクエストボディXMLタグをサポートしています：
+
+* `And`
+* `Days`
+* `Expiration`
+* `ExpiredObjectDeleteMarker`
+* `Filter`
+* `ID`
+* `Key`
+* `LifecycleConfiguration`
+* `NewerNoncurrentVersions`
+* `NoncurrentDays`
+* `NoncurrentVersionExpiration`
+* `Prefix`
+* `Rule`
+* `Status`
+* `Tag`
+* `Value`
+
+
+.StorageGRID ドキュメント
+* link:operations-on-buckets.html["バケットに対する操作"]
+* link:create-s3-lifecycle-configuration.html["S3ライフサイクル構成を作成する"]
+
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputbucketnotificationconfiguration-htmlputbucketnotificationconfiguration]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketNotificationConfiguration.html["PutBucketNotificationConfiguration"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.リクエストボディのXMLタグ
+StorageGRIDは以下のリクエストボディXMLタグをサポートしています：
+
+* `Event`
+* `Filter`
+* `FilterRule`
+* `Id`
+* `Name`
+* `NotificationConfiguration`
+* `Prefix`
+* `S3Key`
+* `Suffix`
+* `Topic`
+* `TopicConfiguration`
+* `Value`
+
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputbucketpolicy-htmlputbucketpolicy]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketPolicy.html["PutBucketPolicy"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+サポートされている JSON ボディ フィールドの詳細については、link:use-access-policies.html["バケットおよびグループのアクセスポリシーを使用する"]を参照してください。
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputbucketreplication-htmlputbucketreplication]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketReplication.html["PutBucketReplication"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.リクエストボディのXMLタグ
+* `Bucket`
+* `Destination`
+* `Prefix`
+* `ReplicationConfiguration`
+* `Rule`
+* `Status`
+* `StorageClass`
+
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputbuckettagging-htmlputbuckettagging]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketTagging.html["PutBucketTagging"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+StorageGRID は、実装時点で Amazon S3 REST API によって定義されたすべてのリクエストボディパラメータをサポートしています。
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputbucketversioning-htmlputbucketversioning]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketVersioning.html["PutBucketVersioning"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.リクエストボディのパラメータ
+StorageGRID は、以下のリクエストボディパラメータをサポートしています：
+
+* `VersioningConfiguration`
+* `Status`
+
+
+.StorageGRID ドキュメント
+link:operations-on-buckets.html["バケットに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputobject-htmlputobject]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html["PutObject"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加ヘッダーもサポートしています：
+
+* `Cache-Control`
+* `Content-Disposition`
+* `Content-Encoding`
+* `Content-Language`
+* `Expires`
+* `x-amz-checksum-sha256`
+* `x-amz-server-side-encryption`
+* `x-amz-storage-class`
+* `x-amz-server-side-encryption-customer-algorithm`
+* `x-amz-server-side-encryption-customer-key`
+* `x-amz-server-side-encryption-customer-key-MD5`
+* `x-amz-tagging`
+* `x-amz-object-lock-mode`
+* `x-amz-object-lock-retain-until-date`
+* `x-amz-object-lock-legal-hold`
+* `x-amz-meta-<metadata-name>`
+
+
+.要求の本文
+* オブジェクトのバイナリデータ
+
+
+.StorageGRID ドキュメント
+link:put-object.html["PutObject"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputobjectlegalhold-htmlputobjectlegalhold]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObjectLegalHold.html["PutObjectLegalHold"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+StorageGRID は、実装時点で Amazon S3 REST API によって定義されたすべてのリクエストボディパラメータをサポートしています。
+
+.StorageGRID ドキュメント
+link:use-s3-api-for-s3-object-lock.html["S3 REST APIを使用してS3オブジェクトロックを設定する"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputobjectlockconfiguration-htmlputobjectlockconfiguration]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObjectLockConfiguration.html["PutObjectLockConfiguration"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+StorageGRID は、実装時点で Amazon S3 REST API によって定義されたすべてのリクエストボディパラメータをサポートしています。
+
+.StorageGRID ドキュメント
+link:use-s3-api-for-s3-object-lock.html["S3 REST APIを使用してS3オブジェクトロックを設定する"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputobjectretention-htmlputobjectretention]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObjectRetention.html["PutObjectRetention"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対するすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加ヘッダーもサポートしています：
+
+* `x-amz-bypass-governance-retention`
+
+
+.要求の本文
+StorageGRID は、実装時点で Amazon S3 REST API によって定義されたすべてのリクエストボディパラメータをサポートしています。
+
+.StorageGRID ドキュメント
+link:use-s3-api-for-s3-object-lock.html["S3 REST APIを使用してS3オブジェクトロックを設定する"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiputobjecttagging-htmlputobjecttagging]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObjectTagging.html["PutObjectTagging"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+StorageGRID は、実装時点で Amazon S3 REST API によって定義されたすべてのリクエストボディパラメータをサポートしています。
+
+.StorageGRID ドキュメント
+link:operations-on-objects.html["オブジェクトに対する操作"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapirestoreobject-htmlrestoreobject]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_RestoreObject.html["RestoreObject"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+サポートされている本文フィールドの詳細については、link:post-object-restore.html["RestoreObject"]を参照してください。
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiselectobjectcontent-htmlselectobjectcontent]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_SelectObjectContent.html["SelectObjectContent"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID はこのリクエストに対して、すべての<<common-params,共通パラメータとヘッダー>>をサポートしています。
+
+.要求の本文
+サポートされている本文フィールドの詳細については、以下を参照してください。
+
+* link:use-s3-select.html["S3 Selectを使用する"]
+* link:select-object-content.html["SelectObjectContent"]
+
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiuploadpart-htmluploadpart]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_UploadPart.html["UploadPart"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加 URI クエリパラメータもサポートしています：
+
+* `partNumber`
+* `uploadId`
+
+
+追加のリクエストヘッダーは次のとおりです：
+
+* `x-amz-checksum-sha256`
+* `x-amz-server-side-encryption-customer-algorithm`
+* `x-amz-server-side-encryption-customer-key`
+* `x-amz-server-side-encryption-customer-key-MD5`
+
+
+.要求の本文
+* 部品のバイナリデータ
+
+
+.StorageGRID ドキュメント
+link:upload-part.html["UploadPart"]
+
+
+
+[[httpsdocs-aws-amazon-comamazons3latestapiapiuploadpartcopy-htmluploadpartcopy]]
+== https://docs.aws.amazon.com/AmazonS3/latest/API/API_UploadPartCopy.html["UploadPartCopy"^]
+
+.URIクエリパラメータとリクエストヘッダー
+StorageGRID は、このリクエストに対してすべての<<common-params,共通パラメータとヘッダー>>をサポートしており、さらに以下の追加 URI クエリパラメータもサポートしています：
+
+* `partNumber`
+* `uploadId`
+
+
+追加のリクエストヘッダーは次のとおりです：
+
+* `x-amz-copy-source`
+* `x-amz-copy-source-if-match`
+* `x-amz-copy-source-if-modified-since`
+* `x-amz-copy-source-if-none-match`
+* `x-amz-copy-source-if-unmodified-since`
+* `x-amz-copy-source-range`
+* `x-amz-server-side-encryption-customer-algorithm`
+* `x-amz-server-side-encryption-customer-key`
+* `x-amz-server-side-encryption-customer-key-MD5`
+* `x-amz-copy-source-server-side-encryption-customer-algorithm`
+* `x-amz-copy-source-server-side-encryption-customer-key`
+* `x-amz-copy-source-server-side-encryption-customer-key-MD5`
+
+
+.要求の本文
+None
+
+.StorageGRID ドキュメント
+link:upload-part-copy.html["UploadPartCopy"]

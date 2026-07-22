@@ -1,0 +1,71 @@
+---
+permalink: tenant/understanding-notifications-for-buckets.html 
+sidebar: sidebar 
+keywords: s3 bucket event notification, sequencer key 
+summary: S3バケットのイベント通知を有効にすると、StorageGRID が指定されたイベントに関する通知を宛先の Kafka クラスターまたは Amazon Simple Notification Service に送信するようになります。 
+---
+= S3バケットのStorageGRIDイベント通知について学ぶ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+S3バケットのイベント通知を有効にすると、StorageGRID が指定されたイベントに関する通知を、宛先の Kafka クラスター、Webhook エンドポイント、または Amazon Simple Notification Service に送信します。
+
+例えば、バケットに追加された各オブジェクトについて、管理者にアラートを送信するように設定できます。ここでいうオブジェクトとは、重大なシステムイベントに関連付けられたログファイルを表します。
+
+イベント通知は、通知設定で指定されたソースバケットで作成され、宛先に配信されます。オブジェクトに関連付けられたイベントが成功した場合、そのイベントに関する通知が作成され、配信待ちのキューに追加されます。
+
+通知の一意性および順序は保証されません。配信の成功を保証するために講じられた措置の結果、イベントに関する通知が複数回宛先に配信される場合があります。また、配信は非同期であるため、特に異なる StorageGRID サイトから発生する操作の場合、宛先での通知の時間順序がソースバケット上のイベントの順序と一致することは保証されません。Amazon S3 のドキュメントに記載されているように、イベントメッセージの `sequencer`キーを使用して、特定のオブジェクトのイベントの順序を確認できます。
+
+StorageGRID のイベント通知は、いくつかの制限はありますが、Amazon S3 API に準拠しています。
+
+* 以下のイベントタイプがサポートされています：
++
+** s3:ObjectCreated:
+** s3:ObjectCreated:Put
+** s3:ObjectCreated:Post
+** s3:ObjectCreated:Copy
+** s3:ObjectCreated:CompleteMultipartUpload
+** s3:ObjectRemoved:
+** s3:ObjectRemoved:Delete
+** s3:ObjectRemoved:DeleteMarkerCreated
+** s3:ObjectRestore:Post
+
+
+* StorageGRID から送信されるイベント通知は標準の JSON 形式を使用しますが、一部のキーは含まれず、他のキーには特定の値が使用されます。詳細は次の表を参照してください。
+
+
+[cols="1a,2a"]
+|===
+| キー名 | StorageGRID の価値 
+
+
+ a| 
+eventSource
+ a| 
+`sgws:s3`
+
+
+
+ a| 
+awsRegion
+ a| 
+_含まれていません_
+
+
+
+ a| 
+x-amz-id-2
+ a| 
+_含まれていません_
+
+
+
+ a| 
+arn
+ a| 
+`urn:sgws:s3:::bucket_name`
+
+|===

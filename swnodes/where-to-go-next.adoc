@@ -1,0 +1,55 @@
+---
+permalink: swnodes/where-to-go-next.html 
+sidebar: sidebar 
+keywords: after installation 
+summary: インストールが完了したら、必要な統合および構成タスクを実行してください。必要に応じて、オプションのタスクを実行できます。 
+---
+= StorageGRIDのインストール後の必須およびオプションの手順について学習します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+インストールが完了したら、必要な統合および構成タスクを実行してください。必要に応じて、オプションのタスクを実行できます。
+
+
+
+[[required-tasks]]
+== 必須タスク
+
+* （VMwareのみ）自動再起動のためにVMware vSphere ハイパーバイザーを設定します。
++
+サーバーの再起動時に仮想マシンも再起動するよう、ハイパーバイザーを設定する必要があります。自動再起動がない場合、サーバーの再起動後も仮想マシンとグリッドノードはシャットダウンされたままになります。詳細については、VMware vSphere ハイパーバイザーのドキュメントを参照してください。
+
+
+
+* link:../admin/managing-tenants.html["テナントアカウントを作成する"] StorageGRID システムにオブジェクトを保存するために使用される S3 クライアントプロトコルの設定。
+* link:../admin/controlling-storagegrid-access.html["制御システムへのアクセス"]グループとユーザーアカウントを設定することによって。オプションで、link:../admin/using-identity-federation.html["フェデレーションIDソースの設定"]（Active Directory や OpenLDAP など）を使用して、管理グループやユーザーをインポートできます。または、link:../admin/managing-users.html#create-a-local-user["ローカルグループとユーザーを作成する"]。
+* StorageGRID システムにオブジェクトをアップロードするために使用する link:../s3/configuring-tenant-accounts-and-connections.html["S3 API"] クライアントアプリケーションを統合してテストします。
+* link:../ilm/index.html["情報ライフサイクル管理（ILM）ルールおよびILMポリシーを設定する"]オブジェクトデータを保護するために使用するもの。
+* インストールにアプライアンスストレージノードが含まれている場合は、SANtricity OS を使用して以下のタスクを完了してください：
++
+** 各 StorageGRID アプライアンスに接続します。
+** AutoSupport データの受信を確認します。
++
+ https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/configuring-hardware.html["ハードウェアのセットアップ"^]を参照してください。
+
+
+
+* link:../harden/index.html["StorageGRID システム強化ガイドライン"]を確認し、セキュリティリスクを排除するために従ってください。
+* link:../monitor/email-alert-notifications.html["システムアラートのメール通知を設定する"]。
+
+
+
+
+[[optional-tasks]]
+== オプションのタスク
+
+* link:../maintain/changing-ip-addresses-and-mtu-values-for-all-nodes-in-grid.html["グリッドノードのIPアドレスを更新する"]展開計画を策定し、リカバリパッケージを生成してから変更があった場合。
+* link:../admin/changing-network-options-object-encryption.html["ストレージ暗号化を設定する"]、必要に応じて。
+* link:../admin/configuring-stored-object-compression.html["ストレージ圧縮を設定する"]必要に応じて、保存されているオブジェクトのサイズを縮小します。
+* link:../admin/configure-vlan-interfaces.html["VLANインターフェースを設定する"]必要に応じて、ネットワーク トラフィックを分離および分割します。
+* link:../admin/configure-high-availability-group.html["高可用性グループを構成する"]必要に応じて、Grid Manager、Tenant Manager、およびS3クライアントの接続可用性を向上させます。
+* link:../admin/configuring-load-balancer-endpoints.html["ロードバランサーのエンドポイントを設定する"]必要に応じて、S3クライアント接続用。
+

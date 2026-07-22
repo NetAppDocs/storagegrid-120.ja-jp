@@ -1,0 +1,53 @@
+---
+permalink: fabricpool/remove-fabricpool-data.html 
+sidebar: sidebar 
+keywords: fabricPool, StorageGRID, ontap, remove data 
+summary: 現在 StorageGRID に保存されている FabricPool データを削除する必要がある場合は、次の手順に従ってください。 
+---
+= StorageGRIDからFabricPoolデータを削除する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+現在 StorageGRID に保存されている FabricPool データを削除する必要がある場合は、ONTAP を使用して FabricPool ボリュームのすべてのデータを取得し、パフォーマンス階層に昇格させる必要があります。
+
+.開始する前に
+*  https://docs.netapp.com/us-en/ontap/fabricpool/promote-data-performance-tier-task.html["高パフォーマンス階層へのデータの昇格"^]の指示と注意事項を確認しました。
+* ONTAP 9.8以降を使用している。
+* あなたはlink:../admin/web-browser-requirements.html["対応ウェブブラウザ"]を使用しています。
+* FabricPool テナントアカウントの StorageGRID ユーザーグループに属しており、link:../tenant/tenant-management-permissions.html["すべてのバケットを管理する、またはルートアクセス権限"]を持っています。
+
+
+.タスク概要
+これらの手順では、StorageGRID から FabricPool にデータを移動する方法について説明します。この手順は、ONTAP および StorageGRID テナントマネージャーを使用して実行します。
+
+.手順
+. ONTAPから `volume modify`コマンドを実行します。
++
+ `tiering-policy`を `none`に設定して新しい階層化を停止し、 `cloud-retrieval-policy`を `promote`に設定して、以前に StorageGRID に階層化されたすべてのデータを返します。
+
++
+ https://docs.netapp.com/us-en/ontap/fabricpool/promote-all-data-performance-tier-task.html["高パフォーマンス階層へのFabricPoolボリュームの全データの昇格"^]を参照してください。
+
+. 操作が完了するまでお待ちください。
++
+ `volume object-store`コマンドと `tiering`オプションを使用して、 https://docs.netapp.com/us-en/ontap/fabricpool/check-status-performance-tier-promotion-task.html["パフォーマンスティア昇格のステータスを確認する"^]することができます。
+
+. プロモーション操作が完了したら、FabricPoolテナントアカウントの StorageGRID テナントマネージャーにサインインします。
+. ダッシュボードから「バケットの表示」を選択するか、*STORAGE (S3)* > *Buckets* を選択してください。
+. FabricPool バケットが空になったことを確認します。
+. バケットが空の場合、link:../tenant/deleting-s3-bucket.html["バケットを削除する"]。
+
+
+.終了後の操作
+バケットを削除すると、FabricPool から StorageGRID へのデータ階層化を続行できなくなります。ただし、ローカル層は引き続き StorageGRID クラウド層に接続されているため、ONTAP System Manager はバケットにアクセスできないことを示すエラーメッセージを返します。
+
+これらのエラーメッセージを回避するには、次のいずれかの操作を行ってください。
+
+* FabricPool Mirror を使用して、別のクラウド階層をアグリゲートに接続します。
+* データを FabricPool アグリゲートから非 FabricPool アグリゲートに移動し、未使用のアグリゲートを削除します。
+
+
+手順については、 https://docs.netapp.com/us-en/ontap/fabricpool/index.html["ONTAP の FabricPool ドキュメント"^]を参照してください。

@@ -1,0 +1,62 @@
+---
+section: expand
+title: グリッドを拡大する
+url: "/landing-expand/index.html"
+entries:
+- title: 拡張について学ぶ
+  pdf-filename: StorageGRID システムを拡張する
+  url: "/expand/index.html"
+- title: 拡張計画
+  entries:
+  - title: 複製データの拡張計画
+    url: "/expand/adding-storage-capacity-for-replicated-objects.html"
+  - title: イレイジャー コーディングデータの拡張計画
+    url: "/expand/adding-storage-capacity-for-erasure-coded-objects.html"
+  - title: 拡張後のイレイジャー コーディングの再バランスについて
+    url: "/expand/considerations-for-rebalancing-erasure-coded-data.html"
+- title: 拡張ガイドライン
+  entries:
+  - title: オブジェクト容量を追加するためのガイドライン
+    url: "/expand/guidelines-for-adding-object-capacity.html"
+  - title: メタデータ容量を追加するためのガイドライン
+    url: "/expand/adding-metadata-capacity.html"
+  - title: グリッドノードを追加するためのガイドライン
+    url: "/expand/adding-grid-nodes-to-add-capabilities.html"
+  - title: 新規サイト追加に関するガイドライン
+    url: "/expand/adding-new-site.html"
+- title: 拡張に備える
+  url: "/expand/gather-required-materials.html"
+- title: グリッドノードまたはサイトを追加する
+  entries:
+  - title: ワークフローの概要
+    url: "/expand/adding-grid-nodes-to-existing-site-or-adding-new-site.html"
+  - title: グリッドネットワークにサブネットを追加または更新する
+    url: "/expand/updating-subnets-for-grid-network.html"
+  - title: 新しいグリッド ノードの導入
+    url: "/expand/deploying-new-grid-nodes.html"
+  - title: 拡張を実行する
+    url: "/expand/performing-expansion.html"
+- title: ストレージボリュームを追加する
+  entries:
+  - title: ストレージノードにストレージボリュームを追加する
+    url: "/expand/adding-storage-volumes-to-storage-nodes.html"
+  - title: VMware 用のストレージボリュームを追加する
+    url: "/expand/vmware-adding-storage-volumes-to-storage-node.html"
+  - title: Linux 用の直接接続ボリュームまたは SAN ボリュームを追加する
+    url: "/expand/linux-adding-direct-attached-or-san-volumes-to-storage-node.html"
+- title: 拡張システムを構成する
+  entries:
+  - title: 新しく追加されたノードとサイトを設定する
+    url: "/expand/configuring-expanded-storagegrid-system.html"
+  - title: ストレージノードがアクティブであることを確認する
+    url: "/expand/verifying-storage-node-is-active.html"
+  - title: 管理ノードデータベースをコピーする
+    url: "/expand/copying-admin-node-database.html"
+  - title: Prometheusのメトリクスをコピーする
+    url: "/expand/copying-prometheus-metrics.html"
+  - title: 監査ログのコピー
+    url: "/expand/copying-audit-logs.html"
+  - title: イレイジャー コーディングデータのリバランス
+    url: "/expand/rebalancing-erasure-coded-data-after-adding-storage-nodes.html"
+- title: 展開エラーのトラブルシューティング
+  url: "/expand/contacting-technical-support.html"

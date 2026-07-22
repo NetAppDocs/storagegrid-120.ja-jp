@@ -1,0 +1,55 @@
+---
+permalink: troubleshoot/troubleshooting-certificate-errors.html 
+sidebar: sidebar 
+keywords: how to troubleshoot certificate errors 
+summary: ウェブブラウザ、S3クライアント、または外部監視ツールを使用して StorageGRID に接続しようとしたときにセキュリティまたは証明書の問題が表示された場合は、証明書を確認してください。 
+---
+= StorageGRID の証明書エラーのトラブルシューティング
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ウェブブラウザ、S3クライアント、または外部監視ツールを使用して StorageGRID に接続しようとしたときにセキュリティまたは証明書の問題が表示された場合は、証明書を確認してください。
+
+.タスク概要
+証明書エラーは、Grid Manager、Grid Management API、Tenant Manager、またはTenant Management APIを使用してStorageGRIDに接続しようとした際に問題を引き起こす可能性があります。S3クライアントや外部監視ツールに接続しようとした際にも、証明書エラーが発生する場合があります。
+
+IPアドレスではなくドメイン名を使用してGrid ManagerまたはTenant Managerにアクセスしている場合、以下のいずれかの事象が発生すると、ブラウザに証明書エラーが表示され、回避するオプションが表示されません。
+
+* お客様のカスタム管理インターフェイス証明書の有効期限が切れました。
+* カスタムの管理インターフェイス証明書からデフォルトのサーバー証明書に戻します。
+
+
+次の例は、カスタム管理インターフェイス証明書の有効期限が切れた場合に発生する証明書エラーを示しています。
+
+image:certificate_error.png["証明書エラーの例"]
+
+サーバ証明書の障害によって運用が中断されないようにするため、サーバ証明書の有効期限が近づくと、「管理インターフェイスのサーバ証明書の有効期限」アラートがトリガーされます。
+
+外部 Prometheus 統合にクライアント証明書を使用する場合、証明書エラーは StorageGRID 管理インターフェイス証明書またはクライアント証明書が原因で発生する可能性があります。*証明書ページで設定されているクライアント証明書の有効期限切れ*アラートは、クライアント証明書の有効期限が近づくとトリガーされます。
+
+.手順
+証明書の有効期限切れに関する警告通知を受け取った場合は、証明書の詳細にアクセスしてください：*Configuration* > *Security* > *Certificates* を選択し、link:../admin/using-storagegrid-security-certificates.html#access-security-certificates["適切な証明書タブを選択してください"]。
+
+. 証明書の有効期間を確認してください。+ 一部のウェブブラウザやS3クライアントは、有効期間が398日を超える証明書を受け付けません。
+. 証明書の有効期限が切れている場合、または間もなく期限が切れる場合は、新しい証明書をアップロードまたは生成してください。
++
+** サーバー証明書については、link:../admin/configuring-custom-server-certificate-for-grid-manager-tenant-manager.html#add-a-custom-management-interface-certificate["グリッドマネージャーとテナントマネージャー用のカスタムサーバー証明書の設定"]の手順を参照してください。
+** クライアント証明書については、link:../admin/configuring-administrator-client-certificates.html["クライアント証明書の設定"]の手順を参照してください。
+
+
+. サーバー証明書のエラーが発生した場合は、以下のいずれか、または両方を試してください。
++
+** 証明書のサブジェクト代替名（SAN）が正しく入力されていること、およびSANが接続先のノードのIPアドレスまたはホスト名と一致していることを確認してください。
+** ドメイン名を使用して StorageGRID に接続しようとしている場合：
++
+... 接続エラーを回避してグリッドマネージャーにアクセスするには、ドメイン名の代わりに管理ノードのIPアドレスを入力してください。
+... グリッドマネージャから、*構成* > *セキュリティ* > *証明書*を選択し、link:../admin/using-storagegrid-security-certificates.html#access-security-certificates["適切な証明書タブを選択してください"]新しいカスタム証明書をインストールするか、デフォルトの証明書を引き続き使用するかを選択します。
+... StorageGRID の管理手順については、link:../admin/configuring-custom-server-certificate-for-grid-manager-tenant-manager.html#add-a-custom-management-interface-certificate["グリッドマネージャーとテナントマネージャー用のカスタムサーバー証明書の設定"]の手順を参照してください。
+
+
+
+
+

@@ -1,0 +1,31 @@
+---
+permalink: admin/updating-storagegrid-license-information.html 
+sidebar: sidebar 
+keywords: storagegrid license, update license, add storage capacity 
+summary: ライセンスの条件が変更された場合は、StorageGRID システムのライセンス情報を更新する必要があります。たとえば、グリッドのストレージ容量を追加購入した場合は、ライセンス情報を更新する必要があります。 
+---
+= StorageGRID ライセンス情報の更新
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ライセンスの条件が変更された場合は、StorageGRID システムのライセンス情報を更新する必要があります。たとえば、グリッドのストレージ容量を追加購入した場合は、ライセンス情報を更新する必要があります。
+
+.開始する前に
+* StorageGRID システムに適用する新しいライセンスファイルがあります。
+* link:admin-group-permissions.html["特定のアクセス権限"]があります。
+* プロビジョニングパスフレーズをお持ちです。
+
+
+.手順
+. *Maintenance* > *System* > *License* を選択します。
+. 「ライセンスの更新」セクションで、*参照*を選択します。
+. 新しいライセンスファイルを探して選択します（(`.txt`）。
++
+新しいライセンスファイルが検証され、表示されます。
+
+. プロビジョニングパスフレーズを入力してください。
+. * 保存 * を選択します。
+

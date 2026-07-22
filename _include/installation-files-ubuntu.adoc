@@ -1,0 +1,83 @@
+= 
+:allow-uri-read: 
+
+
+[cols="1a,1a"]
+|===
+| パスとファイル名 | 説明 
+
+
+| ./debs/README  a| 
+StorageGRID ダウンロード ファイルに含まれるすべてのファイルを説明するテキスト ファイル。
+
+
+
+| ./debs/NLF000000.txt  a| 
+テスト環境およびコンセプトの実証環境に使用できる、非本番環境のNetAppライセンス ファイル。
+
+
+
+| ./debs/storagegrid-webscale-images-version-SHA.deb  a| 
+UbuntuまたはDebianホストにStorageGRIDノードイメージをインストールするためのDEBパッケージ。
+
+
+
+| ./debs/storagegrid-webscale-images-version-SHA.deb.md5  a| 
+MD5 チェックサム（ファイル `/debs/storagegrid-webscale-images-version-SHA.deb`）。
+
+
+
+| ./debs/storagegrid-webscale-service-version-SHA.deb  a| 
+UbuntuまたはDebianホストにStorageGRIDホストサービスをインストールするためのDEBパッケージ。
+
+
+
+| デプロイメントスクリプトツール | 説明 
+
+
+| ./debs/configure-storagegrid.py  a| 
+StorageGRID システムの設定を自動化するために使用される Python スクリプト。
+
+
+
+| ./debs/configure-sga.py  a| 
+StorageGRID アプライアンスの設定を自動化するために使用される Python スクリプト。
+
+
+
+| ./debs/storagegrid-ssoauth.py  a| 
+Grid Management API にサインインする際に使用できる Python スクリプトの例（シングル サインオンが有効になっている場合）。このスクリプトは、Ping Federate との連携にも使用できます。
+
+
+
+| ./debs/configure-storagegrid.sample.json  a| 
+ `configure-storagegrid.py`スクリプトで使用するための設定ファイルの例。
+
+
+
+| ./debs/configure-storagegrid.blank.json  a| 
+ `configure-storagegrid.py`スクリプトで使用するための空の設定ファイル。
+
+
+
+| ./debs/extras/ansible  a| 
+StorageGRID コンテナのデプロイ用に Ubuntu または Debian ホストを設定するための Ansible ロールとプレイブックの例。必要に応じて、ロールやプレイブックをカスタマイズできます。
+
+
+
+| ./debs/storagegrid-ssoauth-azure.py  a| 
+Active Directory または Ping Federate を使用してシングル サインオン（SSO）が有効になっている場合に、Grid Management API へのサインインに使用できる Python スクリプトの例です。
+
+
+
+| ./debs/storagegrid-ssoauth-azure.js  a| 
+コンパニオン `storagegrid-ssoauth-azure.py` Python スクリプトによって呼び出され、Azure とのシングル サインオン操作を実行するヘルパースクリプト。
+
+
+
+| ./debs/extras/api-schemas  a| 
+StorageGRID のAPIスキーマ。
+
+*注*: アップグレードを実行する前に、アップグレード互換性テスト用の非本番 StorageGRID 環境がない場合、これらのスキーマを使用して、StorageGRID 管理 API を使用するために作成したコードが新しい StorageGRID リリースと互換性があることを確認できます。
+
+|===

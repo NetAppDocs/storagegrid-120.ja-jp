@@ -1,0 +1,73 @@
+---
+permalink: audit/olst-system-detected-lost-object.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, OLST, System Detected Lost Object 
+summary: このメッセージは、DDS サービスが StorageGRID システム内でオブジェクトのコピーをどこにも見つけられない場合に生成されます。 
+---
+= StorageGRIDでシステムが検出した紛失オブジェクトに関するOLST監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+このメッセージは、DDS サービスが StorageGRID システム内でオブジェクトのコピーをどこにも見つけられない場合に生成されます。
+
+[cols="1a,1a,4a"]
+|===
+| Code | フィールド | 説明 
+
+
+ a| 
+CBID
+ a| 
+コンテンツブロック識別子
+ a| 
+紛失オブジェクトのCBID。
+
+
+
+ a| 
+NOID
+ a| 
+ノードID
+ a| 
+入手可能な場合は、紛失したオブジェクトの最後に確認された直接位置またはニアライン位置。ボリューム情報が利用できない場合は、Volume ID なしで Node ID のみを保持することも可能です。
+
+
+
+ a| 
+PATH
+ a| 
+S3バケット/キー
+ a| 
+利用可能な場合は、S3バケット名とS3キー名。
+
+
+
+ a| 
+RSLT
+ a| 
+結果
+ a| 
+このフィールドの値は NONE です。RSLT は必須メッセージフィールドですが、このメッセージには関係ありません。このメッセージがフィルタリングされないように、SUCS ではなく NONE が使用されます。
+
+
+
+ a| 
+UUID
+ a| 
+ユニバーサル一意ID
+ a| 
+StorageGRID システム内の紛失オブジェクトの識別子。
+
+
+
+ a| 
+VOLI
+ a| 
+ボリューム ID
+ a| 
+利用可能な場合は、紛失したオブジェクトの最後に確認された場所に対応するストレージノードのボリュームID。
+
+|===

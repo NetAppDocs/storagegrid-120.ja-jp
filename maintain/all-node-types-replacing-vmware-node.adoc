@@ -1,0 +1,78 @@
+---
+permalink: maintain/all-node-types-replacing-vmware-node.html 
+sidebar: sidebar 
+keywords: replace VMware node 
+summary: VMware上でホストされていた障害StorageGRIDノードをリカバリする場合は、障害ノードを削除し、リカバリノードをデプロイします。 
+---
+= StorageGRIDのVMwareノードを交換する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+VMware上でホストされていた障害StorageGRIDノードをリカバリする場合は、障害ノードを削除し、リカバリノードをデプロイします。
+
+.開始する前に
+仮想マシンは復元できないため、交換が必要であると判断しました。
+
+.タスク概要
+VMware vSphere Web Client を使用して、まず障害が発生したグリッドノードに関連付けられている仮想マシンを削除します。その後、新しい仮想マシンをデプロイできます。
+
+この手順は、グリッドノード復旧プロセスの1つのステップにすぎません。ノードの削除および展開手順は、管理ノード、ストレージノード、ゲートウェイノードを含むすべての VMware ノードで同じです。
+
+.手順
+. VMware vSphere Web Clientにログインします。
+. 障害が発生したグリッドノードの仮想マシンに移動します。
+. 復旧ノードをデプロイするために必要なすべての情報をメモしておいてください。
++
+.. 仮想マシンを右クリックし、*Edit Settings* タブを選択して、使用中の設定をメモしてください。
+.. *vApp オプション*タブを選択して、グリッドノードのネットワーク設定を表示および記録します。
+
+
+. 障害が発生したグリッドノードがストレージノードである場合、データストレージに使用されている仮想ハードディスクに損傷がないかどうかを確認し、復旧したグリッドノードに再接続するためにそれらを保存します。
+. 仮想マシンの電源をオフにします。
+. *Actions* > *All vCenter Actions* > *Delete from Disk* を選択して、仮想マシンを削除します。
+. 代替ノードとして新しい仮想マシンをデプロイし、1つ以上の StorageGRID ネットワークに接続します。手順については、link:../swnodes/deploying-storagegrid-node-as-virtual-machine.html["StorageGRID ノードを仮想マシンとして導入する"]を参照してください。
++
+ノードをデプロイする際に、必要に応じてノードポートのマッピングを変更したり、CPUやメモリの設定値を上げたりすることができます。
+
++
+
+NOTE: 新しいノードをデプロイした後、ストレージ要件に応じて新しい仮想ディスクを追加したり、以前に削除された障害発生グリッドノードから保存された仮想ハードディスクを再接続したり、あるいはその両方を行うことができます。
+
+. 復旧対象のノードの種類に応じて、ノード復旧手順を完了してください。
++
+[cols="1a,2a"]
+|===
+| ノードの種類 | [ 
+
+
+ a| 
+プライマリ管理ノード
+ a| 
+link:configuring-replacement-primary-admin-node.html["代替プライマリ管理ノードを構成する"]
+
+
+
+ a| 
+非プライマリ管理ノード
+ a| 
+link:selecting-start-recovery-to-configure-non-primary-admin-node.html["非プライマリ管理ノードを設定するには、「リカバリの開始」を選択します。"]
+
+
+
+ a| 
+ゲートウェイ ノード
+ a| 
+link:selecting-start-recovery-to-configure-gateway-node.html["「リカバリの開始」を選択してゲートウェイノードを設定します。"]
+
+
+
+ a| 
+ストレージ ノード
+ a| 
+link:selecting-start-recovery-to-configure-storage-node.html["ストレージノードを設定するには、「リカバリの開始」を選択します。"]
+
+|===
+

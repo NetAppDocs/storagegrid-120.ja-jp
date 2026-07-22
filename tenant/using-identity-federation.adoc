@@ -1,0 +1,245 @@
+---
+permalink: tenant/using-identity-federation.html 
+sidebar: sidebar 
+keywords: how to use identity federation, how to use federated groups with Tenant Manager 
+summary: IDフェデレーションを利用することで、テナントグループとユーザーの設定が迅速になり、テナントユーザーは使い慣れた認証情報を使用してテナントアカウントにサインインできるようになります。 
+---
+= StorageGRIDでIDフェデレーションを使用する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+IDフェデレーションを利用することで、テナントグループとユーザーの設定が迅速になり、テナントユーザーは使い慣れた認証情報を使用してテナントアカウントにサインインできるようになります。
+
+
+
+[[configure-identity-federation-for-tenant-manager]]
+== テナントマネージャーのIDフェデレーションを構成する
+
+テナントグループとユーザーをActive Directory、Microsoft Entra ID、OpenLDAP、Oracle Directory Serverなどの別のシステムで管理したい場合は、テナントマネージャーのIDフェデレーションを設定できます。
+
+.開始する前に
+* テナントマネージャーに link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用してサインインしています。
+* あなたは、link:tenant-management-permissions.html["ルートアクセス権限"]に属するユーザーグループのメンバーです。
+* お客様は、IDプロバイダーとしてActive Directory、Microsoft Entra ID、OpenLDAP、またはOracle Directory Serverを使用しています。
++
+
+NOTE: リストに記載されていないLDAP v3サービスを利用したい場合は、テクニカルサポートにお問い合わせください。
+
+* OpenLDAPを使用する場合は、OpenLDAPサーバを設定する必要があります。<<OpenLDAPサーバの設定に関するガイドライン>>を参照してください。
+* LDAPサーバとの通信にTransport Layer Security（TLS）を使用する予定がある場合、アイデンティティプロバイダーはTLS 1.2または1.3を使用している必要があります。link:../admin/supported-ciphers-for-outgoing-tls-connections.html["送信TLS接続でサポートされている暗号スイート"]を参照してください。
+
+
+.タスク概要
+テナント向けにIDフェデレーションサービスを構成できるかどうかは、テナントアカウントの設定方法によって異なります。テナントによっては、Grid Manager用に構成されたIDフェデレーションサービスを共有している場合があります。IDフェデレーションページにアクセスした際にこのメッセージが表示される場合、このテナントに対して個別のフェデレーションIDソースを設定することはできません。
+
+image:tenant_shares_identity_federation.png["テナントの共有アイデンティティフェデレーション"]
+
+
+
+[[enter-configuration]]
+=== 設定を入力
+
+アイデンティティフェデレーションを設定する際には、StorageGRID が LDAPサービスに接続するために必要な値を指定します。
+
+.手順
+. *アクセス管理* ＞ *IDフェデレーション* を選択します。
+. *ID連携を有効にする*を選択します。
+. LDAPサービスタイプのセクションで、設定するLDAPサービスのタイプを選択します。
++
+image:ldap_service_type.png["LDAPサービスタイプのオプションを表示するIDフェデレーションページ"]
+
++
+「その他」を選択して、Oracle Directory Serverを使用するLDAPサーバの値を設定します。
+
+. 「その他」を選択した場合は、LDAP属性セクションの各項目を入力してください。そうでない場合は、次のステップに進んでください。
++
+** *ユーザー固有名*：LDAPユーザーの固有識別子を含む属性の名前。この属性は `sAMAccountName`（Active Directory 用）および `uid`（OpenLDAP用）と同等です。Oracle Directory Server を設定する場合は、 `uid`を入力してください。
+** *ユーザーUUID*：LDAPユーザーの永続的な一意の識別子を含む属性の名前。この属性は、Active Directory の場合は `objectGUID`、OpenLDAP の場合は `entryUUID`と同等です。Oracle Directory Server を設定する場合は、 `nsuniqueid`を入力してください。指定した属性に対する各ユーザーの値は、16バイト形式または文字列形式の32桁の16進数である必要があり、ハイフンは無視されます。
+** *グループ固有名*：LDAPグループの固有識別子を含む属性の名前。この属性は、Active Directory の場合は `sAMAccountName`、OpenLDAP の場合は `cn`と同等です。Oracle Directory Server を設定する場合は、 `cn`を入力してください。
+** *グループUUID*：LDAPグループの永続的な一意の識別子を含む属性の名前。この属性は `objectGUID`（Active Directory 用）および `entryUUID`（OpenLDAP用）と同等です。Oracle Directory Server を構成する場合は、 `nsuniqueid`を入力してください。各グループの指定属性の値は、16バイト形式または文字列形式の32桁の16進数でなければならず、ハイフンは無視されます。
+
+
+. すべての LDAP サービスタイプについて、「LDAPサーバの設定」セクションに必要な LDAPサーバとネットワーク接続情報を入力してください。
++
+** *ホスト名*：LDAPサーバの完全修飾ドメイン名（FQDN）またはIPアドレス。
+** *ポート*：LDAPサーバへの接続に使用するポート。
++
+
+NOTE: STARTTLSのデフォルトポートは389番、LDAPSのデフォルトポートは636番です。ただし、ファイアウォールが正しく設定されていれば、どのポートでも使用できます。
+
+** *ユーザー名*：LDAPサーバに接続するユーザーの識別名（DN）の完全パス。
++
+Active Directoryの場合、下位レベルのログオン名またはユーザープリンシパル名を指定することもできます。
+
++
+指定されたユーザーは、グループとユーザーの一覧表示、および以下の属性へのアクセス権限を持っている必要があります：
+
++
+*** `sAMAccountName` または `uid`
+*** `objectGUID`、 `entryUUID`、または `nsuniqueid`
+*** `cn`
+*** `memberOf` または `isMemberOf`
+*** *Active Directory*： `objectSid`、 `primaryGroupID`、 `userAccountControl`、および `userPrincipalName`
+*** *Entra ID*： `accountEnabled`および `userPrincipalName`
+
+
+** *パスワード*：ユーザー名に関連付けられたパスワード。
++
+
+NOTE: 今後パスワードを変更する場合は、このページで更新する必要があります。
+
+** *グループベースDN*：グループを検索するLDAPサブツリーの識別名（DN）の完全パス。下記の Active Directory の例では、識別名がベース DN （DC=storagegrid,DC=example,DC=com） に対して相対的なすべてのグループをフェデレーション グループとして使用できます。
++
+
+NOTE: *グループ固有名*の値は、所属する*グループベースDN*内で一意である必要があります。
+
+** *ユーザーベースDN*：ユーザーを検索するLDAPサブツリーの識別名（DN）の完全パス。
++
+
+NOTE: *ユーザー固有名*の値は、所属する*ユーザーベース DN*内で一意である必要があります。
+
+** *バインドユーザー名フォーマット*（オプション）：パターンを自動的に判別できない場合に StorageGRID が使用するデフォルトのユーザー名パターンです。
++
+*バインドユーザー名形式*を指定することを推奨します。これにより、StorageGRIDがサービスアカウントとバインドできない場合でも、ユーザーがサインインできるようになります。
+
++
+以下のいずれかのパターンを入力してください：
+
++
+*** *UserPrincipalNameパターン（AD および Entra ID）*： `[USERNAME]@_example_.com`
+*** *下位レベルのログオン名パターン（ADおよびEntra ID）*： `_example_\[USERNAME]`
+*** *識別名パターン*： `CN=[USERNAME],CN=Users,DC=_example_,DC=com`
++
+*[USERNAME]* を記載どおりに正確に含めてください。
+
+
+
+
+
+. トランスポート層セキュリティ（TLS）セクションで、セキュリティ設定を選択します。
++
+** *STARTTLSを使用する*：STARTTLSを使用してLDAPサーバとの通信を保護します。これはActive Directory、OpenLDAP、またはその他のシステムでは推奨されるオプションですが、Microsoft Entra IDではサポートされていません。
+** *LDAPSを使用する*：LDAPS（LDAP over SSL）オプションはTLSを使用してLDAPサーバへの接続を確立します。Microsoft Entra IDの場合は、このオプションを選択する必要があります。
+** *TLSを使用しない*：StorageGRIDシステムとLDAPサーバ間のネットワーク トラフィックはセキュリティで保護されません。このオプションは、Microsoft Entra IDではサポートされていません。
++
+
+NOTE: Active Directory サーバーがLDAP署名を強制している場合、「TLSを使用しない」オプションはサポートされていません。STARTTLSまたはLDAPSを使用する必要があります。
+
+
+
+. STARTTLSまたはLDAPSを選択した場合は、接続を保護するために使用する証明書を選択してください。
++
+** *オペレーティングシステムのCA証明書を使用する*：オペレーティングシステムにインストールされているデフォルトのGrid CA証明書を使用して接続を保護します。
+** *カスタムCA証明書を使用する*：カスタムセキュリティ証明書を使用します。
++
+この設定を選択した場合は、カスタムセキュリティ証明書をコピーして、CA証明書のテキストボックスに貼り付けてください。
+
+
+
+
+
+
+
+[[test-the-connection-and-save-the-configuration]]
+=== 接続をテストして設定を保存する
+
+すべての値を入力した後、設定を保存する前に接続テストを行う必要があります。StorageGRID は、LDAPサーバの接続設定と、指定した場合はバインドユーザー名の形式を確認します。
+
+.手順
+. 「接続テスト」を選択します。
+. バインドユーザー名の形式を指定しなかった場合：
++
+** 接続設定が有効な場合、「接続テスト成功」というメッセージが表示されます。設定を保存するには、*保存*を選択してください。
+** 接続設定が無効な場合、「テスト接続を確立できませんでした」というメッセージが表示されます。「閉じる」を選択します。その後、問題をすべて解決し、再度接続テストを行ってください。
+
+
+. バインドユーザー名の形式を指定した場合は、有効なフェデレーションユーザーのユーザー名とパスワードを入力してください。
++
+例えば、ご自身のユーザー名とパスワードを入力してください。ユーザー名には、@ や / などの特殊文字を含めないでください。
+
++
+image:identity_federation_test_connection.png["IDフェデレーションがバインドユーザー名の形式を検証するよう促します"]
+
++
+** 接続設定が有効な場合、「接続テスト成功」というメッセージが表示されます。設定を保存するには、*保存*を選択してください。
+** 接続設定、バインドユーザー名の形式、またはテストユーザー名とパスワードが無効な場合、エラーメッセージが表示されます。問題を解決し、再度接続テストを行ってください。
+
+
+
+
+
+
+[[force-synchronization-with-identity-source]]
+== IDソースとの強制同期
+
+StorageGRID システムは、IDソースから連携グループとユーザーを定期的に同期します。ユーザー権限をできるだけ早く有効化または制限したい場合は、同期を強制的に開始することができます。
+
+.手順
+. ID連携ページに移動します。
+. ページ上部の「Sync server」を選択してください。
++
+同期処理には、お使いの環境によっては時間がかかる場合があります。
+
++
+
+NOTE: 「IDフェデレーション同期失敗」アラートは、IDソースからのフェデレーショングループとユーザーの同期に問題が発生した場合にトリガーされます。
+
+
+
+
+
+[[disable-identity-federation]]
+== IDフェデレーションを無効にする
+
+グループおよびユーザーのID連携を、一時的または永続的に無効にすることができます。ID連携が無効になっている場合、StorageGRIDとIDソース間の通信は行われません。ただし、設定した内容はすべて保持されるため、将来的にID連携を簡単に再度有効にすることができます。
+
+.タスク概要
+IDフェデレーションを無効にする前に、以下の点に注意してください。
+
+* フェデレーションユーザーはサインインできません。
+* 現在サインインしているフェデレーションユーザーは、セッションが期限切れになるまでStorageGRIDシステムへのアクセスを維持できますが、セッションが期限切れになるとサインインできなくなります。
+* StorageGRID システムとIDソース間の同期は行われず、同期されていないアカウントに関するアラートも発生しません。
+* 「ID フェデレーションを有効にする」チェックボックスは、シングル サインオン（SSO）ステータスが「有効」または「サンドボックスモード」の場合は無効になります。ID フェデレーションを無効にするには、まずシングル サインオンページの SSO ステータスを「無効」に設定する必要があります。参照してくださいlink:../admin/disabling-single-sign-on.html["シングル サインオンを無効にする"]。
+
+
+.手順
+. ID連携ページに移動します。
+. *ID連携を有効にする* チェックボックスのチェックを外します。
+
+
+
+
+[[guidelines-for-configuring-openldap-server]]
+== OpenLDAPサーバの設定に関するガイドライン
+
+IDフェデレーションにOpenLDAPサーバーを使用する場合は、OpenLDAPサーバー上で特定の設定を構成する必要があります。
+
+
+CAUTION: Active Directory または Microsoft Entra ID 以外の ID ソースの場合、StorageGRID は外部から無効化されたユーザーによる S3 へのアクセスを自動的にブロックしません。S3 へのアクセスをブロックするには、ユーザーの S3 キーをすべて削除するか、ユーザーをすべてのグループから削除してください。
+
+
+
+[[memberof-and-refint-overlays]]
+=== memberof および refint オーバーレイ
+
+memberof および refint オーバーレイを有効にする必要があります。詳細については、http://www.openldap.org/doc/admin24/index.html["OpenLDAP ドキュメント：バージョン 2.4 管理者ガイド"^] のリバースグループメンバーシップのメンテナンスに関する手順を参照してください。
+
+
+
+[[indexing]]
+=== インデックス作成
+
+以下の OpenLDAP 属性を、指定されたインデックスキーワードで設定する必要があります：
+
+* `olcDbIndex: objectClass eq`
+* `olcDbIndex: uid eq,pres,sub`
+* `olcDbIndex: cn eq,pres,sub`
+* `olcDbIndex: entryUUID eq`
+
+
+さらに、最適なパフォーマンスを得るために、ユーザー名に関するヘルプに記載されているフィールドにインデックスが設定されていることを確認してください。
+
+逆グループメンバーシップの維持に関する情報については、http://www.openldap.org/doc/admin24/index.html["OpenLDAP ドキュメント：バージョン 2.4 管理者ガイド"^]を参照してください。

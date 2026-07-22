@@ -1,0 +1,137 @@
+---
+permalink: troubleshoot/troubleshoot-s3-put-object-size-too-large-alert.html 
+sidebar: sidebar 
+keywords: how to troubleshoot S3 PUT Object size too large alert, S3 PutObject size 
+summary: テナントがS3のサイズ制限である5 GiBを超えるマルチパートではないPutObject操作を試みた場合、S3 PUTオブジェクトのサイズが大きすぎるというアラートがトリガーされます。 
+---
+= StorageGRIDでS3 PUTオブジェクトサイズが大きすぎるというアラートを解決する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+テナントがS3のサイズ制限である5 GiBを超えるマルチパートではないPutObject操作を試みた場合、S3 PUTオブジェクトのサイズが大きすぎるというアラートがトリガーされます。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* link:../admin/admin-group-permissions.html["特定のアクセス権限"]があります。
+
+
+5 GiBを超えるサイズのオブジェクトを使用しているテナントを特定し、それらのテナントに通知できるようにします。
+
+.手順
+. *設定* > *監視* > *監査とsyslogサーバ*に移動します。
+. クライアント書き込みが正常な場合は、監査ログにアクセスしてください。
++
+.. 入力 `ssh admin@_primary_Admin_Node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+.. 監査ログが保存されているディレクトリに移動します。
++
+--
+監査ログのディレクトリと適用可能なノードは、監査先の設定によって異なります。
+
+[cols="1a,2a"]
+|===
+| オプション | デスティネーション 
+
+
+ a| 
+ローカルノード（デフォルト）
+ a| 
+`/var/local/log/localaudit.log`
+
+
+
+ a| 
+管理者ノード／ローカルノード
+ a| 
+*** 管理ノード（プライマリおよび非プライマリ）： `/var/local/audit/export/audit.log`
+*** すべてのノード： `/var/local/log/localaudit.log`このモードでは、ファイルは通常空であるか、存在しません。
+
+
+
+
+ a| 
+外部のsyslogサーバ
+ a| 
+`/var/local/log/localaudit.log`
+
+|===
+監査先の設定に応じて、以下を入力してください： `cd /var/local/log`または `/var/local/audit/export/`
+
+詳細については、link:../monitor/configure-log-management.html#select-log-location["ログの保存場所を選択"] を参照してください。
+
+--
+.. 5 GiBを超えるサイズのオブジェクトを使用しているテナントを特定します。
++
+... 入力 `zgrep SPUT * | egrep "CSIZ\(UI64\):([5-9]|[1-9][0-9]+)[0-9]{9}"`
+... 結果の各監査メッセージについて、 `S3AI`フィールドを確認してテナントアカウントIDを特定してください。メッセージ内の他のフィールドを使用して、クライアントが使用したIPアドレス、バケット、およびオブジェクトを特定します。
++
+[cols="1a,2a"]
+|===
+| Code | 説明 
+
+
+| SAIP  a| 
+ソース IP
+
+
+
+| S3AIを使用したチャンク アップロード署名要求がサポートされるようになりました。  a| 
+Tenant ID
+
+
+
+| S3BKを使用したチャンク アップロード署名要求がサポートされるようになりました。  a| 
+バケット
+
+
+
+| S3KYを使用したチャンク アップロード署名要求がサポートされるようになりました。  a| 
+オブジェクト
+
+
+
+| CSIZ  a| 
+サイズ（バイト）
+
+|===
++
+*監査ログ結果の例*
+
++
+[listing]
+----
+audit.log:2023-01-05T18:47:05.525999 [AUDT:[RSLT(FC32):SUCS][CNID(UI64):1672943621106262][TIME(UI64):804317333][SAIP(IPAD):"10.96.99.127"][S3AI(CSTR):"93390849266154004343"][SACC(CSTR):"bhavna"][S3AK(CSTR):"06OX85M40Q90Y280B7YT"][SUSR(CSTR):"urn:sgws:identity::93390849266154004343:root"][SBAI(CSTR):"93390849266154004343"][SBAC(CSTR):"bhavna"][S3BK(CSTR):"test"][S3KY(CSTR):"large-object"][CBID(UI64):0x077EA25F3B36C69A][UUID(CSTR):"A80219A2-CD1E-466F-9094-B9C0FDE2FFA3"][CSIZ(UI64):6040000000][MTME(UI64):1672943621338958][AVER(UI32):10][ATIM(UI64):1672944425525999][ATYP(FC32):SPUT][ANID(UI32):12220829][AMID(FC32):S3RQ][ATID(UI64):4333283179807659119]]
+----
+
+
+
+
+. クライアント書き込みが正常でない場合は、アラートのテナント ID を使用してテナントを特定します：
++
+.. *サポート* > *ツール* > *ログ収集* に移動します。アラート内のストレージノードのアプリケーションログを収集します。アラートの前後15分間を指定します。link:../monitor/collecting-log-files-and-system-data.html["ログファイルとシステムデータを収集する"] を参照してください。
+.. ファイルを解凍して、 `bycast.log`に移動します：
++
+`/GID<grid_id>_<time_stamp>/<site_node>/<time_stamp>/grid/bycast.log`
+
+.. ログで `method=PUT`を検索し、 `clientIP`フィールドでクライアントを特定します。
++
+*bycast.logの例*
+
++
+[listing]
+----
+Jan  5 18:33:41 BHAVNAJ-DC1-S1-2-65 ADE: |12220829 1870864574 S3RQ %CEA 2023-01-05T18:33:41.208790| NOTICE   1404 af23cb66b7e3efa5 S3RQ: EVENT_PROCESS_CREATE - connection=1672943621106262 method=PUT name=</test/4MiB-0> auth=<V4> clientIP=<10.96.99.127>
+----
+
+
+. テナントに対して、PutObjectの最大サイズは5 GiBであり、5 GiBを超えるオブジェクトにはマルチパートアップロードを使用するよう通知してください。
+. アプリケーションに変更があった場合は、1週間はアラートを無視してください。
+

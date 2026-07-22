@@ -1,0 +1,133 @@
+---
+permalink: fabricpool/use-fabricpool-setup-wizard.html 
+sidebar: sidebar 
+keywords: fabricPool, StorageGRID, FabricPool setup wizard, ontap system manager 
+summary: FabricPool セットアップ ウィザードを使用して、StorageGRID を FabricPool クラウド階層のオブジェクト ストレージ システムとして設定できます。セットアップ ウィザードが完了したら、必要な詳細情報を ONTAP System Manager に入力できます。 
+---
+= StorageGRID FabricPool セットアップ ウィザードについて学ぶ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FabricPool セットアップ ウィザードを使用して、StorageGRID を FabricPool クラウド階層のオブジェクト ストレージ システムとして設定できます。セットアップ ウィザードが完了したら、必要な詳細情報を ONTAP System Manager に入力できます。
+
+
+
+[[when-to-use-the-fabricpool-setup-wizard]]
+== FabricPoolセットアップ ウィザードを使用するタイミング
+
+FabricPool セットアップ ウィザードは、FabricPool で使用するための StorageGRID の設定手順を順を追ってガイドし、ILM やトラフィック分類ポリシーなど、特定のエンティティを自動的に構成します。ウィザードを完了する過程で、ONTAP System Manager に値を入力するために使用できるファイルをダウンロードします。ウィザードを使用してシステムをより迅速に構成し、設定が StorageGRID および FabricPool のベストプラクティスに準拠していることを確認してください。
+
+Root アクセス権限を持っている場合、StorageGRID Grid Manager の使用を開始する際に FabricPool セットアップ ウィザードを完了するか、後からいつでもウィザードにアクセスして完了させることができます。要件に応じて、必要な項目の一部またはすべてを手動で設定し、ウィザードを使用して ONTAP が必要とする値を 1 つのファイルにまとめることもできます。
+
+
+TIP: 特別な要件がある場合や、実装に大幅なカスタマイズが必要な場合を除き、FabricPool セットアップ ウィザードを使用してください。
+
+
+
+[[before-using-the-wizard]]
+== ウィザードを使用する前に
+
+これらの前提条件となる手順を完了したことを確認してください。
+
+
+
+[[review-best-practices]]
+=== ベストプラクティスを確認する
+
+* link:information-needed-to-attach-storagegrid-as-cloud-tier.html["StorageGRID をクラウド階層として接続するために必要な情報"] について、一般的な理解があります。
+* 以下の事項に関する FabricPool のベストプラクティスを確認しました：
++
+** link:best-practices-for-high-availability-groups.html["高可用性（HA）グループ"]
+** link:best-practices-for-load-balancing.html["負荷分散"]
+** link:best-practices-ilm.html["ILMの規則とポリシー"]
+
+
+
+
+
+
+[[obtain-ip-addresses-and-set-up-vlan-interfaces]]
+=== IPアドレスを取得し、VLANインターフェースを設定する
+
+HAグループを設定する場合は、ONTAPが接続するノードと使用するStorageGRIDネットワークを把握しておく必要があります。また、サブネットCIDR、ゲートウェイIPアドレス、仮想IP（VIP）アドレスに入力する値も把握しておく必要があります。
+
+仮想LANを使用して FabricPool トラフィックを分離する予定の場合は、VLANインターフェースは既に設定済みです。link:../admin/configure-vlan-interfaces.html["VLANインターフェースを設定する"] を参照してください。
+
+
+
+[[configure-identity-federation-and-sso]]
+=== IDフェデレーションとSSOを設定する
+
+IDフェデレーションまたはシングル サインオン（SSO）をStorageGRIDシステムで使用する予定がある場合は、これらの機能が有効になっています。また、ONTAPが使用するテナントアカウントのルートアクセス権を持つフェデレーショングループも把握しています。link:../admin/using-identity-federation.html["IDフェデレーションを使用する"]およびlink:../admin/how-sso-works.html["シングル サインオンを設定する"]を参照してください。
+
+
+
+[[obtain-and-configure-domain-names]]
+=== ドメイン名を取得して設定する
+
+* StorageGRID に使用する完全修飾ドメイン名（FQDN）を把握しています。ドメインネームサーバー（DNS）のエントリは、この FQDN を、セットアップ ウィザードを使用して作成した HA グループの仮想 IP（VIP）アドレスにマッピングします。link:../fabricpool/configure-dns-server.html["DNSサーバーの設定"]を参照してください。
+* S3仮想ホスト型リクエストを使用する予定がある場合は、link:../admin/configuring-s3-api-endpoint-domain-names.html["設定済みのS3エンドポイントドメイン名"]。ONTAPはデフォルトではパス形式のURLを使用しますが、仮想ホスト形式のリクエストを使用することをお勧めします。
+
+
+
+
+[[review-load-balancer-and-security-certificate-requirements]]
+=== ロード バランシングとセキュリティ証明書の要件を確認する
+
+StorageGRID ロードバランサーを使用する予定がある場合は、一般的な link:../admin/managing-load-balancing.html["ロード バランシングに関する考慮事項"] を確認済みであることが必要です。アップロードする証明書、または証明書を生成するために必要な値を用意してください。
+
+外部（サードパーティ）の ロード バランシング エンドポイントを使用する場合は、そのロード バランサーの完全修飾ドメイン名（FQDN）、ポート、および証明書が必要です。
+
+
+
+[[confirm-ilm-storage-pool-configuration]]
+=== ILMストレージプール構成を確認する
+
+最初に StorageGRID 11.6 以前をインストールした場合は、使用するストレージプールが設定済みです。一般的に、ONTAP データの保存に使用する StorageGRID サイトごとにストレージプールを作成する必要があります。
+
+
+NOTE: 最初に StorageGRID 11.7 または 11.8 をインストールした場合、この前提条件は適用されません。これらのバージョンのいずれかを最初にインストールすると、各サイトのストレージプールが自動的に作成されます。
+
+
+
+[[relationship-between-ontap-and-the-storagegrid-cloud-tier]]
+== ONTAPとStorageGRIDクラウド層の関係
+
+FabricPool ウィザードは、1つの StorageGRID テナント、1セットのアクセスキー、および1つの StorageGRID バケットを含む単一の StorageGRID クラウド階層を作成するプロセスを案内します。この StorageGRID クラウド階層を1つ以上の ONTAP ローカル階層に接続できます。
+
+クラスター内の複数のローカル層に単一のクラウド層を接続するのが、一般的に推奨される方法です。ただし、要件によっては、複数のバケット、またはさらに複数の StorageGRID テナントを単一クラスター内のローカル層に使用する必要がある場合があります。異なるバケットとテナントを使用することで、ONTAP ローカル層間のデータとデータアクセスを分離できますが、設定と管理はやや複雑になります。
+
+NetApp では、複数のクラスターにおいて、単一のクラウド層をローカル層に接続することは推奨しません。
+
+
+NOTE: StorageGRID と NetApp MetroCluster™ および FabricPool Mirror を使用する際のベストプラクティスについては、 https://www.netapp.com/pdf.html?item=/media/17239-tr4598pdf.pdf["TR-4598: FabricPool ONTAP のベストプラクティス"^]を参照してください。
+
+
+
+[[optional-use-a-different-bucket-for-each-local-tier]]
+=== オプション：ローカルティアごとに異なるバケットを使用する
+
+ONTAPクラスター内のローカルティアに複数のバケットを使用するには、ONTAPで複数のStorageGRIDクラウドティアを追加します。各クラウドティアは同じHAグループ、ロードバランサーエンドポイント、テナント、およびアクセスキーを共有しますが、異なるコンテナ（StorageGRIDバケット）を使用します。以下の一般的な手順に従ってください。
+
+. StorageGRID Grid Managerから、最初のクラウド ティア用のFabricPoolセットアップ ウィザードを完了します。
+. ONTAP System Manager からクラウド階層を追加し、StorageGRID からダウンロードしたファイルを使用して必要な値を指定します。
+. StorageGRID Tenant Managerから、セットアップ ウィザードによって作成されたテナントにサインインし、2つ目のバケットを作成します。
+. FabricPoolウィザードをもう一度完了します。既存のHAグループ、ロードバランサーエンドポイント、およびテナントを選択します。次に、手動で作成した新しいバケットを選択します。新しいバケット用の新しいILMルールを作成し、そのルールを含めるILMポリシーをアクティブ化します。
+. ONTAPから2つ目のクラウド層を追加しますが、新しいバケット名を指定してください。
+
+
+
+
+[[optional-use-a-different-tenant-and-bucket-for-each-local-tier]]
+=== オプション：ローカルティアごとに異なるテナントとバケットを使用する
+
+ONTAP クラスターのローカル階層に複数のテナントと異なるアクセスキーセットを使用するには、ONTAP に複数の StorageGRID クラウド階層を追加します。各クラウド階層は同じ HA グループとロードバランサーエンドポイントを共有しますが、異なるテナント、アクセスキー、およびコンテナ（StorageGRID バケット）を使用します。以下の一般的な手順に従ってください。
+
+. StorageGRID Grid Managerから、最初のクラウド ティア用のFabricPoolセットアップ ウィザードを完了します。
+. ONTAP System Manager からクラウド階層を追加し、StorageGRID からダウンロードしたファイルを使用して必要な値を指定します。
+. FabricPool ウィザードを再度完了します。既存のHAグループとロードバランサーのエンドポイントを選択します。新しいテナントとバケットを作成します。新しいバケット用に新しいILMルールを作成し、そのルールを含めるようにILMポリシーを有効化します。
+. ONTAPから2つ目のクラウド層を追加しますが、新しいアクセスキー、シークレットキー、およびバケット名を指定してください。
+

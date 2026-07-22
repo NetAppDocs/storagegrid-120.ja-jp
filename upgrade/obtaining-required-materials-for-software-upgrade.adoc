@@ -1,0 +1,63 @@
+---
+permalink: upgrade/obtaining-required-materials-for-software-upgrade.html 
+sidebar: sidebar 
+keywords: upgrade, requirements, rhel, red hat, linux, ubuntu, debian 
+summary: ソフトウェアのアップグレードを開始する前に、必要な資料をすべて入手してください。 
+---
+= StorageGRIDソフトウェアのアップグレードに必要な材料を入手する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ソフトウェアのアップグレードを開始する前に、必要な資料をすべて入手してください。
+
+[cols="1a,3a"]
+|===
+| 項目 | Notes 
+
+
+ a| 
+サービス用ノートパソコン
+ a| 
+サービス用ノートパソコンには以下のものが必要です。
+
+* ネットワークポート
+* SSHクライアント（例：PuTTY）
+
+
+
+
+ a| 
+link:../admin/web-browser-requirements.html["対応ウェブブラウザ"]
+ a| 
+ブラウザのサポートは、通常 StorageGRID のリリースごとに変更されます。お使いのブラウザが新しい StorageGRID バージョンに対応していることを確認してください。
+
+
+
+ a| 
+プロビジョニングパスフレーズ
+ a| 
+パスフレーズは、StorageGRID システムが最初にインストールされるときに作成され、記録されます。プロビジョニングパスフレーズは `Passwords.txt`ファイルに記載されていません。
+
+
+
+ a| 
+Linux RPMまたはDEBアーカイブ
+ a| 
+Linux ホスト上にノードがデプロイされている場合は、アップグレードを開始する前に link:linux-installing-rpm-or-deb-package-on-all-hosts.html["すべてのホストにRPMまたはDEBパッケージをダウンロードしてインストールします"] 必要があります。
+
+Linux オペレーティングシステムが StorageGRID の最小カーネルバージョン要件を満たしていることを確認してください。link:../swnodes/installing-linux.html["LinuxホストへのStorageGRIDのインストール"]を参照してください。
+
+
+
+ a| 
+StorageGRID ドキュメント
+ a| 
+* https://library.netapp.com/ecm/ecm_download_file/ECMLP3351267["リリース ノート"^]。NetAppアカウントでサインインするか、アカウントを作成してリリースノートにアクセスする必要があります。アップグレードを開始する前に、必ずこれらの内容をよくお読みください。
+* https://kb.netapp.com/hybrid/StorageGRID/Maintenance/StorageGRID_12.0_software_upgrade_resolution_guide["StorageGRID ソフトウェアアップグレード解決ガイド"^]アップグレード先のメジャーバージョンについて（サインインが必要です）
+* その他 https://docs.netapp.com/us-en/storagegrid-family/index.html["StorageGRID ドキュメント"^]（必要に応じて）。
+
+
+|===

@@ -1,0 +1,39 @@
+---
+permalink: tenant/guidelines-for-configuring-openldap-server.html 
+sidebar: sidebar 
+keywords: how to configure open ldap 
+summary: IDフェデレーションにOpenLDAPサーバーを使用する場合は、OpenLDAPサーバー上で特定の設定を構成する必要があります。 
+---
+= StorageGRID用のOpenLDAPサーバーの設定
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+IDフェデレーションにOpenLDAPサーバーを使用する場合は、OpenLDAPサーバー上で特定の設定を構成する必要があります。
+
+
+
+[[memberof-and-refint-overlays]]
+== memberof および refint オーバーレイ
+
+memberof および refint オーバーレイを有効にする必要があります。詳細については、『OpenLDAP Software Administrator's Guide』の逆グループメンバーシップ管理に関する手順を参照してください。
+
+
+
+[[indexing]]
+== インデックス作成
+
+以下の OpenLDAP 属性を、指定されたインデックスキーワードで設定する必要があります：
+
+[listing]
+----
+olcDbIndex: objectClass eq
+olcDbIndex: uid eq,pres,sub
+olcDbIndex: cn eq,pres,sub
+olcDbIndex: entryUUID eq
+----
+さらに、最適なパフォーマンスを得るために、ユーザー名に関するヘルプに記載されているフィールドにインデックスが設定されていることを確認してください。
+
+逆グループメンバーシップのメンテナンスに関する情報は、『OpenLDAP Software Administrator's Guide』を参照してください。

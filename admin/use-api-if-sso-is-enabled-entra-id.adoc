@@ -1,0 +1,75 @@
+---
+permalink: admin/use-api-if-sso-is-enabled-entra-id.html 
+sidebar: sidebar 
+keywords: how to access storagegrid API if SSO is enabled with Entra ID 
+summary: シングル サインオン（SSO）を設定して有効にしており、Entra ID を SSO プロバイダーとして使用している場合は、2 つのサンプルスクリプトを使用して、Grid Management API または Tenant Management API で有効な認証トークンを取得できます。 
+---
+= シングル サインオン が有効になっている場合は StorageGRID API を使用します（Entra ID）
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+link:../admin/how-sso-works.html["設定および有効化されたシングル サインオン（SSO）"]をお持ちで、Entra ID をSSOプロバイダーとして使用している場合は、2つのサンプルスクリプトを使用して、Grid Management APIまたはTenant Management APIで有効な認証トークンを取得できます。
+
+
+
+[[sign-in-to-the-api-if-entra-id-single-sign-on-is-enabled]]
+== Entra ID のシングル サインオンが有効になっている場合は、API にサインインします
+
+これらの手順は、SSOのIDプロバイダーとしてEntra IDを使用している場合に適用されます。
+
+.開始する前に
+* StorageGRID ユーザーグループに属するフェデレーションユーザーの SSO メールアドレスとパスワードを知っている必要があります。
+* テナント管理APIにアクセスするには、テナントアカウントIDを知っている必要があります。
+
+
+.タスク概要
+認証トークンを取得するには、以下のサンプルスクリプトを使用できます。
+
+* この `storagegrid-ssoauth-azure.py` Python スクリプト
+* The `storagegrid-ssoauth-azure.js` Node.js スクリプト
+
+
+両方のスクリプトは、StorageGRID インストールファイルディレクトリ（(`./rpms` は RHEL の場合、 `./debs` は Ubuntu または Debian の場合、 `./vsphere` は VMware の場合）にあります。
+
+Entra ID との独自の API 統合を作成するには、 `storagegrid-ssoauth-azure.py`スクリプトを参照してください。Python スクリプトは StorageGRID に対して直接 2 つのリクエストを行い（最初に SAMLRequest を取得し、その後認証トークンを取得します）、さらに Node.js スクリプトを呼び出して Entra ID とやり取りし、SSO 操作を実行します。
+
+SSO操作は一連のAPIリクエストを使用して実行できますが、その方法は簡単ではありません。Puppeteer Node.jsモジュールは、Entra ID SSOインターフェースのスクレイピングに使用されます。
+
+URLエンコードに問題がある場合、次のようなエラーが表示されることがあります： `Unsupported SAML version`。
+
+.手順
+. 必要な依存関係を以下の手順でインストールします：
++
+.. Node.jsをインストールします（ https://nodejs.org/en/download/["https://nodejs.org/en/download/"^]を参照）。
+.. 必要なNode.jsモジュール（puppeteerとjsdom）をインストールします：
++
+`npm install -g <module>`
+
+
+
+. PythonスクリプトをPythonインタープリタに渡して実行します。
++
+次に、Pythonスクリプトが対応するNode.jsスクリプトを呼び出し、Entra ID SSOのやり取りを実行します。
+
+. プロンプトが表示されたら、以下の引数に値を入力してください（または、パラメータを使用して渡してください）：
++
+** Entra ID へのサインインに使用される SSO メールアドレス
+** StorageGRID のアドレス
+** テナント管理APIにアクセスする場合は、テナントアカウントID
+
+
+. 指示が表示されたらパスワードを入力し、必要に応じて Entra ID への MFA 認証を提供する準備をしてください。
++
+image:sso_api_password_mfa.png["パスワードとMFAの入力を求めるプロンプト"]
+
++
+
+NOTE: このスクリプトは、多要素認証（MFA）がMicrosoft Authenticatorを使用して行われることを前提としています。他の形式の多要素認証（テキストメッセージで受信したコードを入力するなど）をサポートするには、スクリプトを修正する必要がある場合があります。
+
++
+StorageGRID 認証トークンが出力に含まれています。これで、SSO を使用していない場合と同様に、トークンを他のリクエストに使用できます。
+
+

@@ -1,0 +1,50 @@
+---
+permalink: ilm/enabling-s3-object-lock-globally.html 
+sidebar: sidebar 
+keywords: enable s3 object lock, object lock 
+summary: S3 テナントアカウントがオブジェクトデータを保存する際に規制要件を遵守する必要がある場合は、StorageGRID システム全体で S3 Object Lock を有効にする必要があります。グローバルな S3 Object Lock 設定を有効にすると、すべての S3 テナントユーザーが S3 Object Lock を使用してバケットとオブジェクトを作成および管理できるようになります。 
+---
+= StorageGRIDでS3オブジェクトロックをグローバルに有効にする
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+S3 テナントアカウントがオブジェクトデータを保存する際に規制要件を遵守する必要がある場合は、StorageGRID システム全体で S3 Object Lock を有効にする必要があります。グローバルな S3 Object Lock 設定を有効にすると、すべての S3 テナントユーザーが S3 Object Lock を使用してバケットとオブジェクトを作成および管理できるようになります。
+
+.開始する前に
+* あなたはlink:../admin/admin-group-permissions.html["ルートアクセス権限"]があります。
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* S3 オブジェクトロックのワークフローを確認し、考慮事項を理解しました。
+* 有効なILMポリシーのデフォルトルールが準拠していることを確認しました。詳細については、link:creating-default-ilm-rule.html["デフォルトのILMルールを作成する"]を参照してください。
+
+
+.タスク概要
+テナントユーザーがS3オブジェクトロックが有効になっている新しいバケットを作成できるようにするには、グリッド管理者がグローバルなS3オブジェクトロック設定を有効にする必要があります。この設定を有効にすると、無効にすることはできません。
+
+グローバルな S3 オブジェクトロック設定を有効にした後、既存のテナントのコンプライアンス設定を確認してください。この設定を有効にすると、S3 オブジェクトロックのテナントごとの設定は、テナントが作成された時点の StorageGRID リリースによって異なります。
+
+
+NOTE: グローバルコンプライアンス設定は非推奨です。以前のバージョンの StorageGRID を使用してこの設定を有効にした場合、S3 オブジェクトロック設定は自動的に有効になります。引き続き StorageGRID を使用して既存の準拠バケットの設定を管理できますが、新しい準拠バケットを作成することはできません。詳細については、 https://kb.netapp.com/Advice_and_Troubleshooting/Hybrid_Cloud_Infrastructure/StorageGRID/How_to_manage_legacy_Compliant_buckets_in_StorageGRID_11.5["NetApp ナレッジベース：StorageGRID 11.5 でレガシー準拠バケットを管理する方法"^]を参照してください。
+
+.手順
+. *設定* ＞ *システム* ＞ *S3 Object Lock* を選択します。
++
+S3オブジェクトロック設定ページが表示されます。
+
+. 「S3オブジェクトロックを有効にする」を選択します。
+. 「適用」を選択します。
++
+確認ダイアログボックスが表示され、S3 Object Lockは一度有効にすると無効にできないことが通知されます。
+
+. システム全体で S3 オブジェクトロックを永続的に有効にする場合は、*OK* を選択してください。
++
+「OK」を選択すると：
+
++
+** アクティブなILMポリシーのデフォルトルールが準拠している場合、S3 Object Lockはグリッド全体で有効になり、無効にすることはできません。
+** デフォルトルールが準拠していない場合、エラーが表示されます。準拠ルールをデフォルトルールとして含む新しいILMポリシーを作成して有効化する必要があります。「OK」を選択します。次に、新しいポリシーを作成し、シミュレーションを実行してから、有効化します。手順については、link:creating-ilm-policy.html["ILMポリシーを作成する"]を参照してください。
+
+
+

@@ -1,0 +1,41 @@
+---
+permalink: maintain/preparing-appliance-for-reinstallation-platform-replacement-only.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, appliance, reinstallation appliance, reinstall appliance 
+summary: サービスアプライアンスでホストされていたグリッドノードを復旧する場合は、まずアプライアンスを StorageGRID ソフトウェアの再インストール用に準備する必要があります。 
+---
+= StorageGRID アプライアンスの再設置の準備（プラットフォーム交換のみ）
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+サービスアプライアンスでホストされていたグリッドノードを復旧する場合は、まずアプライアンスを StorageGRID ソフトウェアの再インストール用に準備する必要があります。
+
+この手順は、サービスアプライアンス上でホストされていた障害発生ノードを交換する場合にのみ実行してください。障害が発生したノードが元々VMwareまたはLinuxホスト上でホストされていた場合は、これらの手順に従わないでください。
+
+.手順
+. 障害が発生したグリッドノードにログインします。
++
+.. 次のコマンドを入力します： `ssh admin@_grid_node_IP_`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+.. 以下のコマンドを入力して root に切り替えます： `su -`
+..  `Passwords.txt`ファイルに記載されているパスワードを入力してください。
+
+
++
+rootとしてログインすると、プロンプトが `$`から `#`に変わります。
+
+. StorageGRID ソフトウェアのインストールに向けてアプライアンスを準備します。次のように入力します： `sgareinstall`
+. 続行を求められたら、以下を入力してください： `y`
++
+アプライアンスが再起動し、SSHセッションが終了します。通常、StorageGRID アプライアンスインストーラが使用可能になるまで約5分かかりますが、場合によっては最大30分待つ必要があることがあります。
+
++
+サービス機器がリセットされ、グリッドノード上のデータにアクセスできなくなります。初期インストール時に設定されたIPアドレスはそのまま維持されますが、手順完了後に確認することをお勧めします。
+
++
+ `sgareinstall`コマンドを実行すると、StorageGRIDでプロビジョニングされたすべてのアカウント、パスワード、およびSSHキーが削除され、新しいホストキーが生成されます。
+
+

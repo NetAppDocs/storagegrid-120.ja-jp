@@ -1,0 +1,28 @@
+---
+permalink: maintain/recovering-from-primary-admin-node-failures.html 
+sidebar: sidebar 
+keywords: storagegrid, recover, primary admin node failure 
+summary: プライマリ管理ノードの障害から復旧するには、特定の一連のタスクを完了する必要があります。プライマリ管理ノードは、グリッドの構成管理ノード（CMN）サービスをホストします。 
+---
+= プライマリStorageGRID管理ノードの障害から回復する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+プライマリ管理ノードの障害から復旧するには、特定の一連のタスクを完了する必要があります。プライマリ管理ノードは、グリッドの構成管理ノード（CMN）サービスをホストします。
+
+
+CAUTION: プライマリ管理ノードに障害が発生した場合は、速やかに修理または交換する必要があります。そうしないと、特定のメンテナンス手順を実行できなくなる可能性があります。
+
+プライマリ管理ノードを復旧するための概要手順は次のとおりです：
+
+. link:copying-audit-logs-from-failed-primary-admin-node.html["障害が発生したプライマリ管理ノードから監査ログをコピーする"]
+. link:replacing-primary-admin-node.html["プライマリ管理ノードを交換する"]
+. link:configuring-replacement-primary-admin-node.html["代替プライマリ管理ノードを構成する"]
+. link:assess-hotfix-requirement-during-primary-admin-node-recovery.html["復旧したプライマリ管理ノードにホットフィックスが必要かどうかを判断する"]
+. link:restoring-audit-log-on-recovered-primary-admin-node.html["復旧したプライマリ管理ノードで監査ログを復元する"]
+. link:restoring-admin-node-database-primary-admin-node.html["プライマリ管理ノードを復旧する際に、管理ノードデータベースを復元する"]
+. link:restoring-prometheus-metrics-primary-admin-node.html["プライマリ管理ノードの復旧時にPrometheusメトリクスを復元する"]
+

@@ -1,0 +1,87 @@
+---
+indexpage:
+  title: StorageGRID 12.0 ソフトウェアドキュメント
+  summary: NetApp StorageGRID は、パブリック、プライベート、ハイブリッドマルチクラウド環境における幅広いユースケースをサポートする、ソフトウェアで定義されるオブジェクトストレージスイートです。StorageGRID
+    は Amazon S3 API のネイティブサポートを提供し、自動化されたライフサイクル管理などの業界をリードする革新的な機能により、非構造化データを長期間にわたってコスト効率よく保存、セキュリティ保護、保護、保全します。
+  keywords: storagegrid documentation
+  lead: NetApp StorageGRID は、パブリック、プライベート、ハイブリッドマルチクラウド環境における幅広いユースケースをサポートする、ソフトウェアで定義されるオブジェクトストレージスイートです。StorageGRID
+    は Amazon S3 API のネイティブサポートを提供し、自動化されたライフサイクル管理などの業界をリードする革新的な機能により、非構造化データを長期間にわたってコスト効率よく保存、セキュリティ保護、保護、保全します。
+  tiles:
+  - title: はじめに
+    links:
+    - title: 新機能
+      url: "/release-notes/whats-new.html"
+    - title: StorageGRID について
+      url: "/primer/index.html"
+    - title: ネットワーク構築ガイドライン
+      url: "/network/index.html"
+    - title: StorageGRID クイックスタート
+      url: "/primer/quick-start.html"
+  - title: インストール、アップグレード、ホットフィックス
+    links:
+    - title: StorageGRID アプライアンスのインストール
+      url: https://docs.netapp.com/us-en/storagegrid-appliances/installconfig/index.html
+    - title: ソフトウェアベースのノードへの StorageGRID のインストール
+      url: "/swnodes/index.html"
+    - title: 新しい StorageGRID バージョンへのアップグレード
+      url: "/upgrade/index.html"
+    - title: ホットフィックスを適用する
+      url: "/maintain/storagegrid-hotfix-procedure.html"
+  - title: グリッドを設定する
+    links:
+    - title: StorageGRID の管理
+      url: "/admin/index.html"
+    - title: ILMを使用してオブジェクトを管理する
+      url: "/ilm/index.html"
+    - title: システム強化
+      url: "/harden/index.html"
+    - title: StorageGRID を FabricPool 用に設定する
+      url: "/fabricpool/index.html"
+  - title: オブジェクトを管理する
+    links:
+    - title: テナントアカウントを使用する
+      url: "/tenant/index.html"
+    - title: S3 REST APIを使用する
+      url: "/s3/index.html"
+    - title: Swift REST APIの使用（サポート終了）
+      url: "/swift/index.html"
+  - title: 監視とトラブルシューティング
+    links:
+    - title: グリッドを監視する
+      url: "/monitor/index.html"
+    - title: グリッドのトラブルシューティング
+      url: "/troubleshoot/index.html"
+    - title: 監査ログを確認する
+      url: "/audit/index.html"
+  - title: グリッドを拡張して維持する
+    links:
+    - title: ボリューム、ノード、サイトを追加する
+      url: "/expand/index.html"
+    - title: グリッドを管理する
+      url: "/maintain/index.html"
+    - title: ノードを復旧または交換する
+      url: "/maintain/warnings-and-considerations-for-grid-node-recovery.html"
+    - title: StorageGRID アプライアンスのメンテナンス
+      url: https://docs.netapp.com/us-en/storagegrid-appliances/commonhardware/index.html
+  - title: 追加の指示
+    links:
+    - title: StorageGRIDソリューションとリソース
+      url: https://docs.netapp.com/us-en/storagegrid-enable/index.html
+    - title: StorageGRIDビデオライブラリ
+      url: https://www.youtube.com/playlist?list=PLdXI3bZJEw7nh2wGRA65iulXhtXwLiqrY
+    - title: NetApp 学習サービス
+      url: https://www.netapp.com/support-and-training/netapp-university/
+    - title: NetApp Consoleを使用したStorageGRIDの管理
+      url: https://docs.netapp.com/us-en/storage-management-storagegrid/index.html
+  - title: その他のリソース
+    links:
+    - title: StorageGRIDサポートページ
+      url: https://mysupport.netapp.com/site/products/all/details/5d9f1107e01d9c0001ee50f6/guideme-tab
+    - title: NetApp Interoperability Matrix Tool（IMT）
+      url: https://imt.netapp.com/matrix/#welcome
+    - title: StorageGRID ナレッジベース
+      url: https://kb.netapp.com/Advice_and_Troubleshooting/Hybrid_Cloud_Infrastructure/StorageGRID
+    - title: NetAppブログ
+      url: https://netapp.com/blog/
+    - title: NetAppコミュニティ
+      url: https://community.netapp.com/

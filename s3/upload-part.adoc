@@ -1,0 +1,64 @@
+---
+permalink: s3/upload-part.html 
+sidebar: sidebar 
+keywords: s3 UploadPart operation 
+summary: UploadPart オペレーションは、オブジェクトのマルチパートアップロードにおけるパートをアップロードします。 
+---
+= StorageGRID の S3 UploadPart 処理でサポートされているリクエストヘッダーとサポートされていないリクエストヘッダー
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+UploadPart オペレーションは、オブジェクトのマルチパートアップロードにおけるパートをアップロードします。
+
+
+
+[[supported-request-headers]]
+== サポートされているリクエストヘッダー
+
+以下のリクエストヘッダーがサポートされています：
+
+* `x-amz-checksum-sha256`
+* `Content-Length`
+* `Content-MD5`
+
+
+
+
+[[request-headers-for-server-side-encryption]]
+== サーバー側暗号化のためのリクエストヘッダー
+
+CreateMultipartUploadリクエストにSSE-C暗号化を指定した場合は、各UploadPartリクエストに以下のリクエストヘッダーも含める必要があります：
+
+* `x-amz-server-side-encryption-customer-algorithm`： `AES256`を指定します。
+* `x-amz-server-side-encryption-customer-key`：CreateMultipartUpload リクエストで指定したものと同じ暗号化キーを指定してください。
+* `x-amz-server-side-encryption-customer-key-MD5`：CreateMultipartUpload リクエストで指定したものと同じ MD5 ダイジェストを指定します。
+
+
+
+CAUTION: ご提供いただいた暗号化キーは一切保存されません。暗号化キーを紛失した場合、対応するオブジェクトも失われます。オブジェクトデータの保護に顧客提供のキーを使用する前に、link:using-server-side-encryption.html["サーバー側暗号化を使用する"]の考慮事項を確認してください。
+
+CreateMultipartUploadリクエスト時にSHA-256チェックサムを指定した場合は、各UploadPartリクエストに次のリクエストヘッダーも含める必要があります：
+
+* `x-amz-checksum-sha256`：この部分の SHA-256 チェックサムを指定します。
+
+
+
+
+[[unsupported-request-headers]]
+== サポートされていないリクエストヘッダー
+
+以下のリクエストヘッダーはサポートされていません：
+
+* `x-amz-sdk-checksum-algorithm`
+* `x-amz-trailer`
+
+
+
+
+[[versioning]]
+== バージョン管理
+
+マルチパートアップロードは、アップロードの開始、アップロードの一覧表示、パートのアップロード、アップロードされたパートの組み立て、およびアップロードの完了という、それぞれ独立した操作で構成されます。オブジェクトは、CompleteMultipartUpload操作が実行されると作成されます（該当する場合はバージョン管理されます）。

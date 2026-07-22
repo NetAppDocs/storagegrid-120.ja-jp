@@ -1,0 +1,72 @@
+---
+permalink: fabricpool/creating-s3-bucket-and-access-key.html 
+sidebar: sidebar 
+keywords: fabricPool, StorageGRID, S3 bucket, bucket, access key, secret access key 
+summary: FabricPool ワークロードで StorageGRID を使用する前に、FabricPool データ用の S3 バケットを作成する必要があります。また、FabricPool に使用するテナントアカウントのアクセスキーとシークレットアクセスキーを取得する必要があります。 
+---
+= StorageGRID で FabricPool 用の S3 バケットを作成してアクセス キーを取得
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FabricPool ワークロードで StorageGRID を使用する前に、FabricPool データ用の S3 バケットを作成する必要があります。また、FabricPool に使用するテナントアカウントのアクセスキーとシークレットアクセスキーを取得する必要があります。
+
+このタスクの詳細については、link:../tenant/creating-s3-bucket.html["S3バケットを作成する"]およびlink:../tenant/creating-your-own-s3-access-keys.html["独自のS3アクセスキーを作成する"]を参照してください。FabricPoolセットアップ ウィザードを使用してこのタスクを完了するには、link:use-fabricpool-setup-wizard-steps.html["FabricPool セットアップ ウィザードにアクセスして完了する"]に移動します。
+
+.開始する前に
+* FabricPool 用のテナントアカウントを作成しました。
+* テナントアカウントへの Root アクセス権を持っています。
+
+
+.手順
+. テナントマネージャーにサインインします。
++
+以下のいずれかの方法を実行できます。
+
++
+** グリッドマネージャーのテナントアカウントページから、該当するテナントの「サインイン」リンクを選択し、認証情報を入力します。
+** ウェブブラウザにテナントアカウントの URL を入力し、認証情報を入力してください。
+
+
+. FabricPool データ用の S3 バケットを作成します。
++
+使用する予定のONTAPクラスターごとに、固有のバケットを作成する必要があります。
+
++
+.. ダッシュボードから「バケットの表示」を選択するか、*STORAGE (S3)* > *Buckets* を選択してください。
+.. 「バケットの作成」を選択します。
+.. FabricPool で使用する StorageGRID バケットの名前を入力してください。例： `fabricpool-bucket`。
++
+
+TIP: バケットを作成した後は、バケット名を変更することはできません。
+
+.. このバケットのリージョンを選択してください。
++
+デフォルトでは、すべてのバケットは `us-east-1`リージョンに作成されます。デフォルトリージョンが `us-east-1`以外のリージョンに設定されている場合、ドロップダウンリストでは最初にそのリージョンが選択されます。
+
+.. *続行*を選択します。
+.. 「バケットの作成」を選択します。
++
+
+NOTE: FabricPool バケットに対して *オブジェクトのバージョン管理を有効にする* を選択しないでください。同様に、FabricPool バケットを編集して *Available* またはデフォルト以外の整合性を使用しないでください。FabricPool バケットに推奨されるバケットの整合性は *Read-after-new-write* であり、これは新しいバケットのデフォルトの整合性です。
+
+
+
+. アクセスキーとシークレットアクセスキーを作成します。
++
+.. *STORAGE (S3)* ＞ *マイアクセスキー* を選択します。
+.. 「キーの作成」を選択します。
+.. 「アクセスキーの作成」を選択します。
+.. アクセスキーIDとシークレットアクセスキーを安全な場所にコピーするか、*Download .csv* を選択して、アクセスキーIDとシークレットアクセスキーを含むスプレッドシートファイルを保存してください。
++
+StorageGRID を FabricPool クラウド階層として設定する際に、これらの値を ONTAP に入力します。
+
++
+
+TIP: 今後 StorageGRID で新しいアクセスキーとシークレットアクセスキーを生成する場合は、StorageGRID から古い値を削除する前に、新しいキーを ONTAP に入力してください。そうしないと、ONTAP が StorageGRID へのアクセスを一時的に失う可能性があります。
+
+
+
+

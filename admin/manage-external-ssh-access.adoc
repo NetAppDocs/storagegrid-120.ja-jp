@@ -1,0 +1,38 @@
+---
+permalink: admin/manage-external-ssh-access.html 
+sidebar: sidebar 
+keywords: security, external, ssh, access 
+summary: 外部からのSSHアクセスをブロックまたは許可することで、SSH保護を管理します。 
+---
+= StorageGRIDで外部SSHアクセスを管理する
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+外部からのアクセスをブロックまたは許可することで、グリッドへの受信トラフィックに対するSSHアクセスを管理します。SSH外部アクセスを管理しても、グリッド内のノード間のトラフィックには影響しません。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* link:admin-group-permissions.html["ルートアクセス権限"]があります。
+
+
+.タスク概要
+システムセキュリティを強化するため、外部からのSSHアクセスはデフォルトでブロックされています。トラブルシューティングなど、受信SSHアクセスを必要とするタスクを実行する必要がある場合は、一時的に外部アクセスを許可してください。作業が完了したら、外部からのアクセスを遮断してください。
+
+.手順
+. *Configuration* > *Security* > *Security settings* を選択します。
+. 「SSH をブロック」タブを選択します。
+. 外部からの SSH アクセスを管理するには、*受信 SSH アクセスをブロック*オプションを使用します。
++
+.. アクセスをブロックするには、チェックボックスを選択します（デフォルト）。
+.. アクセスを許可するには、チェックボックスの選択を解除してください。
++
+
+NOTE: サービス用ラップトップと他のすべてのグリッドノード間で、ポート22へのアクセスが必要です。メンテナンス作業が完了したら、ポート22へのアクセスを削除してください。
+
+
+
+. * 保存 * を選択します。
+

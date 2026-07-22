@@ -1,0 +1,36 @@
+---
+permalink: maintain/downloading-recovery-package.html 
+sidebar: sidebar 
+keywords: storagegrid, recovery package 
+summary: リカバリパッケージファイルを使用すると、障害が発生した場合に StorageGRID システムをリストアできます。 
+---
+= StorageGRID 復旧パッケージをダウンロードします
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+リカバリパッケージファイルを使用すると、障害が発生した場合に StorageGRID システムをリストアできます。
+
+.開始する前に
+* どの管理ノードからでも、link:../admin/web-browser-requirements.html["対応ウェブブラウザ"]を使用してGrid Managerにサインインしています。
+* プロビジョニングパスフレーズをお持ちです。
+* link:../admin/admin-group-permissions.html["特定のアクセス権限"]があります。
+
+
+StorageGRID システムのグリッドトポロジーを変更する前、またはソフトウェアをアップグレードする前に、最新のリカバリパッケージファイルをダウンロードしてください。グリッドトポロジーの変更後、またはソフトウェアのアップグレード後には、リカバリパッケージの新しいコピーをダウンロードしてください。
+
+.手順
+. *Maintenance* > *System* > *Recovery package* を選択します。
+. プロビジョニングパスフレーズを入力し、*ダウンロード開始*を選択します。
++
+ダウンロードはすぐに開始されます。
+
+. ダウンロードが完了したら、 `.zip`ファイルを開き、 `Passwords.txt`ファイルを含む内容にアクセスできることを確認してください。
+. ダウンロードしたリカバリパッケージファイル（(`.zip`）を、安全で保護された2つの別々の場所にコピーしてください。
++
+
+CAUTION: リカバリパッケージファイルには、StorageGRID システムからデータを取得するために使用できる暗号化キーとパスワードが含まれているため、保護する必要があります。
+
+

@@ -1,0 +1,47 @@
+---
+permalink: swnodes/specifying-network-time-protocol-server-information.html 
+sidebar: sidebar 
+keywords: how to specify Network Time Protocol server information 
+summary: StorageGRID システムのネットワークタイムプロトコル（NTP）設定情報を指定する必要があります。これにより、別々のサーバで実行される操作を同期させることができます。 
+---
+= StorageGRID のネットワークタイムプロトコルサーバ情報を指定します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID システムのネットワークタイムプロトコル（NTP）設定情報を指定する必要があります。これにより、別々のサーバで実行される操作を同期させることができます。
+
+.タスク概要
+NTPサーバーにはIPv4アドレスを指定する必要があります。
+
+外部NTPサーバーを指定する必要があります。指定されたNTPサーバーはNTPプロトコルを使用する必要があります。
+
+時刻ずれの問題を防ぐため、Stratum 3以上のNTPサーバー参照を4つ指定する必要があります。
+
+[NOTE]
+====
+運用レベルの StorageGRID インストールに外部 NTP ソースを指定する場合、Windows Server 2016 より前のバージョンの Windows では、Windows 時刻 （W32Time） サービスを使用しないでください。以前のバージョンの Windows の時刻サービスは十分な精度がなく、StorageGRID などの高精度環境での使用については Microsoft によってサポートされていません。
+
+https://support.microsoft.com/en-us/help/939322/support-boundary-to-configure-the-windows-time-service-for-high-accura["高精度環境向けに Windows タイム サービスを構成するためのサポート境界"^]
+
+====
+外部NTPサーバーは、以前にプライマリNTPの役割を割り当てたノードで使用されます。
+
+
+CAUTION: 各サイトの少なくとも2つのノードが、少なくとも4つの外部NTPソースにアクセスできることを確認してください。あるサイト内でNTPソースにアクセスできるノードが1つしかない場合、そのノードがダウンするとタイミングの問題が発生します。さらに、サイトごとに2つのノードを主要なNTPソースとして指定することで、サイトがグリッドの他の部分から隔離された場合でも正確な時刻同期が保証されます。
+
+（VMwareのみ）VMwareに対して追加チェックを実行します。ハイパーバイザーが仮想マシンと同じ NTP ソースを使用していることを確認し、VMTools を使用してハイパーバイザーと StorageGRID 仮想マシン間の時刻同期を無効にします。
+
+.手順
+. *サーバー1*から*サーバー4*のテキストボックスに、少なくとも4つのNTPサーバーのIPv4アドレスを指定してください。
+. 必要に応じて、最後のエントリの横にあるプラス記号を選択して、サーバーエントリを追加してください。
++
+image:8_gmi_installer_ntp_page.gif["この図には説明が付随しています。"]
+
+. *Next* を選択します。
+
+
+.関連情報
+link:../network/index.html["ネットワーク構築ガイドライン"]

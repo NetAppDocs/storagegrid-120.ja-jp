@@ -1,0 +1,55 @@
+---
+permalink: harden/hardening-guidelines-for-software-upgrades.html 
+sidebar: sidebar 
+keywords: StorageGRID, hardening guidelines, upgrades 
+summary: StorageGRID システムおよび関連サービスを最新の状態に保ち、攻撃から防御する必要があります。 
+---
+= StorageGRIDソフトウェア アップグレードの強化ガイドライン
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+StorageGRID システムおよび関連サービスを最新の状態に保ち、攻撃から防御する必要があります。
+
+
+
+[[upgrades-to-storagegrid-software]]
+== StorageGRID ソフトウェアのアップグレード
+
+可能な限り、StorageGRID ソフトウェアを最新のメジャーリリース、または1つ前のメジャーリリースにアップグレードしてください。StorageGRID を最新の状態に維持することで、既知の脆弱性が有効な期間を短縮し、攻撃対象領域全体を縮小することができます。さらに、StorageGRID の最新リリースには、以前のリリースには含まれていなかったセキュリティ強化機能が搭載されていることが多くあります。
+
+ https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool"^]（IMT）を参照して、使用すべき StorageGRID ソフトウェアのバージョンを確認してください。ホットフィックスが必要な場合、NetApp は最新リリース向けのアップデート作成を優先します。一部のパッチは、以前のリリースと互換性がない場合があります。
+
+* 最新の StorageGRID リリースおよびホットフィックスをダウンロードするには、 https://mysupport.netapp.com/site/products/all/details/storagegrid/downloads-tab["NetAppのダウンロード：StorageGRID"^]にアクセスしてください。
+* StorageGRID ソフトウェアをアップグレードするには、link:../upgrade/performing-upgrade.html["アップグレード手順"]を参照してください。
+* ホットフィックスを適用するには、link:../maintain/storagegrid-hotfix-procedure.html["StorageGRIDホットフィックス手順"]を参照してください。
+
+
+
+
+[[upgrades-to-external-services]]
+== 外部サービスのアップグレード
+
+外部サービスには、StorageGRID に間接的に影響する脆弱性が存在する場合があります。StorageGRID が依存するサービスを常に最新の状態に保つようにしてください。これらのサービスには、LDAP、KMS（または KMIP サーバー）、DNS、NTP が含まれます。
+
+サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool"^]を参照してください。
+
+
+
+[[upgrades-to-hypervisors]]
+== ハイパーバイザーのアップグレード
+
+StorageGRID ノードが VMware または別のハイパーバイザー上で実行されている場合は、ハイパーバイザーのソフトウェアとファームウェアが最新の状態であることを確認してください。
+
+サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool"^]を参照してください。
+
+
+
+[[upgrades-to-linux-nodes]]
+== *Linuxノードのアップグレード*
+
+StorageGRIDノードがLinuxホストプラットフォームを使用している場合は、ホストOSにセキュリティアップデートとカーネルアップデートが適用されていることを確認する必要があります。さらに、ファームウェアのアップデートが利用可能になった際には、脆弱性のあるハードウェアにアップデートを適用する必要があります。
+
+サポートされているバージョンの一覧については、 https://imt.netapp.com/matrix/#welcome["NetApp Interoperability Matrix Tool"^]を参照してください。

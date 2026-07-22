@@ -1,0 +1,46 @@
+---
+permalink: maintain/pausing-and-resuming-decommission-process-for-storage-nodes.html 
+sidebar: sidebar 
+keywords: how to pause decommission 
+summary: 2回目のメンテナンス手順を実行する必要がある場合は、ストレージノードの廃止手順の特定の段階で一時停止することができます。他の手順が完了したら、廃止措置を再開できます。 
+---
+= StorageGRID ストレージノードの廃止プロセスを一時停止して再開します
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+2回目のメンテナンス手順を実行する必要がある場合は、ストレージノードの廃止手順の特定の段階で一時停止することができます。他の手順が完了したら、廃止措置を再開できます。
+
+
+NOTE: 「一時停止」ボタンは、ILM評価または消去符号化データの廃止段階に達した場合にのみ有効になります。ただし、ILM評価（データ移行）はバックグラウンドで引き続き実行されます。
+
+.開始する前に
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"] を使用して Grid Manager にサインインしています。
+* あなたはlink:../admin/admin-group-permissions.html["メンテナンス権限またはルートアクセス権限"]があります。
+
+
+.手順
+. *Maintenance* > *Tasks* > *Decommission* を選択します。
++
+廃止ページが表示されます。
+
+. 「ノードの廃止」を選択します。
++
+「ノードの廃止」ページが表示されます。廃止手順が以下のいずれかの段階に達すると、「一時停止」ボタンが有効になります。
+
++
+** ILMの評価
+** 消去符号化データの廃止
+
+
+. 手順を一時停止するには、*一時停止*を選択してください。
++
+現在のステージは一時停止されており、「再開」ボタンが有効になっています。
+
++
+image:decommission_nodes_procedure_paused.png["ノードの廃止手順が一時停止されました"]
+
+. その他のメンテナンス手順が完了したら、*再開*を選択して廃止措置を進めてください。
+

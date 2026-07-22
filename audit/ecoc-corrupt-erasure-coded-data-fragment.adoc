@@ -1,0 +1,55 @@
+---
+permalink: audit/ecoc-corrupt-erasure-coded-data-fragment.html 
+sidebar: sidebar 
+keywords: storagegrid, audit, message, ECOC, Corrupt Erasure-Coded Data Fragment 
+summary: この監査メッセージは、システムが破損した消去符号化データ断片を検出したことを示しています。 
+---
+= StorageGRIDの破損した消去符号化データに関するECOC監査メッセージ
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+この監査メッセージは、システムが破損した消去符号化データ断片を検出したことを示しています。
+
+[cols="1a,1a,4a"]
+|===
+| Code | フィールド | 説明 
+
+
+ a| 
+VCCO
+ a| 
+VCS ID
+ a| 
+破損したチャンクを含むVCSの名前。
+
+
+
+ a| 
+VLID
+ a| 
+ボリューム ID
+ a| 
+破損したイレイジャーコーディング断片を含むRangeDBボリューム。
+
+
+
+ a| 
+CCID
+ a| 
+チャンクID
+ a| 
+破損した消去符号化フラグメントの識別子。
+
+
+
+ a| 
+RSLT
+ a| 
+結果
+ a| 
+このフィールドの値は「NONE」です。RSLTは必須のメッセージ項目ですが、このメッセージには関係ありません。このメッセージがフィルタリングされないように、「SUCS」ではなく「NONE」が使用されます。
+
+|===

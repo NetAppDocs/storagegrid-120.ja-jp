@@ -1,0 +1,61 @@
+---
+permalink: maintain/obtaining-required-materials-for-hotfix.html 
+sidebar: sidebar 
+keywords: storagegrid, hotfix 
+summary: ホットフィックスを適用する前に、必要なすべての資料を入手する必要があります。 
+---
+= StorageGRIDホットフィックスに必要な材料を入手
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ホットフィックスを適用する前に、必要なすべての資料を入手する必要があります。
+
+[cols="1a,2a"]
+|===
+| 項目 | Notes 
+
+
+ a| 
+StorageGRID ホットフィックスファイル
+ a| 
+StorageGRID ホットフィックスファイルをダウンロードする必要があります。
+
+
+
+ a| 
+* ネットワークポート
+* link:../admin/web-browser-requirements.html["対応ウェブブラウザ"]
+* SSHクライアント（例：PuTTY）
+
+ a| 
+
+
+
+ a| 
+復旧パッケージ(`.zip`）ファイル
+ a| 
+ホットフィックスを適用する前に、link:downloading-recovery-package.html["最新のリカバリパッケージファイルをダウンロードします。"]ホットフィックスの適用中に問題が発生した場合に備えてください。ホットフィックスを適用した後、リカバリパッケージファイルの新しいコピーをダウンロードし、安全な場所に保存してください。更新されたリカバリパッケージファイルを使用すると、障害が発生した場合にシステムを復元できます。
+
+
+
+| Passwords.txtファイル  a| 
+オプションであり、SSHクライアントを使用してホットフィックスを手動で適用する場合にのみ使用します。 `Passwords.txt`ファイルはリカバリパッケージ `.zip`ファイルの一部です。
+
+
+
+ a| 
+プロビジョニングパスフレーズ
+ a| 
+パスフレーズは、StorageGRID システムが最初にインストールされるときに作成され、記録されます。プロビジョニングパスフレーズは `Passwords.txt`ファイルに記載されていません。
+
+
+
+ a| 
+関連ドキュメント
+ a| 
+`readme.txt`ホットフィックス用のファイル。このファイルは、ホットフィックスのダウンロードページに含まれています。ホットフィックスを適用する前に、必ず `readme`ファイルをよくご確認ください。
+
+|===
