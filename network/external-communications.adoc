@@ -315,6 +315,21 @@ Cloud Storage Pools のリクエストは、HTTPS を使用する AWS ターゲ�
 
 
  a| 
+636
+ a| 
+TCP/UDP
+ a| 
+LDAP
+ a| 
+ADC搭載ストレージノード
+ a| 
+Active Directory/LDAP
+ a| 
+Active Directory またはLDAPサーバに接続してアイデンティティフェデレーションを行うために使用されます。
+
+
+
+ a| 
 5353
  a| 
 UDP

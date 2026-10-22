@@ -15,11 +15,11 @@ StorageGRIDシステムは、S3テナントアカウントごとに最大5,000�
 
 各グリッドには最大100,000個のバケットを設定できます。
 
-5,000個のバケットをサポートするには、グリッド内の各ストレージノードに最低64 GBのRAMが必要です。
+複数のテナントがそれぞれ最大5,000個のバケットを持つ場合、グリッド内の各ストレージノードは最低64 GBのRAMを搭載する必要があります。
 
 バケット名の制限は AWS US Standard リージョンの制限に従いますが、S3 仮想ホスト型リクエストをサポートするために、さらに DNS 命名規則に基づいて制限する必要があります。
 
-詳細については、次を参照してください。
+詳細については、以下を参照してください。
 
 * https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html["Amazon Simple Storage Service ユーザーガイド：バケットのクォータ、制限、および制約"^]
 * link:../admin/configuring-s3-api-endpoint-domain-names.html["S3エンドポイントのドメイン名を設定する"]
@@ -179,7 +179,7 @@ GetBucketTagging
  a| 
  `tagging`サブリソースを使用して、バケットのすべてのタグを返します。
 
-*注意*：このバケットにデフォルト以外の ILM ポリシータグが設定されている場合、値が割り当てられた `NTAP-SG-ILM-BUCKET-TAG`バケットタグが存在します。このタグを変更または削除しないでください。
+*注意*：このバケットにデフォルト以外の ILM ポリシータグが設定されている場合、値が割り当てられた `NTAP-SG-ILM-BUCKET-TAG`バケットタグが存在します。このタグは変更または削除しないでください。
 
 
 
@@ -348,7 +348,7 @@ PutBucketReplication
 * StorageGRID はレプリケーション設定の V1 のみをサポートしています。つまり、StorageGRID はルールに対して `Filter`要素の使用をサポートしておらず、オブジェクトバージョンの削除については V1 の規約に従います。詳細については、 https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html["Amazon Simple Storage Service ユーザーガイド：レプリケーション設定"^]を参照してください。
 * バケットのレプリケーションは、バージョン管理されたバケットとバージョン管理されていないバケットの両方で設定できます。
 * レプリケーション構成XMLの各ルールで、異なる宛先バケットを指定できます。ソースバケットは、複数の宛先バケットにレプリケートできます。
-* 宛先バケットは、Tenant Manager またはTenant Management APIで指定されているStorageGRID エンドポイントのURN として指定する必要があります。参照してください link:../tenant/configuring-cloudmirror-replication.html["CloudMirror レプリケーションの設定"]。
+* 宛先バケットは、Tenant Manager またはTenant Management APIで指定されているStorageGRID エンドポイントのURN として指定する必要があります。link:../tenant/configuring-cloudmirror-replication.html["CloudMirror レプリケーションの設定"]を参照してください。
 +
 レプリケーション構成を成功させるには、エンドポイントが存在している必要があります。エンドポイントが存在しない場合、リクエストは `400 Bad Request`として失敗します。エラーメッセージには次のように記載されています： `Unable to save the replication policy. The specified endpoint URN does not exist: _URN_.`
 
@@ -375,7 +375,7 @@ PutBucketTagging
 * キーと値は大文字と小文字を区別します。
 
 
-*注意*：このバケットにデフォルト以外の ILM ポリシータグが設定されている場合、値が割り当てられた `NTAP-SG-ILM-BUCKET-TAG`バケットタグが存在します。割り当てられた値を持つ `NTAP-SG-ILM-BUCKET-TAG`バケットタグが、すべての PutBucketTagging リクエストに含まれていることを確認してください。このタグを変更または削除しないでください。
+*注意*：このバケットにデフォルト以外の ILM ポリシータグが設定されている場合、値が割り当てられた `NTAP-SG-ILM-BUCKET-TAG`バケットタグが存在します。割り当てられた値を持つ `NTAP-SG-ILM-BUCKET-TAG`バケットタグが、すべての PutBucketTagging リクエストに含まれていることを確認してください。このタグは変更または削除しないでください。
 
 *注*：この操作を行うと、バケットに既に存在するタグはすべて上書きされます。セットから既存のタグが省略された場合、それらのタグはバケットから削除されます。
 
